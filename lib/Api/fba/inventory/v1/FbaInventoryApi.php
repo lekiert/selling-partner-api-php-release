@@ -1319,7 +1319,7 @@ class FbaInventoryApi
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $start_date_time,
             'startDateTime', // param base name
-            'string', // openApiType
+            '\DateTime', // openApiType
             '', // style
             false, // explode
             false, // required
