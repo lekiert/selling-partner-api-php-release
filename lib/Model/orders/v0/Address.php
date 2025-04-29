@@ -360,7 +360,9 @@ class Address implements ModelInterface, \ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets name.
+     * Gets name
+     *
+     * @return ?string
      */
     public function getName(): ?string
     {
