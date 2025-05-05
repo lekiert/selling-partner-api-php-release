@@ -1,16 +1,18 @@
 <?php
+
 /**
  * MerchantFulfillmentApi
- * PHP version 8.3
+ * PHP version 8.3.
  *
  * @category Class
- * @package  SpApi
+ *
  * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ *
+ * @see     https://openapi-generator.tech
  */
 
 /**
- * Selling Partner API for Merchant Fulfillment
+ * Selling Partner API for Merchant Fulfillment.
  *
  * With the Selling Partner API for Merchant Fulfillment, you can build applications that sellers can use to purchase shipping for non-Prime and Prime orders using Amazon's Buy Shipping Services.
  *
@@ -35,38 +37,42 @@ use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
-use SpApi\AuthAndAuth\RateLimitConfiguration;
-use Symfony\Component\RateLimiter\LimiterInterface;
-use Symfony\Component\RateLimiter\Storage\InMemoryStorage;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
 use SpApi\ApiException;
 use SpApi\Configuration;
 use SpApi\HeaderSelector;
+use SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse;
+use SpApi\Model\merchantFulfillment\v0\CreateShipmentRequest;
+use SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse;
+use SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsRequest;
+use SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse;
+use SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesRequest;
+use SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse;
+use SpApi\Model\merchantFulfillment\v0\GetShipmentResponse;
 use SpApi\ObjectSerializer;
+use Symfony\Component\RateLimiter\LimiterInterface;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\Storage\InMemoryStorage;
 
 /**
- * MerchantFulfillmentApi Class Doc Comment
+ * MerchantFulfillmentApi Class Doc Comment.
  *
  * @category Class
- * @package  SpApi
+ *
  * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
+ *
+ * @see     https://openapi-generator.tech
  */
 class MerchantFulfillmentApi
 {
-    /**
-     * @var ClientInterface
-     */
+    public ?LimiterInterface $cancelShipmentRateLimiter;
+    public ?LimiterInterface $createShipmentRateLimiter;
+    public ?LimiterInterface $getAdditionalSellerInputsRateLimiter;
+    public ?LimiterInterface $getEligibleShipmentServicesRateLimiter;
+    public ?LimiterInterface $getShipmentRateLimiter;
     protected ClientInterface $client;
 
-    /**
-     * @var Configuration
-     */
     protected Configuration $config;
 
-    /**
-     * @var HeaderSelector
-     */
     protected HeaderSelector $headerSelector;
 
     /**
@@ -74,46 +80,35 @@ class MerchantFulfillmentApi
      */
     protected int $hostIndex;
 
-    /**
-     * @var ?RateLimitConfiguration
-     */
-    private ?RateLimitConfiguration $rateLimitConfig = null;
+    private bool $rateLimiterEnabled;
+    private InMemoryStorage $rateLimitStorage;
 
     /**
-     * @var ?LimiterInterface
-     */
-    private ?LimiterInterface $rateLimiter = null;
-
-    /**
-     * @param Configuration   $config
-     * @param RateLimitConfiguration|null $rateLimitConfig
-     * @param ClientInterface|null $client
-     * @param HeaderSelector|null $selector
      * @param int $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
      */
     public function __construct(
         Configuration $config,
-        ?RateLimitConfiguration $rateLimitConfig = null,
         ?ClientInterface $client = null,
+        ?bool $rateLimiterEnabled = true,
         ?HeaderSelector $selector = null,
         int $hostIndex = 0
     ) {
         $this->config = $config;
-        $this->rateLimitConfig = $rateLimitConfig;
-        if ($rateLimitConfig) {
-            $type = $rateLimitConfig->getRateLimitType();
-            $rateLimitOptions = [
-                'id' => 'spApiCall',
-                'policy' => $type,
-                'limit' => $rateLimitConfig->getRateLimitTokenLimit(),
-            ];
-            if ($type === "fixed_window" || $type === "sliding_window") {
-                $rateLimitOptions['interval'] = $rateLimitConfig->getRateLimitToken() . 'seconds';
-            } else {
-                $rateLimitOptions['rate'] = ['interval' => $rateLimitConfig->getRateLimitToken() . 'seconds'];
-            }
-            $factory = new RateLimiterFactory($rateLimitOptions, new InMemoryStorage());
-            $this->rateLimiter = $factory->create();
+        $this->rateLimiterEnabled = $rateLimiterEnabled;
+
+        if ($rateLimiterEnabled) {
+            $this->rateLimitStorage = new InMemoryStorage();
+
+            $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('MerchantFulfillmentApi-cancelShipment'), $this->rateLimitStorage);
+            $this->cancelShipmentRateLimiter = $factory->create('MerchantFulfillmentApi-cancelShipment');
+            $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('MerchantFulfillmentApi-createShipment'), $this->rateLimitStorage);
+            $this->createShipmentRateLimiter = $factory->create('MerchantFulfillmentApi-createShipment');
+            $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('MerchantFulfillmentApi-getAdditionalSellerInputs'), $this->rateLimitStorage);
+            $this->getAdditionalSellerInputsRateLimiter = $factory->create('MerchantFulfillmentApi-getAdditionalSellerInputs');
+            $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('MerchantFulfillmentApi-getEligibleShipmentServices'), $this->rateLimitStorage);
+            $this->getEligibleShipmentServicesRateLimiter = $factory->create('MerchantFulfillmentApi-getEligibleShipmentServices');
+            $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('MerchantFulfillmentApi-getShipment'), $this->rateLimitStorage);
+            $this->getShipmentRateLimiter = $factory->create('MerchantFulfillmentApi-getShipment');
         }
 
         $this->client = $client ?: new Client();
@@ -122,7 +117,7 @@ class MerchantFulfillmentApi
     }
 
     /**
-     * Set the host index
+     * Set the host index.
      *
      * @param int $hostIndex Host index (required)
      */
@@ -132,7 +127,7 @@ class MerchantFulfillmentApi
     }
 
     /**
-     * Get the host index
+     * Get the host index.
      *
      * @return int Host index
      */
@@ -141,40 +136,38 @@ class MerchantFulfillmentApi
         return $this->hostIndex;
     }
 
-    /**
-     * @return Configuration
-     */
     public function getConfig(): Configuration
     {
         return $this->config;
     }
 
     /**
-     * Operation cancelShipment
+     * Operation cancelShipment.
      *
-     * @param  string $shipment_id
-     *  The Amazon-defined shipment identifier for the shipment to cancel. (required)
+     * @param string $shipment_id
+     *                            The Amazon-defined shipment identifier for the shipment to cancel. (required)
      *
-     * @throws \SpApi\ApiException on non-2xx response
+     * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse
      */
     public function cancelShipment(
         string $shipment_id
-    ): \SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse {
+    ): CancelShipmentResponse {
         list($response) = $this->cancelShipmentWithHttpInfo($shipment_id);
+
         return $response;
     }
 
     /**
-     * Operation cancelShipmentWithHttpInfo
+     * Operation cancelShipmentWithHttpInfo.
      *
-     * @param  string $shipment_id
-     *  The Amazon-defined shipment identifier for the shipment to cancel. (required)
+     * @param string $shipment_id
+     *                            The Amazon-defined shipment identifier for the shipment to cancel. (required)
      *
-     * @throws \SpApi\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function cancelShipmentWithHttpInfo(
         string $shipment_id
@@ -184,8 +177,11 @@ class MerchantFulfillmentApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
-                $this->rateLimitWait();
+                if ($this->rateLimiterEnabled) {
+                    $this->cancelShipmentRateLimiter->consume()->ensureAccepted();
+                }
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
@@ -217,225 +213,39 @@ class MerchantFulfillmentApi
                     (string) $response->getBody()
                 );
             }
-
-            switch($statusCode) {
-                case 200:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 400:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 401:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 403:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 404:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 429:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 500:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 503:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-            }
-
-            $returnType = '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse';
-            if ($returnType === '\SplFileObject') {
-                $content = $response->getBody(); //stream goes to serializer
+            if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' === '\SplFileObject') {
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
-                if ($returnType !== 'string') {
+                if ('\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse' !== 'string') {
                     $content = json_decode($content);
                 }
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse', []),
                 $response->getStatusCode(),
-                $response->getHeaders()
+                $response->getHeaders(),
             ];
-
         } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 500:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 503:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-            }
+            $data = ObjectSerializer::deserialize(
+                $e->getResponseBody(),
+                '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse',
+                $e->getResponseHeaders()
+            );
+            $e->setResponseObject($data);
+
             throw $e;
         }
     }
 
     /**
-     * Operation cancelShipmentAsync
+     * Operation cancelShipmentAsync.
      *
-     * @param  string $shipment_id
-     *  The Amazon-defined shipment identifier for the shipment to cancel. (required)
+     * @param string $shipment_id
+     *                            The Amazon-defined shipment identifier for the shipment to cancel. (required)
      *
      * @throws \InvalidArgumentException
-     * @return PromiseInterface
      */
     public function cancelShipmentAsync(
         string $shipment_id
@@ -445,17 +255,17 @@ class MerchantFulfillmentApi
                 function ($response) {
                     return $response[0];
                 }
-            );
+            )
+        ;
     }
 
     /**
-     * Operation cancelShipmentAsyncWithHttpInfo
+     * Operation cancelShipmentAsyncWithHttpInfo.
      *
-     * @param  string $shipment_id
-     *  The Amazon-defined shipment identifier for the shipment to cancel. (required)
+     * @param string $shipment_id
+     *                            The Amazon-defined shipment identifier for the shipment to cancel. (required)
      *
      * @throws \InvalidArgumentException
-     * @return PromiseInterface
      */
     public function cancelShipmentAsyncWithHttpInfo(
         string $shipment_id
@@ -463,17 +273,19 @@ class MerchantFulfillmentApi
         $returnType = '\SpApi\Model\merchantFulfillment\v0\CancelShipmentResponse';
         $request = $this->cancelShipmentRequest($shipment_id);
         $request = $this->config->sign($request);
-        $this->rateLimitWait();
+        if ($this->rateLimiterEnabled) {
+            $this->cancelShipmentRateLimiter->consume()->ensureAccepted();
+        }
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
                 function ($response) use ($returnType) {
-                    if ($returnType === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ($returnType !== 'string') {
+                        if ('string' !== $returnType) {
                             $content = json_decode($content);
                         }
                     }
@@ -481,12 +293,13 @@ class MerchantFulfillmentApi
                     return [
                         ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -498,31 +311,30 @@ class MerchantFulfillmentApi
                         (string) $response->getBody()
                     );
                 }
-            );
+            )
+        ;
     }
 
     /**
-     * Create request for operation 'cancelShipment'
+     * Create request for operation 'cancelShipment'.
      *
-     * @param  string $shipment_id
-     *  The Amazon-defined shipment identifier for the shipment to cancel. (required)
+     * @param string $shipment_id
+     *                            The Amazon-defined shipment identifier for the shipment to cancel. (required)
      *
      * @throws \InvalidArgumentException
-     * @return Request
      */
     public function cancelShipmentRequest(
         string $shipment_id
     ): Request {
         // verify the required parameter 'shipment_id' is set
-        if ($shipment_id === null || (is_array($shipment_id) && count($shipment_id) === 0)) {
+        if (null === $shipment_id || (is_array($shipment_id) && 0 === count($shipment_id))) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $shipment_id when calling cancelShipment'
             );
         }
-        if (!preg_match("/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/", $shipment_id)) {
-            throw new \InvalidArgumentException("invalid value for \"shipment_id\" when calling MerchantFulfillmentApi.cancelShipment, must conform to the pattern /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/.");
+        if (!preg_match('/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/', $shipment_id)) {
+            throw new \InvalidArgumentException('invalid value for "shipment_id" when calling MerchantFulfillmentApi.cancelShipment, must conform to the pattern /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/.');
         }
-
 
         $resourcePath = '/mfn/v0/shipments/{shipmentId}';
         $formParams = [];
@@ -531,30 +343,20 @@ class MerchantFulfillmentApi
         $httpBody = '';
         $multipart = false;
 
-
-
         // path params
-        if ($shipment_id !== null) {
+        if (null !== $shipment_id) {
             $resourcePath = str_replace(
-                '{' . 'shipmentId' . '}',
+                '{shipmentId}',
                 ObjectSerializer::toPathValue($shipment_id),
                 $resourcePath
             );
         }
 
-
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                
-                '',
-                false
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            '',
+            $multipart
+        );
 
         // for model (json/xml)
         if (count($formParams) > 0) {
@@ -565,22 +367,19 @@ class MerchantFulfillmentApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
+            } elseif ('application/json' === $headers['Content-Type']) {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
-
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams, $this->config);
             }
         }
-
 
         $defaultHeaders = [];
         if ($this->config->getUserAgent()) {
@@ -594,51 +393,56 @@ class MerchantFulfillmentApi
         );
 
         $query = ObjectSerializer::buildQuery($queryParams, $this->config);
+
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
     /**
-     * Operation createShipment
+     * Operation createShipment.
      *
-     * @param  \SpApi\Model\merchantFulfillment\v0\CreateShipmentRequest $body
-     *  The request schema for the &#x60;CreateShipment&#x60; operation. (required)
+     * @param CreateShipmentRequest $body
+     *                                    The request schema for the &#x60;CreateShipment&#x60; operation. (required)
      *
-     * @throws \SpApi\ApiException on non-2xx response
+     * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse
      */
     public function createShipment(
-        \SpApi\Model\merchantFulfillment\v0\CreateShipmentRequest $body
-    ): \SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse {
+        CreateShipmentRequest $body
+    ): CreateShipmentResponse {
         list($response) = $this->createShipmentWithHttpInfo($body);
+
         return $response;
     }
 
     /**
-     * Operation createShipmentWithHttpInfo
+     * Operation createShipmentWithHttpInfo.
      *
-     * @param  \SpApi\Model\merchantFulfillment\v0\CreateShipmentRequest $body
-     *  The request schema for the &#x60;CreateShipment&#x60; operation. (required)
+     * @param CreateShipmentRequest $body
+     *                                    The request schema for the &#x60;CreateShipment&#x60; operation. (required)
      *
-     * @throws \SpApi\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function createShipmentWithHttpInfo(
-        \SpApi\Model\merchantFulfillment\v0\CreateShipmentRequest $body
+        CreateShipmentRequest $body
     ): array {
         $request = $this->createShipmentRequest($body);
         $request = $this->config->sign($request);
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
-                $this->rateLimitWait();
+                if ($this->rateLimiterEnabled) {
+                    $this->createShipmentRateLimiter->consume()->ensureAccepted();
+                }
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
@@ -670,263 +474,79 @@ class MerchantFulfillmentApi
                     (string) $response->getBody()
                 );
             }
-
-            switch($statusCode) {
-                case 200:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 400:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 401:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 403:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 404:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 429:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 500:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 503:
-                    if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-            }
-
-            $returnType = '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse';
-            if ($returnType === '\SplFileObject') {
-                $content = $response->getBody(); //stream goes to serializer
+            if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' === '\SplFileObject') {
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
-                if ($returnType !== 'string') {
+                if ('\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse' !== 'string') {
                     $content = json_decode($content);
                 }
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse', []),
                 $response->getStatusCode(),
-                $response->getHeaders()
+                $response->getHeaders(),
             ];
-
         } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 500:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 503:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-            }
+            $data = ObjectSerializer::deserialize(
+                $e->getResponseBody(),
+                '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse',
+                $e->getResponseHeaders()
+            );
+            $e->setResponseObject($data);
+
             throw $e;
         }
     }
 
     /**
-     * Operation createShipmentAsync
+     * Operation createShipmentAsync.
      *
-     * @param  \SpApi\Model\merchantFulfillment\v0\CreateShipmentRequest $body
-     *  The request schema for the &#x60;CreateShipment&#x60; operation. (required)
+     * @param CreateShipmentRequest $body
+     *                                    The request schema for the &#x60;CreateShipment&#x60; operation. (required)
      *
      * @throws \InvalidArgumentException
-     * @return PromiseInterface
      */
     public function createShipmentAsync(
-        \SpApi\Model\merchantFulfillment\v0\CreateShipmentRequest $body
+        CreateShipmentRequest $body
     ): PromiseInterface {
         return $this->createShipmentAsyncWithHttpInfo($body)
             ->then(
                 function ($response) {
                     return $response[0];
                 }
-            );
+            )
+        ;
     }
 
     /**
-     * Operation createShipmentAsyncWithHttpInfo
+     * Operation createShipmentAsyncWithHttpInfo.
      *
-     * @param  \SpApi\Model\merchantFulfillment\v0\CreateShipmentRequest $body
-     *  The request schema for the &#x60;CreateShipment&#x60; operation. (required)
+     * @param CreateShipmentRequest $body
+     *                                    The request schema for the &#x60;CreateShipment&#x60; operation. (required)
      *
      * @throws \InvalidArgumentException
-     * @return PromiseInterface
      */
     public function createShipmentAsyncWithHttpInfo(
-        \SpApi\Model\merchantFulfillment\v0\CreateShipmentRequest $body
+        CreateShipmentRequest $body
     ): PromiseInterface {
         $returnType = '\SpApi\Model\merchantFulfillment\v0\CreateShipmentResponse';
         $request = $this->createShipmentRequest($body);
         $request = $this->config->sign($request);
-        $this->rateLimitWait();
+        if ($this->rateLimiterEnabled) {
+            $this->createShipmentRateLimiter->consume()->ensureAccepted();
+        }
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
                 function ($response) use ($returnType) {
-                    if ($returnType === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ($returnType !== 'string') {
+                        if ('string' !== $returnType) {
                             $content = json_decode($content);
                         }
                     }
@@ -934,12 +554,13 @@ class MerchantFulfillmentApi
                     return [
                         ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -951,23 +572,23 @@ class MerchantFulfillmentApi
                         (string) $response->getBody()
                     );
                 }
-            );
+            )
+        ;
     }
 
     /**
-     * Create request for operation 'createShipment'
+     * Create request for operation 'createShipment'.
      *
-     * @param  \SpApi\Model\merchantFulfillment\v0\CreateShipmentRequest $body
-     *  The request schema for the &#x60;CreateShipment&#x60; operation. (required)
+     * @param CreateShipmentRequest $body
+     *                                    The request schema for the &#x60;CreateShipment&#x60; operation. (required)
      *
      * @throws \InvalidArgumentException
-     * @return Request
      */
     public function createShipmentRequest(
-        \SpApi\Model\merchantFulfillment\v0\CreateShipmentRequest $body
+        CreateShipmentRequest $body
     ): Request {
         // verify the required parameter 'body' is set
-        if ($body === null || (is_array($body) && count($body) === 0)) {
+        if (null === $body || (is_array($body) && 0 === count($body))) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $body when calling createShipment'
             );
@@ -980,26 +601,15 @@ class MerchantFulfillmentApi
         $httpBody = '';
         $multipart = false;
 
-
-
-
-
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                'application/json'
-                ,
-                false
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            'application/json',
+            $multipart
+        );
 
         // for model (json/xml)
         if (isset($body)) {
-            if ($headers['Content-Type'] === 'application/json') {
+            if ('application/json' === $headers['Content-Type']) {
                 $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($body));
             } else {
                 $httpBody = $body;
@@ -1012,22 +622,19 @@ class MerchantFulfillmentApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
+            } elseif ('application/json' === $headers['Content-Type']) {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
-
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams, $this->config);
             }
         }
-
 
         $defaultHeaders = [];
         if ($this->config->getUserAgent()) {
@@ -1041,51 +648,56 @@ class MerchantFulfillmentApi
         );
 
         $query = ObjectSerializer::buildQuery($queryParams, $this->config);
+
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
     /**
-     * Operation getAdditionalSellerInputs
+     * Operation getAdditionalSellerInputs.
      *
-     * @param  \SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsRequest $body
-     *  The request schema for the &#x60;GetAdditionalSellerInputs&#x60; operation. (required)
+     * @param GetAdditionalSellerInputsRequest $body
+     *                                               The request schema for the &#x60;GetAdditionalSellerInputs&#x60; operation. (required)
      *
-     * @throws \SpApi\ApiException on non-2xx response
+     * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse
      */
     public function getAdditionalSellerInputs(
-        \SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsRequest $body
-    ): \SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse {
+        GetAdditionalSellerInputsRequest $body
+    ): GetAdditionalSellerInputsResponse {
         list($response) = $this->getAdditionalSellerInputsWithHttpInfo($body);
+
         return $response;
     }
 
     /**
-     * Operation getAdditionalSellerInputsWithHttpInfo
+     * Operation getAdditionalSellerInputsWithHttpInfo.
      *
-     * @param  \SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsRequest $body
-     *  The request schema for the &#x60;GetAdditionalSellerInputs&#x60; operation. (required)
+     * @param GetAdditionalSellerInputsRequest $body
+     *                                               The request schema for the &#x60;GetAdditionalSellerInputs&#x60; operation. (required)
      *
-     * @throws \SpApi\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function getAdditionalSellerInputsWithHttpInfo(
-        \SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsRequest $body
+        GetAdditionalSellerInputsRequest $body
     ): array {
         $request = $this->getAdditionalSellerInputsRequest($body);
         $request = $this->config->sign($request);
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
-                $this->rateLimitWait();
+                if ($this->rateLimiterEnabled) {
+                    $this->getAdditionalSellerInputsRateLimiter->consume()->ensureAccepted();
+                }
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
@@ -1117,263 +729,79 @@ class MerchantFulfillmentApi
                     (string) $response->getBody()
                 );
             }
-
-            switch($statusCode) {
-                case 200:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 400:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 401:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 403:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 404:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 429:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 500:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 503:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-            }
-
-            $returnType = '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse';
-            if ($returnType === '\SplFileObject') {
-                $content = $response->getBody(); //stream goes to serializer
+            if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' === '\SplFileObject') {
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
-                if ($returnType !== 'string') {
+                if ('\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse' !== 'string') {
                     $content = json_decode($content);
                 }
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse', []),
                 $response->getStatusCode(),
-                $response->getHeaders()
+                $response->getHeaders(),
             ];
-
         } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 500:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 503:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-            }
+            $data = ObjectSerializer::deserialize(
+                $e->getResponseBody(),
+                '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse',
+                $e->getResponseHeaders()
+            );
+            $e->setResponseObject($data);
+
             throw $e;
         }
     }
 
     /**
-     * Operation getAdditionalSellerInputsAsync
+     * Operation getAdditionalSellerInputsAsync.
      *
-     * @param  \SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsRequest $body
-     *  The request schema for the &#x60;GetAdditionalSellerInputs&#x60; operation. (required)
+     * @param GetAdditionalSellerInputsRequest $body
+     *                                               The request schema for the &#x60;GetAdditionalSellerInputs&#x60; operation. (required)
      *
      * @throws \InvalidArgumentException
-     * @return PromiseInterface
      */
     public function getAdditionalSellerInputsAsync(
-        \SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsRequest $body
+        GetAdditionalSellerInputsRequest $body
     ): PromiseInterface {
         return $this->getAdditionalSellerInputsAsyncWithHttpInfo($body)
             ->then(
                 function ($response) {
                     return $response[0];
                 }
-            );
+            )
+        ;
     }
 
     /**
-     * Operation getAdditionalSellerInputsAsyncWithHttpInfo
+     * Operation getAdditionalSellerInputsAsyncWithHttpInfo.
      *
-     * @param  \SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsRequest $body
-     *  The request schema for the &#x60;GetAdditionalSellerInputs&#x60; operation. (required)
+     * @param GetAdditionalSellerInputsRequest $body
+     *                                               The request schema for the &#x60;GetAdditionalSellerInputs&#x60; operation. (required)
      *
      * @throws \InvalidArgumentException
-     * @return PromiseInterface
      */
     public function getAdditionalSellerInputsAsyncWithHttpInfo(
-        \SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsRequest $body
+        GetAdditionalSellerInputsRequest $body
     ): PromiseInterface {
         $returnType = '\SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsResponse';
         $request = $this->getAdditionalSellerInputsRequest($body);
         $request = $this->config->sign($request);
-        $this->rateLimitWait();
+        if ($this->rateLimiterEnabled) {
+            $this->getAdditionalSellerInputsRateLimiter->consume()->ensureAccepted();
+        }
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
                 function ($response) use ($returnType) {
-                    if ($returnType === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ($returnType !== 'string') {
+                        if ('string' !== $returnType) {
                             $content = json_decode($content);
                         }
                     }
@@ -1381,12 +809,13 @@ class MerchantFulfillmentApi
                     return [
                         ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -1398,23 +827,23 @@ class MerchantFulfillmentApi
                         (string) $response->getBody()
                     );
                 }
-            );
+            )
+        ;
     }
 
     /**
-     * Create request for operation 'getAdditionalSellerInputs'
+     * Create request for operation 'getAdditionalSellerInputs'.
      *
-     * @param  \SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsRequest $body
-     *  The request schema for the &#x60;GetAdditionalSellerInputs&#x60; operation. (required)
+     * @param GetAdditionalSellerInputsRequest $body
+     *                                               The request schema for the &#x60;GetAdditionalSellerInputs&#x60; operation. (required)
      *
      * @throws \InvalidArgumentException
-     * @return Request
      */
     public function getAdditionalSellerInputsRequest(
-        \SpApi\Model\merchantFulfillment\v0\GetAdditionalSellerInputsRequest $body
+        GetAdditionalSellerInputsRequest $body
     ): Request {
         // verify the required parameter 'body' is set
-        if ($body === null || (is_array($body) && count($body) === 0)) {
+        if (null === $body || (is_array($body) && 0 === count($body))) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $body when calling getAdditionalSellerInputs'
             );
@@ -1427,26 +856,15 @@ class MerchantFulfillmentApi
         $httpBody = '';
         $multipart = false;
 
-
-
-
-
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                'application/json'
-                ,
-                false
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            'application/json',
+            $multipart
+        );
 
         // for model (json/xml)
         if (isset($body)) {
-            if ($headers['Content-Type'] === 'application/json') {
+            if ('application/json' === $headers['Content-Type']) {
                 $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($body));
             } else {
                 $httpBody = $body;
@@ -1459,22 +877,19 @@ class MerchantFulfillmentApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
+            } elseif ('application/json' === $headers['Content-Type']) {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
-
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams, $this->config);
             }
         }
-
 
         $defaultHeaders = [];
         if ($this->config->getUserAgent()) {
@@ -1488,51 +903,56 @@ class MerchantFulfillmentApi
         );
 
         $query = ObjectSerializer::buildQuery($queryParams, $this->config);
+
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
     /**
-     * Operation getEligibleShipmentServices
+     * Operation getEligibleShipmentServices.
      *
-     * @param  \SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesRequest $body
-     *  The request schema for the &#x60;GetEligibleShipmentServices&#x60; operation. (required)
+     * @param GetEligibleShipmentServicesRequest $body
+     *                                                 The request schema for the &#x60;GetEligibleShipmentServices&#x60; operation. (required)
      *
-     * @throws \SpApi\ApiException on non-2xx response
+     * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse
      */
     public function getEligibleShipmentServices(
-        \SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesRequest $body
-    ): \SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse {
+        GetEligibleShipmentServicesRequest $body
+    ): GetEligibleShipmentServicesResponse {
         list($response) = $this->getEligibleShipmentServicesWithHttpInfo($body);
+
         return $response;
     }
 
     /**
-     * Operation getEligibleShipmentServicesWithHttpInfo
+     * Operation getEligibleShipmentServicesWithHttpInfo.
      *
-     * @param  \SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesRequest $body
-     *  The request schema for the &#x60;GetEligibleShipmentServices&#x60; operation. (required)
+     * @param GetEligibleShipmentServicesRequest $body
+     *                                                 The request schema for the &#x60;GetEligibleShipmentServices&#x60; operation. (required)
      *
-     * @throws \SpApi\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function getEligibleShipmentServicesWithHttpInfo(
-        \SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesRequest $body
+        GetEligibleShipmentServicesRequest $body
     ): array {
         $request = $this->getEligibleShipmentServicesRequest($body);
         $request = $this->config->sign($request);
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
-                $this->rateLimitWait();
+                if ($this->rateLimiterEnabled) {
+                    $this->getEligibleShipmentServicesRateLimiter->consume()->ensureAccepted();
+                }
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
@@ -1564,263 +984,79 @@ class MerchantFulfillmentApi
                     (string) $response->getBody()
                 );
             }
-
-            switch($statusCode) {
-                case 200:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 400:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 401:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 403:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 404:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 429:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 500:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 503:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-            }
-
-            $returnType = '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse';
-            if ($returnType === '\SplFileObject') {
-                $content = $response->getBody(); //stream goes to serializer
+            if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' === '\SplFileObject') {
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
-                if ($returnType !== 'string') {
+                if ('\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse' !== 'string') {
                     $content = json_decode($content);
                 }
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse', []),
                 $response->getStatusCode(),
-                $response->getHeaders()
+                $response->getHeaders(),
             ];
-
         } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 500:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 503:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-            }
+            $data = ObjectSerializer::deserialize(
+                $e->getResponseBody(),
+                '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse',
+                $e->getResponseHeaders()
+            );
+            $e->setResponseObject($data);
+
             throw $e;
         }
     }
 
     /**
-     * Operation getEligibleShipmentServicesAsync
+     * Operation getEligibleShipmentServicesAsync.
      *
-     * @param  \SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesRequest $body
-     *  The request schema for the &#x60;GetEligibleShipmentServices&#x60; operation. (required)
+     * @param GetEligibleShipmentServicesRequest $body
+     *                                                 The request schema for the &#x60;GetEligibleShipmentServices&#x60; operation. (required)
      *
      * @throws \InvalidArgumentException
-     * @return PromiseInterface
      */
     public function getEligibleShipmentServicesAsync(
-        \SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesRequest $body
+        GetEligibleShipmentServicesRequest $body
     ): PromiseInterface {
         return $this->getEligibleShipmentServicesAsyncWithHttpInfo($body)
             ->then(
                 function ($response) {
                     return $response[0];
                 }
-            );
+            )
+        ;
     }
 
     /**
-     * Operation getEligibleShipmentServicesAsyncWithHttpInfo
+     * Operation getEligibleShipmentServicesAsyncWithHttpInfo.
      *
-     * @param  \SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesRequest $body
-     *  The request schema for the &#x60;GetEligibleShipmentServices&#x60; operation. (required)
+     * @param GetEligibleShipmentServicesRequest $body
+     *                                                 The request schema for the &#x60;GetEligibleShipmentServices&#x60; operation. (required)
      *
      * @throws \InvalidArgumentException
-     * @return PromiseInterface
      */
     public function getEligibleShipmentServicesAsyncWithHttpInfo(
-        \SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesRequest $body
+        GetEligibleShipmentServicesRequest $body
     ): PromiseInterface {
         $returnType = '\SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesResponse';
         $request = $this->getEligibleShipmentServicesRequest($body);
         $request = $this->config->sign($request);
-        $this->rateLimitWait();
+        if ($this->rateLimiterEnabled) {
+            $this->getEligibleShipmentServicesRateLimiter->consume()->ensureAccepted();
+        }
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
                 function ($response) use ($returnType) {
-                    if ($returnType === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ($returnType !== 'string') {
+                        if ('string' !== $returnType) {
                             $content = json_decode($content);
                         }
                     }
@@ -1828,12 +1064,13 @@ class MerchantFulfillmentApi
                     return [
                         ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -1845,23 +1082,23 @@ class MerchantFulfillmentApi
                         (string) $response->getBody()
                     );
                 }
-            );
+            )
+        ;
     }
 
     /**
-     * Create request for operation 'getEligibleShipmentServices'
+     * Create request for operation 'getEligibleShipmentServices'.
      *
-     * @param  \SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesRequest $body
-     *  The request schema for the &#x60;GetEligibleShipmentServices&#x60; operation. (required)
+     * @param GetEligibleShipmentServicesRequest $body
+     *                                                 The request schema for the &#x60;GetEligibleShipmentServices&#x60; operation. (required)
      *
      * @throws \InvalidArgumentException
-     * @return Request
      */
     public function getEligibleShipmentServicesRequest(
-        \SpApi\Model\merchantFulfillment\v0\GetEligibleShipmentServicesRequest $body
+        GetEligibleShipmentServicesRequest $body
     ): Request {
         // verify the required parameter 'body' is set
-        if ($body === null || (is_array($body) && count($body) === 0)) {
+        if (null === $body || (is_array($body) && 0 === count($body))) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $body when calling getEligibleShipmentServices'
             );
@@ -1874,26 +1111,15 @@ class MerchantFulfillmentApi
         $httpBody = '';
         $multipart = false;
 
-
-
-
-
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                'application/json'
-                ,
-                false
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            'application/json',
+            $multipart
+        );
 
         // for model (json/xml)
         if (isset($body)) {
-            if ($headers['Content-Type'] === 'application/json') {
+            if ('application/json' === $headers['Content-Type']) {
                 $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($body));
             } else {
                 $httpBody = $body;
@@ -1906,22 +1132,19 @@ class MerchantFulfillmentApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
+            } elseif ('application/json' === $headers['Content-Type']) {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
-
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams, $this->config);
             }
         }
-
 
         $defaultHeaders = [];
         if ($this->config->getUserAgent()) {
@@ -1935,40 +1158,42 @@ class MerchantFulfillmentApi
         );
 
         $query = ObjectSerializer::buildQuery($queryParams, $this->config);
+
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
     /**
-     * Operation getShipment
+     * Operation getShipment.
      *
-     * @param  string $shipment_id
-     *  The Amazon-defined shipment identifier for the shipment. (required)
+     * @param string $shipment_id
+     *                            The Amazon-defined shipment identifier for the shipment. (required)
      *
-     * @throws \SpApi\ApiException on non-2xx response
+     * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \SpApi\Model\merchantFulfillment\v0\GetShipmentResponse
      */
     public function getShipment(
         string $shipment_id
-    ): \SpApi\Model\merchantFulfillment\v0\GetShipmentResponse {
+    ): GetShipmentResponse {
         list($response) = $this->getShipmentWithHttpInfo($shipment_id);
+
         return $response;
     }
 
     /**
-     * Operation getShipmentWithHttpInfo
+     * Operation getShipmentWithHttpInfo.
      *
-     * @param  string $shipment_id
-     *  The Amazon-defined shipment identifier for the shipment. (required)
+     * @param string $shipment_id
+     *                            The Amazon-defined shipment identifier for the shipment. (required)
      *
-     * @throws \SpApi\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \SpApi\Model\merchantFulfillment\v0\GetShipmentResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
      */
     public function getShipmentWithHttpInfo(
         string $shipment_id
@@ -1978,8 +1203,11 @@ class MerchantFulfillmentApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
-                $this->rateLimitWait();
+                if ($this->rateLimiterEnabled) {
+                    $this->getShipmentRateLimiter->consume()->ensureAccepted();
+                }
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
@@ -2011,225 +1239,39 @@ class MerchantFulfillmentApi
                     (string) $response->getBody()
                 );
             }
-
-            switch($statusCode) {
-                case 200:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 400:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 401:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 403:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 404:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 429:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 500:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-                case 503:
-                    if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                        if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' !== 'string') {
-                            $content = json_decode($content);
-                        }
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders()
-                    ];
-            }
-
-            $returnType = '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse';
-            if ($returnType === '\SplFileObject') {
-                $content = $response->getBody(); //stream goes to serializer
+            if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' === '\SplFileObject') {
+                $content = $response->getBody(); // stream goes to serializer
             } else {
                 $content = (string) $response->getBody();
-                if ($returnType !== 'string') {
+                if ('\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse' !== 'string') {
                     $content = json_decode($content);
                 }
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                ObjectSerializer::deserialize($content, '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse', []),
                 $response->getStatusCode(),
-                $response->getHeaders()
+                $response->getHeaders(),
             ];
-
         } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 500:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-                case 503:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-                    break;
-            }
+            $data = ObjectSerializer::deserialize(
+                $e->getResponseBody(),
+                '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse',
+                $e->getResponseHeaders()
+            );
+            $e->setResponseObject($data);
+
             throw $e;
         }
     }
 
     /**
-     * Operation getShipmentAsync
+     * Operation getShipmentAsync.
      *
-     * @param  string $shipment_id
-     *  The Amazon-defined shipment identifier for the shipment. (required)
+     * @param string $shipment_id
+     *                            The Amazon-defined shipment identifier for the shipment. (required)
      *
      * @throws \InvalidArgumentException
-     * @return PromiseInterface
      */
     public function getShipmentAsync(
         string $shipment_id
@@ -2239,17 +1281,17 @@ class MerchantFulfillmentApi
                 function ($response) {
                     return $response[0];
                 }
-            );
+            )
+        ;
     }
 
     /**
-     * Operation getShipmentAsyncWithHttpInfo
+     * Operation getShipmentAsyncWithHttpInfo.
      *
-     * @param  string $shipment_id
-     *  The Amazon-defined shipment identifier for the shipment. (required)
+     * @param string $shipment_id
+     *                            The Amazon-defined shipment identifier for the shipment. (required)
      *
      * @throws \InvalidArgumentException
-     * @return PromiseInterface
      */
     public function getShipmentAsyncWithHttpInfo(
         string $shipment_id
@@ -2257,17 +1299,19 @@ class MerchantFulfillmentApi
         $returnType = '\SpApi\Model\merchantFulfillment\v0\GetShipmentResponse';
         $request = $this->getShipmentRequest($shipment_id);
         $request = $this->config->sign($request);
-        $this->rateLimitWait();
+        if ($this->rateLimiterEnabled) {
+            $this->getShipmentRateLimiter->consume()->ensureAccepted();
+        }
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
                 function ($response) use ($returnType) {
-                    if ($returnType === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ($returnType !== 'string') {
+                        if ('string' !== $returnType) {
                             $content = json_decode($content);
                         }
                     }
@@ -2275,12 +1319,13 @@ class MerchantFulfillmentApi
                     return [
                         ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -2292,31 +1337,30 @@ class MerchantFulfillmentApi
                         (string) $response->getBody()
                     );
                 }
-            );
+            )
+        ;
     }
 
     /**
-     * Create request for operation 'getShipment'
+     * Create request for operation 'getShipment'.
      *
-     * @param  string $shipment_id
-     *  The Amazon-defined shipment identifier for the shipment. (required)
+     * @param string $shipment_id
+     *                            The Amazon-defined shipment identifier for the shipment. (required)
      *
      * @throws \InvalidArgumentException
-     * @return Request
      */
     public function getShipmentRequest(
         string $shipment_id
     ): Request {
         // verify the required parameter 'shipment_id' is set
-        if ($shipment_id === null || (is_array($shipment_id) && count($shipment_id) === 0)) {
+        if (null === $shipment_id || (is_array($shipment_id) && 0 === count($shipment_id))) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $shipment_id when calling getShipment'
             );
         }
-        if (!preg_match("/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/", $shipment_id)) {
-            throw new \InvalidArgumentException("invalid value for \"shipment_id\" when calling MerchantFulfillmentApi.getShipment, must conform to the pattern /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/.");
+        if (!preg_match('/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/', $shipment_id)) {
+            throw new \InvalidArgumentException('invalid value for "shipment_id" when calling MerchantFulfillmentApi.getShipment, must conform to the pattern /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/.');
         }
-
 
         $resourcePath = '/mfn/v0/shipments/{shipmentId}';
         $formParams = [];
@@ -2325,30 +1369,20 @@ class MerchantFulfillmentApi
         $httpBody = '';
         $multipart = false;
 
-
-
         // path params
-        if ($shipment_id !== null) {
+        if (null !== $shipment_id) {
             $resourcePath = str_replace(
-                '{' . 'shipmentId' . '}',
+                '{shipmentId}',
                 ObjectSerializer::toPathValue($shipment_id),
                 $resourcePath
             );
         }
 
-
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                
-                '',
-                false
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            '',
+            $multipart
+        );
 
         // for model (json/xml)
         if (count($formParams) > 0) {
@@ -2359,22 +1393,19 @@ class MerchantFulfillmentApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
+            } elseif ('application/json' === $headers['Content-Type']) {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
-
             } else {
                 // for HTTP post (form)
                 $httpBody = ObjectSerializer::buildQuery($formParams, $this->config);
             }
         }
-
 
         $defaultHeaders = [];
         if ($this->config->getUserAgent()) {
@@ -2388,19 +1419,21 @@ class MerchantFulfillmentApi
         );
 
         $query = ObjectSerializer::buildQuery($queryParams, $this->config);
+
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
             $headers,
             $httpBody
         );
     }
 
     /**
-     * Create http client option
+     * Create http client option.
+     *
+     * @return array of http client options
      *
      * @throws \RuntimeException on file opening failure
-     * @return array of http client options
      */
     protected function createHttpClientOption(): array
     {
@@ -2408,27 +1441,10 @@ class MerchantFulfillmentApi
         if ($this->config->getDebug()) {
             $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
             if (!$options[RequestOptions::DEBUG]) {
-                throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
+                throw new \RuntimeException('Failed to open the debug file: '.$this->config->getDebugFile());
             }
         }
 
         return $options;
-    }
-
-    /**
-     * Rate Limiter waits for tokens
-     *
-     * @return void
-     */
-    public function rateLimitWait(): void
-    {
-        if ($this->rateLimiter) {
-            $type = $this->rateLimitConfig->getRateLimitType();
-            if ($this->rateLimitConfig->getTimeOut() != 0 && ($type == "token_bucket" || $type == "fixed_window")) {
-                $this->rateLimiter->reserve(1, ($this->rateLimitConfig->getTimeOut()) / 1000)->wait();
-            } else {
-                $this->rateLimiter->consume()->wait();
-            }
-        }
     }
 }
