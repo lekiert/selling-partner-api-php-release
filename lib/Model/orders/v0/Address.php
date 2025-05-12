@@ -372,20 +372,12 @@ class Address implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Sets name.
      *
-     * @param null|string $name the name
+     * @param ?string $name The name.
+     *
+     * @return self
      */
     public function setName(?string $name): self
     {
-        if (is_null($name)) {
-            array_push($this->openAPINullablesSetToNull, 'name');
-        } else {
-            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
-            $index = array_search('name', $nullablesSetToNull);
-            if (false !== $index) {
-                unset($nullablesSetToNull[$index]);
-                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
-            }
-        }
         $this->container['name'] = $name;
 
         return $this;
