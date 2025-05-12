@@ -112,7 +112,7 @@ class Address implements ModelInterface, \ArrayAccess, \JsonSerializable
      * @var bool[]
      */
     protected static array $openAPINullables = [
-        'name' => false,
+        'name' => true,
         'company_name' => true,
         'address_line1' => true,
         'address_line2' => true,
@@ -375,13 +375,12 @@ class Address implements ModelInterface, \ArrayAccess, \JsonSerializable
     /**
      * Sets name.
      *
-     * @param string $name the name
+     * @param ?string $name The name.
+     *
+     * @return self
      */
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
-        if (is_null($name)) {
-            throw new \InvalidArgumentException('non-nullable name cannot be null');
-        }
         $this->container['name'] = $name;
 
         return $this;
