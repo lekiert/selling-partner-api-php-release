@@ -265,15 +265,6 @@ class TaxCollection implements ModelInterface, \ArrayAccess, \JsonSerializable
             );
         }
 
-        $allowedValues = $this->getResponsiblePartyAllowableValues();
-        if (!is_null($this->container['responsible_party']) && !in_array($this->container['responsible_party'], $allowedValues, true)) {
-            $invalidProperties[] = sprintf(
-                "invalid value '%s' for 'responsible_party', must be one of '%s'",
-                $this->container['responsible_party'],
-                implode("', '", $allowedValues)
-            );
-        }
-
         return $invalidProperties;
     }
 
