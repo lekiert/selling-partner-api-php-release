@@ -773,7 +773,7 @@ class VendorOrdersApi
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $created_after,
             'createdAfter', // param base name
-            'string', // openApiType
+            '\DateTime', // openApiType
             '', // style
             false, // explode
             true, // required
@@ -783,7 +783,7 @@ class VendorOrdersApi
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $created_before,
             'createdBefore', // param base name
-            'string', // openApiType
+            '\DateTime', // openApiType
             '', // style
             false, // explode
             true, // required
