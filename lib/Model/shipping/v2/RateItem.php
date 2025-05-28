@@ -62,7 +62,7 @@ class RateItem implements ModelInterface, \ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static array $openAPITypes = [
-        'rate_item_id' => '\SpApi\Model\shipping\v2\RateItemID',
+        'rate_item_id' => 'string',
         'rate_item_type' => '\SpApi\Model\shipping\v2\RateItemType',
         'rate_item_charge' => '\SpApi\Model\shipping\v2\Currency',
         'rate_item_name_localization' => 'string'];
