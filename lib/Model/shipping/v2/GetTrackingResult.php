@@ -307,7 +307,7 @@ class GetTrackingResult implements ModelInterface, \ArrayAccess, \JsonSerializab
     /**
      * Gets alternate_leg_tracking_id.
      */
-    public function getAlternateLegTrackingId(): string
+    public function getAlternateLegTrackingId(): ?string
     {
         return $this->container['alternate_leg_tracking_id'];
     }
