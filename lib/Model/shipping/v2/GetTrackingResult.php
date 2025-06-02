@@ -353,7 +353,7 @@ class GetTrackingResult implements ModelInterface, \ArrayAccess, \JsonSerializab
     /**
      * Gets promised_delivery_date.
      */
-    public function getPromisedDeliveryDate(): \DateTime
+    public function getPromisedDeliveryDate(): ?\DateTime
     {
         return $this->container['promised_delivery_date'];
     }
