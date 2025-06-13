@@ -65,7 +65,11 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
         'feature_name' => 'string',
         'is_eligible' => 'bool',
         'ineligible_reasons' => 'string[]',
-        'sku_info' => '\SpApi\Model\fulfillment\outbound\v2020_07_01\FeatureSku'];
+        'sku_info' => '\SpApi\Model\fulfillment\outbound\v2020_07_01\FeatureSku',
+        'seller_sku' => 'string',
+        'fn_sku' => 'string',
+        'sku_count' => 'integer',
+    ];
 
     /**
      * Array of property to format mappings. Used for (de)serialization.
@@ -81,7 +85,11 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
         'feature_name' => null,
         'is_eligible' => null,
         'ineligible_reasons' => null,
-        'sku_info' => null];
+        'sku_info' => null,
+        'seller_sku' => null,
+        'fn_sku' => null,
+        'sku_count' => null,
+    ];
 
     /**
      * Array of nullable properties. Used for (de)serialization.
@@ -94,6 +102,9 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
         'is_eligible' => false,
         'ineligible_reasons' => true,
         'sku_info' => true,
+        'seller_sku' => true,
+        'fn_sku' => true,
+        'sku_count' => true,
     ];
 
     /**
@@ -115,6 +126,9 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
         'is_eligible' => 'isEligible',
         'ineligible_reasons' => 'ineligibleReasons',
         'sku_info' => 'skuInfo',
+        'fn_sku' => 'fnSku',
+        'seller_sku' => 'sellerSku',
+        'sku_count' => 'skuCount',
     ];
 
     /**
@@ -128,6 +142,9 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
         'is_eligible' => 'setIsEligible',
         'ineligible_reasons' => 'setIneligibleReasons',
         'sku_info' => 'setSkuInfo',
+        'fn_sku' => 'setFnSku',
+        'seller_sku' => 'setSellerSku',
+        'sku_count' => 'setSkuCount',
     ];
 
     /**
@@ -141,6 +158,9 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
         'is_eligible' => 'getIsEligible',
         'ineligible_reasons' => 'getIneligibleReasons',
         'sku_info' => 'getSkuInfo',
+        'fn_sku' => 'getFnSku',
+        'seller_sku' => 'getSellerSku',
+        'sku_count' => 'getSkuCount',
     ];
 
     /**
@@ -161,6 +181,9 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
         $this->setIfExists('is_eligible', $data ?? [], null);
         $this->setIfExists('ineligible_reasons', $data ?? [], null);
         $this->setIfExists('sku_info', $data ?? [], null);
+        $this->setIfExists('fn_sku', $data ?? [], null);
+        $this->setIfExists('seller_sku', $data ?? [], null);
+        $this->setIfExists('sku_count', $data ?? [], null);
     }
 
     /**
@@ -379,6 +402,60 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
     public function getSkuInfo(): ?FeatureSku
     {
         return $this->container['sku_info'];
+    }
+
+    /**
+     * Gets fn_sku.
+     */
+    public function getFnSku(): ?string
+    {
+        return $this->container['fn_sku'] ?? null;
+    }
+
+    /**
+     * Sets fn_sku.
+     */
+    public function setFnSku(?string $fn_sku): self
+    {
+        $this->container['fn_sku'] = $fn_sku;
+
+        return $this;
+    }
+
+    /**
+     * Gets seller_sku.
+     */
+    public function getSellerSku(): ?string
+    {
+        return $this->container['seller_sku'] ?? null;
+    }
+
+    /**
+     * Sets seller_sku.
+     */
+    public function setSellerSku(?string $seller_sku): self
+    {
+        $this->container['seller_sku'] = $seller_sku;
+
+        return $this;
+    }
+
+    /**
+     * Gets sku_count.
+     */
+    public function getSkuCount(): ?int
+    {
+        return $this->container['sku_count'] ?? null;
+    }
+
+    /**
+     * Sets seller_sku.
+     */
+    public function setSkuCount(?int $sku_count): self
+    {
+        $this->container['sku_count'] = $sku_count;
+
+        return $this;
     }
 
     /**
