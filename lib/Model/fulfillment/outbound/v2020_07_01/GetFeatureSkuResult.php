@@ -69,6 +69,7 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
         'seller_sku' => 'string',
         'fn_sku' => 'string',
         'sku_count' => 'integer',
+        'overlapping_skus' => 'string[]',
     ];
 
     /**
@@ -89,6 +90,7 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
         'seller_sku' => null,
         'fn_sku' => null,
         'sku_count' => null,
+        'overlapping_skus' => null,
     ];
 
     /**
@@ -105,6 +107,7 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
         'seller_sku' => true,
         'fn_sku' => true,
         'sku_count' => true,
+        'overlapping_skus' => true,
     ];
 
     /**
@@ -129,6 +132,7 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
         'fn_sku' => 'fnSku',
         'seller_sku' => 'sellerSku',
         'sku_count' => 'skuCount',
+        'overlapping_skus' => 'overlappingSkus',
     ];
 
     /**
@@ -145,6 +149,7 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
         'fn_sku' => 'setFnSku',
         'seller_sku' => 'setSellerSku',
         'sku_count' => 'setSkuCount',
+        'overlapping_skus' => 'setOverlappingSkus',
     ];
 
     /**
@@ -161,6 +166,7 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
         'fn_sku' => 'getFnSku',
         'seller_sku' => 'getSellerSku',
         'sku_count' => 'getSkuCount',
+        'overlapping_skus' => 'getOverlappingSkus',
     ];
 
     /**
@@ -184,6 +190,7 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
         $this->setIfExists('fn_sku', $data ?? [], null);
         $this->setIfExists('seller_sku', $data ?? [], null);
         $this->setIfExists('sku_count', $data ?? [], null);
+        $this->setIfExists('overlapping_skus', $data ?? [], null);
     }
 
     /**
@@ -454,6 +461,26 @@ class GetFeatureSkuResult implements ModelInterface, \ArrayAccess, \JsonSerializ
     public function setSkuCount(?int $sku_count): self
     {
         $this->container['sku_count'] = $sku_count;
+
+        return $this;
+    }
+
+    /**
+     * Gets overlapping_skus.
+     */
+    public function getOverlappingSkus(): ?array
+    {
+        return $this->container['overlapping_skus'];
+    }
+
+    /**
+     * Sets overlapping_skus.
+     *
+     * @param null|array $overlapping_skus other seller SKUs that are shared across the same inventory
+     */
+    public function setOverlappingSkus(?array $overlapping_skus): self
+    {
+        $this->container['overlapping_skus'] = $overlapping_skus;
 
         return $this;
     }
