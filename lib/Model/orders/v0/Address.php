@@ -336,9 +336,6 @@ class Address implements ModelInterface, \ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if (null === $this->container['name']) {
-            $invalidProperties[] = "'name' can't be null";
-        }
         $allowedValues = $this->getAddressTypeAllowableValues();
         if (!is_null($this->container['address_type']) && !in_array($this->container['address_type'], $allowedValues, true)) {
             $invalidProperties[] = sprintf(

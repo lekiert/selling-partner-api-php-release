@@ -38,6 +38,7 @@ use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
 use SpApi\ApiException;
+use SpApi\AuthAndAuth\RestrictedDataTokenSigner;
 use SpApi\Configuration;
 use SpApi\HeaderSelector;
 use SpApi\Model\invoices\v2024_06_19\ExportInvoicesRequest;
@@ -48,6 +49,9 @@ use SpApi\Model\invoices\v2024_06_19\GetInvoicesDocumentResponse;
 use SpApi\Model\invoices\v2024_06_19\GetInvoicesExportResponse;
 use SpApi\Model\invoices\v2024_06_19\GetInvoicesExportsResponse;
 use SpApi\Model\invoices\v2024_06_19\GetInvoicesResponse;
+use SpApi\Model\invoices\v2024_06_19\GovernmentInvoiceRequest;
+use SpApi\Model\invoices\v2024_06_19\GovernmentInvoiceStatusResponse;
+use SpApi\Model\invoices\v2024_06_19\GovtInvoiceDocumentResponse;
 use SpApi\ObjectSerializer;
 use Symfony\Component\RateLimiter\LimiterInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
@@ -64,7 +68,10 @@ use Symfony\Component\RateLimiter\Storage\InMemoryStorage;
  */
 class InvoicesApi
 {
+    public ?LimiterInterface $createGovernmentInvoiceRateLimiter;
     public ?LimiterInterface $createInvoicesExportRateLimiter;
+    public ?LimiterInterface $getGovernmentInvoiceDocumentRateLimiter;
+    public ?LimiterInterface $getGovernmentInvoiceStatusRateLimiter;
     public ?LimiterInterface $getInvoiceRateLimiter;
     public ?LimiterInterface $getInvoicesRateLimiter;
     public ?LimiterInterface $getInvoicesAttributesRateLimiter;
@@ -101,8 +108,14 @@ class InvoicesApi
         if ($rateLimiterEnabled) {
             $this->rateLimitStorage = new InMemoryStorage();
 
+            $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('InvoicesApi-createGovernmentInvoice'), $this->rateLimitStorage);
+            $this->createGovernmentInvoiceRateLimiter = $factory->create('InvoicesApi-createGovernmentInvoice');
             $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('InvoicesApi-createInvoicesExport'), $this->rateLimitStorage);
             $this->createInvoicesExportRateLimiter = $factory->create('InvoicesApi-createInvoicesExport');
+            $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('InvoicesApi-getGovernmentInvoiceDocument'), $this->rateLimitStorage);
+            $this->getGovernmentInvoiceDocumentRateLimiter = $factory->create('InvoicesApi-getGovernmentInvoiceDocument');
+            $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('InvoicesApi-getGovernmentInvoiceStatus'), $this->rateLimitStorage);
+            $this->getGovernmentInvoiceStatusRateLimiter = $factory->create('InvoicesApi-getGovernmentInvoiceStatus');
             $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('InvoicesApi-getInvoice'), $this->rateLimitStorage);
             $this->getInvoiceRateLimiter = $factory->create('InvoicesApi-getInvoice');
             $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('InvoicesApi-getInvoices'), $this->rateLimitStorage);
@@ -148,18 +161,261 @@ class InvoicesApi
     }
 
     /**
+     * Operation createGovernmentInvoice.
+     *
+     * @param GovernmentInvoiceRequest $body
+     *                                                      Information required to create the government invoice. (required)
+     * @param null|string              $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function createGovernmentInvoice(
+        GovernmentInvoiceRequest $body,
+        ?string $restrictedDataToken = null
+    ): void {
+        $this->createGovernmentInvoiceWithHttpInfo($body, $restrictedDataToken);
+    }
+
+    /**
+     * Operation createGovernmentInvoiceWithHttpInfo.
+     *
+     * @param GovernmentInvoiceRequest $body
+     *                                                      Information required to create the government invoice. (required)
+     * @param null|string              $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
+     *
+     * @return array of , HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function createGovernmentInvoiceWithHttpInfo(
+        GovernmentInvoiceRequest $body,
+        ?string $restrictedDataToken = null
+    ): array {
+        $request = $this->createGovernmentInvoiceRequest($body);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-createGovernmentInvoice');
+        } else {
+            $request = $this->config->sign($request);
+        }
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                if ($this->rateLimiterEnabled) {
+                    $this->createGovernmentInvoiceRateLimiter->consume()->ensureAccepted();
+                }
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getResponse()->getBody()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return [null, $statusCode, $response->getHeaders()];
+        } catch (ApiException $e) {
+            $data = ObjectSerializer::deserialize(
+                $e->getResponseBody(),
+                '\SpApi\Model\invoices\v2024_06_19\ErrorList',
+                $e->getResponseHeaders()
+            );
+            $e->setResponseObject($data);
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation createGovernmentInvoiceAsync.
+     *
+     * @param GovernmentInvoiceRequest $body
+     *                                       Information required to create the government invoice. (required)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function createGovernmentInvoiceAsync(
+        GovernmentInvoiceRequest $body
+    ): PromiseInterface {
+        return $this->createGovernmentInvoiceAsyncWithHttpInfo($body)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation createGovernmentInvoiceAsyncWithHttpInfo.
+     *
+     * @param GovernmentInvoiceRequest $body
+     *                                       Information required to create the government invoice. (required)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function createGovernmentInvoiceAsyncWithHttpInfo(
+        GovernmentInvoiceRequest $body,
+        ?string $restrictedDataToken = null
+    ): PromiseInterface {
+        $returnType = '';
+        $request = $this->createGovernmentInvoiceRequest($body);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-createGovernmentInvoice');
+        } else {
+            $request = $this->config->sign($request);
+        }
+        if ($this->rateLimiterEnabled) {
+            $this->createGovernmentInvoiceRateLimiter->consume()->ensureAccepted();
+        }
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) {
+                    return [null, $response->getStatusCode(), $response->getHeaders()];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'createGovernmentInvoice'.
+     *
+     * @param GovernmentInvoiceRequest $body
+     *                                       Information required to create the government invoice. (required)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function createGovernmentInvoiceRequest(
+        GovernmentInvoiceRequest $body
+    ): Request {
+        // verify the required parameter 'body' is set
+        if (null === $body || (is_array($body) && 0 === count($body))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $body when calling createGovernmentInvoice'
+            );
+        }
+
+        $resourcePath = '/tax/invoices/2024-06-19/governmentInvoiceRequests';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            'application/json',
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($body)) {
+            if ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($body));
+            } else {
+                $httpBody = $body;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams, $this->config);
+            }
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = ObjectSerializer::buildQuery($queryParams, $this->config);
+
+        return new Request(
+            'POST',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation createInvoicesExport.
      *
      * @param ExportInvoicesRequest $body
-     *                                    Information required to create the export request. (required)
+     *                                                   Information required to create the export request. (required)
+     * @param null|string           $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
      */
     public function createInvoicesExport(
-        ExportInvoicesRequest $body
+        ExportInvoicesRequest $body,
+        ?string $restrictedDataToken = null
     ): ExportInvoicesResponse {
-        list($response) = $this->createInvoicesExportWithHttpInfo($body);
+        list($response) = $this->createInvoicesExportWithHttpInfo($body, $restrictedDataToken);
 
         return $response;
     }
@@ -168,7 +424,8 @@ class InvoicesApi
      * Operation createInvoicesExportWithHttpInfo.
      *
      * @param ExportInvoicesRequest $body
-     *                                    Information required to create the export request. (required)
+     *                                                   Information required to create the export request. (required)
+     * @param null|string           $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of \SpApi\Model\invoices\v2024_06_19\ExportInvoicesResponse, HTTP status code, HTTP response headers (array of strings)
      *
@@ -176,10 +433,15 @@ class InvoicesApi
      * @throws \InvalidArgumentException
      */
     public function createInvoicesExportWithHttpInfo(
-        ExportInvoicesRequest $body
+        ExportInvoicesRequest $body,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->createInvoicesExportRequest($body);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-createInvoicesExport');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -274,11 +536,16 @@ class InvoicesApi
      * @throws \InvalidArgumentException
      */
     public function createInvoicesExportAsyncWithHttpInfo(
-        ExportInvoicesRequest $body
+        ExportInvoicesRequest $body,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '\SpApi\Model\invoices\v2024_06_19\ExportInvoicesResponse';
         $request = $this->createInvoicesExportRequest($body);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-createInvoicesExport');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->createInvoicesExportRateLimiter->consume()->ensureAccepted();
         }
@@ -403,21 +670,829 @@ class InvoicesApi
     }
 
     /**
+     * Operation getGovernmentInvoiceDocument.
+     *
+     * @param string      $marketplace_id
+     *                                         The invoices returned will match the marketplace that you specify. (required)
+     * @param string      $transaction_type
+     *                                         Marketplace specific classification of the transaction type that originated the invoice. Check &#39;transactionType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param string      $shipment_id
+     *                                         The unique shipment identifier to get an invoice for. (required)
+     * @param string      $invoice_type
+     *                                         Marketplace specific classification of the invoice type. Check &#39;invoiceType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param null|string $inbound_plan_id
+     *                                         The unique InboundPlan identifier in which the shipment is contained and for which the invoice will be created. (optional)
+     * @param null|string $file_format
+     *                                         Requested file format. Default is XML (optional)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function getGovernmentInvoiceDocument(
+        string $marketplace_id,
+        string $transaction_type,
+        string $shipment_id,
+        string $invoice_type,
+        ?string $inbound_plan_id = null,
+        ?string $file_format = null,
+        ?string $restrictedDataToken = null
+    ): GovtInvoiceDocumentResponse {
+        list($response) = $this->getGovernmentInvoiceDocumentWithHttpInfo($marketplace_id, $transaction_type, $shipment_id, $invoice_type, $inbound_plan_id, $file_format, $restrictedDataToken);
+
+        return $response;
+    }
+
+    /**
+     * Operation getGovernmentInvoiceDocumentWithHttpInfo.
+     *
+     * @param string      $marketplace_id
+     *                                         The invoices returned will match the marketplace that you specify. (required)
+     * @param string      $transaction_type
+     *                                         Marketplace specific classification of the transaction type that originated the invoice. Check &#39;transactionType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param string      $shipment_id
+     *                                         The unique shipment identifier to get an invoice for. (required)
+     * @param string      $invoice_type
+     *                                         Marketplace specific classification of the invoice type. Check &#39;invoiceType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param null|string $inbound_plan_id
+     *                                         The unique InboundPlan identifier in which the shipment is contained and for which the invoice will be created. (optional)
+     * @param null|string $file_format
+     *                                         Requested file format. Default is XML (optional)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
+     *
+     * @return array of \SpApi\Model\invoices\v2024_06_19\GovtInvoiceDocumentResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function getGovernmentInvoiceDocumentWithHttpInfo(
+        string $marketplace_id,
+        string $transaction_type,
+        string $shipment_id,
+        string $invoice_type,
+        ?string $inbound_plan_id = null,
+        ?string $file_format = null,
+        ?string $restrictedDataToken = null
+    ): array {
+        $request = $this->getGovernmentInvoiceDocumentRequest($marketplace_id, $transaction_type, $shipment_id, $invoice_type, $inbound_plan_id, $file_format);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getGovernmentInvoiceDocument');
+        } else {
+            $request = $this->config->sign($request);
+        }
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                if ($this->rateLimiterEnabled) {
+                    $this->getGovernmentInvoiceDocumentRateLimiter->consume()->ensureAccepted();
+                }
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getResponse()->getBody()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+            if ('\SpApi\Model\invoices\v2024_06_19\GovtInvoiceDocumentResponse' === '\SplFileObject') {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('\SpApi\Model\invoices\v2024_06_19\GovtInvoiceDocumentResponse' !== 'string') {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, '\SpApi\Model\invoices\v2024_06_19\GovtInvoiceDocumentResponse', []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            $data = ObjectSerializer::deserialize(
+                $e->getResponseBody(),
+                '\SpApi\Model\invoices\v2024_06_19\ErrorList',
+                $e->getResponseHeaders()
+            );
+            $e->setResponseObject($data);
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation getGovernmentInvoiceDocumentAsync.
+     *
+     * @param string      $marketplace_id
+     *                                      The invoices returned will match the marketplace that you specify. (required)
+     * @param string      $transaction_type
+     *                                      Marketplace specific classification of the transaction type that originated the invoice. Check &#39;transactionType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param string      $shipment_id
+     *                                      The unique shipment identifier to get an invoice for. (required)
+     * @param string      $invoice_type
+     *                                      Marketplace specific classification of the invoice type. Check &#39;invoiceType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param null|string $inbound_plan_id
+     *                                      The unique InboundPlan identifier in which the shipment is contained and for which the invoice will be created. (optional)
+     * @param null|string $file_format
+     *                                      Requested file format. Default is XML (optional)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getGovernmentInvoiceDocumentAsync(
+        string $marketplace_id,
+        string $transaction_type,
+        string $shipment_id,
+        string $invoice_type,
+        ?string $inbound_plan_id = null,
+        ?string $file_format = null
+    ): PromiseInterface {
+        return $this->getGovernmentInvoiceDocumentAsyncWithHttpInfo($marketplace_id, $transaction_type, $shipment_id, $invoice_type, $inbound_plan_id, $file_format)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation getGovernmentInvoiceDocumentAsyncWithHttpInfo.
+     *
+     * @param string      $marketplace_id
+     *                                      The invoices returned will match the marketplace that you specify. (required)
+     * @param string      $transaction_type
+     *                                      Marketplace specific classification of the transaction type that originated the invoice. Check &#39;transactionType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param string      $shipment_id
+     *                                      The unique shipment identifier to get an invoice for. (required)
+     * @param string      $invoice_type
+     *                                      Marketplace specific classification of the invoice type. Check &#39;invoiceType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param null|string $inbound_plan_id
+     *                                      The unique InboundPlan identifier in which the shipment is contained and for which the invoice will be created. (optional)
+     * @param null|string $file_format
+     *                                      Requested file format. Default is XML (optional)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getGovernmentInvoiceDocumentAsyncWithHttpInfo(
+        string $marketplace_id,
+        string $transaction_type,
+        string $shipment_id,
+        string $invoice_type,
+        ?string $inbound_plan_id = null,
+        ?string $file_format = null,
+        ?string $restrictedDataToken = null
+    ): PromiseInterface {
+        $returnType = '\SpApi\Model\invoices\v2024_06_19\GovtInvoiceDocumentResponse';
+        $request = $this->getGovernmentInvoiceDocumentRequest($marketplace_id, $transaction_type, $shipment_id, $invoice_type, $inbound_plan_id, $file_format);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getGovernmentInvoiceDocument');
+        } else {
+            $request = $this->config->sign($request);
+        }
+        if ($this->rateLimiterEnabled) {
+            $this->getGovernmentInvoiceDocumentRateLimiter->consume()->ensureAccepted();
+        }
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'getGovernmentInvoiceDocument'.
+     *
+     * @param string      $marketplace_id
+     *                                      The invoices returned will match the marketplace that you specify. (required)
+     * @param string      $transaction_type
+     *                                      Marketplace specific classification of the transaction type that originated the invoice. Check &#39;transactionType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param string      $shipment_id
+     *                                      The unique shipment identifier to get an invoice for. (required)
+     * @param string      $invoice_type
+     *                                      Marketplace specific classification of the invoice type. Check &#39;invoiceType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param null|string $inbound_plan_id
+     *                                      The unique InboundPlan identifier in which the shipment is contained and for which the invoice will be created. (optional)
+     * @param null|string $file_format
+     *                                      Requested file format. Default is XML (optional)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getGovernmentInvoiceDocumentRequest(
+        string $marketplace_id,
+        string $transaction_type,
+        string $shipment_id,
+        string $invoice_type,
+        ?string $inbound_plan_id = null,
+        ?string $file_format = null
+    ): Request {
+        // verify the required parameter 'marketplace_id' is set
+        if (null === $marketplace_id || (is_array($marketplace_id) && 0 === count($marketplace_id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $marketplace_id when calling getGovernmentInvoiceDocument'
+            );
+        }
+        // verify the required parameter 'transaction_type' is set
+        if (null === $transaction_type || (is_array($transaction_type) && 0 === count($transaction_type))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $transaction_type when calling getGovernmentInvoiceDocument'
+            );
+        }
+        // verify the required parameter 'shipment_id' is set
+        if (null === $shipment_id || (is_array($shipment_id) && 0 === count($shipment_id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $shipment_id when calling getGovernmentInvoiceDocument'
+            );
+        }
+        // verify the required parameter 'invoice_type' is set
+        if (null === $invoice_type || (is_array($invoice_type) && 0 === count($invoice_type))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $invoice_type when calling getGovernmentInvoiceDocument'
+            );
+        }
+
+        $resourcePath = '/tax/invoices/2024-06-19/governmentInvoiceRequests/{shipmentId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $marketplace_id,
+            'marketplaceId', // param base name
+            'string', // openApiType
+            '', // style
+            false, // explode
+            true, // required
+            $this->config
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $transaction_type,
+            'transactionType', // param base name
+            'string', // openApiType
+            '', // style
+            false, // explode
+            true, // required
+            $this->config
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $invoice_type,
+            'invoiceType', // param base name
+            'string', // openApiType
+            '', // style
+            false, // explode
+            true, // required
+            $this->config
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $inbound_plan_id,
+            'inboundPlanId', // param base name
+            'string', // openApiType
+            '', // style
+            false, // explode
+            false, // required
+            $this->config
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $file_format,
+            'fileFormat', // param base name
+            'string', // openApiType
+            '', // style
+            false, // explode
+            false, // required
+            $this->config
+        ) ?? []);
+
+        // path params
+        if (null !== $shipment_id) {
+            $resourcePath = str_replace(
+                '{shipmentId}',
+                ObjectSerializer::toPathValue($shipment_id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            '',
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams, $this->config);
+            }
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = ObjectSerializer::buildQuery($queryParams, $this->config);
+
+        return new Request(
+            'GET',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation getGovernmentInvoiceStatus.
+     *
+     * @param string      $marketplace_id
+     *                                         The invoices status will match the marketplace that you specify. (required)
+     * @param string      $transaction_type
+     *                                         Marketplace specific classification of the transaction type that originated the invoice. Check &#39;transactionType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param string      $shipment_id
+     *                                         The unique shipment identifier to get an invoice for. (required)
+     * @param string      $invoice_type
+     *                                         Marketplace specific classification of the invoice type. Check &#39;invoiceType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param null|string $inbound_plan_id
+     *                                         The unique InboundPlan identifier in which the shipment is contained and for which the invoice will be created. (optional)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function getGovernmentInvoiceStatus(
+        string $marketplace_id,
+        string $transaction_type,
+        string $shipment_id,
+        string $invoice_type,
+        ?string $inbound_plan_id = null,
+        ?string $restrictedDataToken = null
+    ): GovernmentInvoiceStatusResponse {
+        list($response) = $this->getGovernmentInvoiceStatusWithHttpInfo($marketplace_id, $transaction_type, $shipment_id, $invoice_type, $inbound_plan_id, $restrictedDataToken);
+
+        return $response;
+    }
+
+    /**
+     * Operation getGovernmentInvoiceStatusWithHttpInfo.
+     *
+     * @param string      $marketplace_id
+     *                                         The invoices status will match the marketplace that you specify. (required)
+     * @param string      $transaction_type
+     *                                         Marketplace specific classification of the transaction type that originated the invoice. Check &#39;transactionType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param string      $shipment_id
+     *                                         The unique shipment identifier to get an invoice for. (required)
+     * @param string      $invoice_type
+     *                                         Marketplace specific classification of the invoice type. Check &#39;invoiceType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param null|string $inbound_plan_id
+     *                                         The unique InboundPlan identifier in which the shipment is contained and for which the invoice will be created. (optional)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
+     *
+     * @return array of \SpApi\Model\invoices\v2024_06_19\GovernmentInvoiceStatusResponse, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function getGovernmentInvoiceStatusWithHttpInfo(
+        string $marketplace_id,
+        string $transaction_type,
+        string $shipment_id,
+        string $invoice_type,
+        ?string $inbound_plan_id = null,
+        ?string $restrictedDataToken = null
+    ): array {
+        $request = $this->getGovernmentInvoiceStatusRequest($marketplace_id, $transaction_type, $shipment_id, $invoice_type, $inbound_plan_id);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getGovernmentInvoiceStatus');
+        } else {
+            $request = $this->config->sign($request);
+        }
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                if ($this->rateLimiterEnabled) {
+                    $this->getGovernmentInvoiceStatusRateLimiter->consume()->ensureAccepted();
+                }
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getResponse()->getBody()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+            if ('\SpApi\Model\invoices\v2024_06_19\GovernmentInvoiceStatusResponse' === '\SplFileObject') {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('\SpApi\Model\invoices\v2024_06_19\GovernmentInvoiceStatusResponse' !== 'string') {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, '\SpApi\Model\invoices\v2024_06_19\GovernmentInvoiceStatusResponse', []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            $data = ObjectSerializer::deserialize(
+                $e->getResponseBody(),
+                '\SpApi\Model\invoices\v2024_06_19\ErrorList',
+                $e->getResponseHeaders()
+            );
+            $e->setResponseObject($data);
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation getGovernmentInvoiceStatusAsync.
+     *
+     * @param string      $marketplace_id
+     *                                      The invoices status will match the marketplace that you specify. (required)
+     * @param string      $transaction_type
+     *                                      Marketplace specific classification of the transaction type that originated the invoice. Check &#39;transactionType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param string      $shipment_id
+     *                                      The unique shipment identifier to get an invoice for. (required)
+     * @param string      $invoice_type
+     *                                      Marketplace specific classification of the invoice type. Check &#39;invoiceType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param null|string $inbound_plan_id
+     *                                      The unique InboundPlan identifier in which the shipment is contained and for which the invoice will be created. (optional)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getGovernmentInvoiceStatusAsync(
+        string $marketplace_id,
+        string $transaction_type,
+        string $shipment_id,
+        string $invoice_type,
+        ?string $inbound_plan_id = null
+    ): PromiseInterface {
+        return $this->getGovernmentInvoiceStatusAsyncWithHttpInfo($marketplace_id, $transaction_type, $shipment_id, $invoice_type, $inbound_plan_id)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation getGovernmentInvoiceStatusAsyncWithHttpInfo.
+     *
+     * @param string      $marketplace_id
+     *                                      The invoices status will match the marketplace that you specify. (required)
+     * @param string      $transaction_type
+     *                                      Marketplace specific classification of the transaction type that originated the invoice. Check &#39;transactionType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param string      $shipment_id
+     *                                      The unique shipment identifier to get an invoice for. (required)
+     * @param string      $invoice_type
+     *                                      Marketplace specific classification of the invoice type. Check &#39;invoiceType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param null|string $inbound_plan_id
+     *                                      The unique InboundPlan identifier in which the shipment is contained and for which the invoice will be created. (optional)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getGovernmentInvoiceStatusAsyncWithHttpInfo(
+        string $marketplace_id,
+        string $transaction_type,
+        string $shipment_id,
+        string $invoice_type,
+        ?string $inbound_plan_id = null,
+        ?string $restrictedDataToken = null
+    ): PromiseInterface {
+        $returnType = '\SpApi\Model\invoices\v2024_06_19\GovernmentInvoiceStatusResponse';
+        $request = $this->getGovernmentInvoiceStatusRequest($marketplace_id, $transaction_type, $shipment_id, $invoice_type, $inbound_plan_id);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getGovernmentInvoiceStatus');
+        } else {
+            $request = $this->config->sign($request);
+        }
+        if ($this->rateLimiterEnabled) {
+            $this->getGovernmentInvoiceStatusRateLimiter->consume()->ensureAccepted();
+        }
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'getGovernmentInvoiceStatus'.
+     *
+     * @param string      $marketplace_id
+     *                                      The invoices status will match the marketplace that you specify. (required)
+     * @param string      $transaction_type
+     *                                      Marketplace specific classification of the transaction type that originated the invoice. Check &#39;transactionType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param string      $shipment_id
+     *                                      The unique shipment identifier to get an invoice for. (required)
+     * @param string      $invoice_type
+     *                                      Marketplace specific classification of the invoice type. Check &#39;invoiceType&#39; options using &#39;getInvoicesAttributes&#39; operation. (required)
+     * @param null|string $inbound_plan_id
+     *                                      The unique InboundPlan identifier in which the shipment is contained and for which the invoice will be created. (optional)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getGovernmentInvoiceStatusRequest(
+        string $marketplace_id,
+        string $transaction_type,
+        string $shipment_id,
+        string $invoice_type,
+        ?string $inbound_plan_id = null
+    ): Request {
+        // verify the required parameter 'marketplace_id' is set
+        if (null === $marketplace_id || (is_array($marketplace_id) && 0 === count($marketplace_id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $marketplace_id when calling getGovernmentInvoiceStatus'
+            );
+        }
+        // verify the required parameter 'transaction_type' is set
+        if (null === $transaction_type || (is_array($transaction_type) && 0 === count($transaction_type))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $transaction_type when calling getGovernmentInvoiceStatus'
+            );
+        }
+        // verify the required parameter 'shipment_id' is set
+        if (null === $shipment_id || (is_array($shipment_id) && 0 === count($shipment_id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $shipment_id when calling getGovernmentInvoiceStatus'
+            );
+        }
+        // verify the required parameter 'invoice_type' is set
+        if (null === $invoice_type || (is_array($invoice_type) && 0 === count($invoice_type))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $invoice_type when calling getGovernmentInvoiceStatus'
+            );
+        }
+
+        $resourcePath = '/tax/invoices/2024-06-19/governmentInvoiceRequests';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $marketplace_id,
+            'marketplaceId', // param base name
+            'string', // openApiType
+            '', // style
+            false, // explode
+            true, // required
+            $this->config
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $transaction_type,
+            'transactionType', // param base name
+            'string', // openApiType
+            '', // style
+            false, // explode
+            true, // required
+            $this->config
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $shipment_id,
+            'shipmentId', // param base name
+            'string', // openApiType
+            '', // style
+            false, // explode
+            true, // required
+            $this->config
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $invoice_type,
+            'invoiceType', // param base name
+            'string', // openApiType
+            '', // style
+            false, // explode
+            true, // required
+            $this->config
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $inbound_plan_id,
+            'inboundPlanId', // param base name
+            'string', // openApiType
+            '', // style
+            false, // explode
+            false, // required
+            $this->config
+        ) ?? []);
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            '',
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams, $this->config);
+            }
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = ObjectSerializer::buildQuery($queryParams, $this->config);
+
+        return new Request(
+            'GET',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation getInvoice.
      *
-     * @param string $marketplace_id
-     *                               The marketplace from which you want the invoice. (required)
-     * @param string $invoice_id
-     *                               The invoice identifier. (required)
+     * @param string      $marketplace_id
+     *                                         The marketplace from which you want the invoice. (required)
+     * @param string      $invoice_id
+     *                                         The invoice identifier. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
      */
     public function getInvoice(
         string $marketplace_id,
-        string $invoice_id
+        string $invoice_id,
+        ?string $restrictedDataToken = null
     ): GetInvoiceResponse {
-        list($response) = $this->getInvoiceWithHttpInfo($marketplace_id, $invoice_id);
+        list($response) = $this->getInvoiceWithHttpInfo($marketplace_id, $invoice_id, $restrictedDataToken);
 
         return $response;
     }
@@ -425,10 +1500,11 @@ class InvoicesApi
     /**
      * Operation getInvoiceWithHttpInfo.
      *
-     * @param string $marketplace_id
-     *                               The marketplace from which you want the invoice. (required)
-     * @param string $invoice_id
-     *                               The invoice identifier. (required)
+     * @param string      $marketplace_id
+     *                                         The marketplace from which you want the invoice. (required)
+     * @param string      $invoice_id
+     *                                         The invoice identifier. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of \SpApi\Model\invoices\v2024_06_19\GetInvoiceResponse, HTTP status code, HTTP response headers (array of strings)
      *
@@ -437,10 +1513,15 @@ class InvoicesApi
      */
     public function getInvoiceWithHttpInfo(
         string $marketplace_id,
-        string $invoice_id
+        string $invoice_id,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->getInvoiceRequest($marketplace_id, $invoice_id);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getInvoice');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -541,11 +1622,16 @@ class InvoicesApi
      */
     public function getInvoiceAsyncWithHttpInfo(
         string $marketplace_id,
-        string $invoice_id
+        string $invoice_id,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '\SpApi\Model\invoices\v2024_06_19\GetInvoiceResponse';
         $request = $this->getInvoiceRequest($marketplace_id, $invoice_id);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getInvoice');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->getInvoiceRateLimiter->consume()->ensureAccepted();
         }
@@ -723,6 +1809,7 @@ class InvoicesApi
      *                                                    Return invoices that match this external ID. This is typically the Government Invoice ID. (optional)
      * @param null|string    $sort_by
      *                                                    The attribute by which you want to sort the invoices in the response. (optional)
+     * @param null|string    $restrictedDataToken         Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
@@ -741,9 +1828,10 @@ class InvoicesApi
         ?string $invoice_type = null,
         ?array $statuses = null,
         ?string $external_invoice_id = null,
-        ?string $sort_by = null
+        ?string $sort_by = null,
+        ?string $restrictedDataToken = null
     ): GetInvoicesResponse {
-        list($response) = $this->getInvoicesWithHttpInfo($marketplace_id, $transaction_identifier_name, $page_size, $date_end, $transaction_type, $transaction_identifier_id, $date_start, $series, $next_token, $sort_order, $invoice_type, $statuses, $external_invoice_id, $sort_by);
+        list($response) = $this->getInvoicesWithHttpInfo($marketplace_id, $transaction_identifier_name, $page_size, $date_end, $transaction_type, $transaction_identifier_id, $date_start, $series, $next_token, $sort_order, $invoice_type, $statuses, $external_invoice_id, $sort_by, $restrictedDataToken);
 
         return $response;
     }
@@ -779,6 +1867,7 @@ class InvoicesApi
      *                                                    Return invoices that match this external ID. This is typically the Government Invoice ID. (optional)
      * @param null|string    $sort_by
      *                                                    The attribute by which you want to sort the invoices in the response. (optional)
+     * @param null|string    $restrictedDataToken         Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of \SpApi\Model\invoices\v2024_06_19\GetInvoicesResponse, HTTP status code, HTTP response headers (array of strings)
      *
@@ -799,10 +1888,15 @@ class InvoicesApi
         ?string $invoice_type = null,
         ?array $statuses = null,
         ?string $external_invoice_id = null,
-        ?string $sort_by = null
+        ?string $sort_by = null,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->getInvoicesRequest($marketplace_id, $transaction_identifier_name, $page_size, $date_end, $transaction_type, $transaction_identifier_id, $date_start, $series, $next_token, $sort_order, $invoice_type, $statuses, $external_invoice_id, $sort_by);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getInvoices');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -975,11 +2069,16 @@ class InvoicesApi
         ?string $invoice_type = null,
         ?array $statuses = null,
         ?string $external_invoice_id = null,
-        ?string $sort_by = null
+        ?string $sort_by = null,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '\SpApi\Model\invoices\v2024_06_19\GetInvoicesResponse';
         $request = $this->getInvoicesRequest($marketplace_id, $transaction_identifier_name, $page_size, $date_end, $transaction_type, $transaction_identifier_id, $date_start, $series, $next_token, $sort_order, $invoice_type, $statuses, $external_invoice_id, $sort_by);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getInvoices');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->getInvoicesRateLimiter->consume()->ensureAccepted();
         }
@@ -1283,16 +2382,18 @@ class InvoicesApi
     /**
      * Operation getInvoicesAttributes.
      *
-     * @param string $marketplace_id
-     *                               The marketplace identifier. (required)
+     * @param string      $marketplace_id
+     *                                         The marketplace identifier. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
      */
     public function getInvoicesAttributes(
-        string $marketplace_id
+        string $marketplace_id,
+        ?string $restrictedDataToken = null
     ): GetInvoicesAttributesResponse {
-        list($response) = $this->getInvoicesAttributesWithHttpInfo($marketplace_id);
+        list($response) = $this->getInvoicesAttributesWithHttpInfo($marketplace_id, $restrictedDataToken);
 
         return $response;
     }
@@ -1300,8 +2401,9 @@ class InvoicesApi
     /**
      * Operation getInvoicesAttributesWithHttpInfo.
      *
-     * @param string $marketplace_id
-     *                               The marketplace identifier. (required)
+     * @param string      $marketplace_id
+     *                                         The marketplace identifier. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of \SpApi\Model\invoices\v2024_06_19\GetInvoicesAttributesResponse, HTTP status code, HTTP response headers (array of strings)
      *
@@ -1309,10 +2411,15 @@ class InvoicesApi
      * @throws \InvalidArgumentException
      */
     public function getInvoicesAttributesWithHttpInfo(
-        string $marketplace_id
+        string $marketplace_id,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->getInvoicesAttributesRequest($marketplace_id);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getInvoicesAttributes');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -1407,11 +2514,16 @@ class InvoicesApi
      * @throws \InvalidArgumentException
      */
     public function getInvoicesAttributesAsyncWithHttpInfo(
-        string $marketplace_id
+        string $marketplace_id,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '\SpApi\Model\invoices\v2024_06_19\GetInvoicesAttributesResponse';
         $request = $this->getInvoicesAttributesRequest($marketplace_id);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getInvoicesAttributes');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->getInvoicesAttributesRateLimiter->consume()->ensureAccepted();
         }
@@ -1543,16 +2655,18 @@ class InvoicesApi
     /**
      * Operation getInvoicesDocument.
      *
-     * @param string $invoices_document_id
-     *                                     The export document identifier. (required)
+     * @param string      $invoices_document_id
+     *                                          The export document identifier. (required)
+     * @param null|string $restrictedDataToken  Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
      */
     public function getInvoicesDocument(
-        string $invoices_document_id
+        string $invoices_document_id,
+        ?string $restrictedDataToken = null
     ): GetInvoicesDocumentResponse {
-        list($response) = $this->getInvoicesDocumentWithHttpInfo($invoices_document_id);
+        list($response) = $this->getInvoicesDocumentWithHttpInfo($invoices_document_id, $restrictedDataToken);
 
         return $response;
     }
@@ -1560,8 +2674,9 @@ class InvoicesApi
     /**
      * Operation getInvoicesDocumentWithHttpInfo.
      *
-     * @param string $invoices_document_id
-     *                                     The export document identifier. (required)
+     * @param string      $invoices_document_id
+     *                                          The export document identifier. (required)
+     * @param null|string $restrictedDataToken  Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of \SpApi\Model\invoices\v2024_06_19\GetInvoicesDocumentResponse, HTTP status code, HTTP response headers (array of strings)
      *
@@ -1569,10 +2684,15 @@ class InvoicesApi
      * @throws \InvalidArgumentException
      */
     public function getInvoicesDocumentWithHttpInfo(
-        string $invoices_document_id
+        string $invoices_document_id,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->getInvoicesDocumentRequest($invoices_document_id);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getInvoicesDocument');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -1667,11 +2787,16 @@ class InvoicesApi
      * @throws \InvalidArgumentException
      */
     public function getInvoicesDocumentAsyncWithHttpInfo(
-        string $invoices_document_id
+        string $invoices_document_id,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '\SpApi\Model\invoices\v2024_06_19\GetInvoicesDocumentResponse';
         $request = $this->getInvoicesDocumentRequest($invoices_document_id);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getInvoicesDocument');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->getInvoicesDocumentRateLimiter->consume()->ensureAccepted();
         }
@@ -1801,16 +2926,18 @@ class InvoicesApi
     /**
      * Operation getInvoicesExport.
      *
-     * @param string $export_id
-     *                          The unique identifier for the export. (required)
+     * @param string      $export_id
+     *                                         The unique identifier for the export. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
      */
     public function getInvoicesExport(
-        string $export_id
+        string $export_id,
+        ?string $restrictedDataToken = null
     ): GetInvoicesExportResponse {
-        list($response) = $this->getInvoicesExportWithHttpInfo($export_id);
+        list($response) = $this->getInvoicesExportWithHttpInfo($export_id, $restrictedDataToken);
 
         return $response;
     }
@@ -1818,8 +2945,9 @@ class InvoicesApi
     /**
      * Operation getInvoicesExportWithHttpInfo.
      *
-     * @param string $export_id
-     *                          The unique identifier for the export. (required)
+     * @param string      $export_id
+     *                                         The unique identifier for the export. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of \SpApi\Model\invoices\v2024_06_19\GetInvoicesExportResponse, HTTP status code, HTTP response headers (array of strings)
      *
@@ -1827,10 +2955,15 @@ class InvoicesApi
      * @throws \InvalidArgumentException
      */
     public function getInvoicesExportWithHttpInfo(
-        string $export_id
+        string $export_id,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->getInvoicesExportRequest($export_id);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getInvoicesExport');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -1925,11 +3058,16 @@ class InvoicesApi
      * @throws \InvalidArgumentException
      */
     public function getInvoicesExportAsyncWithHttpInfo(
-        string $export_id
+        string $export_id,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '\SpApi\Model\invoices\v2024_06_19\GetInvoicesExportResponse';
         $request = $this->getInvoicesExportRequest($export_id);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getInvoicesExport');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->getInvoicesExportRateLimiter->consume()->ensureAccepted();
         }
@@ -2060,17 +3198,18 @@ class InvoicesApi
      * Operation getInvoicesExports.
      *
      * @param string         $marketplace_id
-     *                                       The returned exports match the specified marketplace. (required)
+     *                                            The returned exports match the specified marketplace. (required)
      * @param null|\DateTime $date_start
-     *                                       The earliest export creation date and time for exports that you want to include in the response. Values are in [ISO 8601](https://developer-docs.amazon.com/sp-api/docs/iso-8601) date-time format. The default is 30 days ago. (optional)
+     *                                            The earliest export creation date and time for exports that you want to include in the response. Values are in [ISO 8601](https://developer-docs.amazon.com/sp-api/docs/iso-8601) date-time format. The default is 30 days ago. (optional)
      * @param null|string    $next_token
-     *                                       The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;pageSize&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
+     *                                            The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;pageSize&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
      * @param null|int       $page_size
-     *                                       The maximum number of invoices to return in a single call.  Minimum: 1  Maximum: 100 (optional)
+     *                                            The maximum number of invoices to return in a single call.  Minimum: 1  Maximum: 100 (optional)
      * @param null|\DateTime $date_end
-     *                                       The latest export creation date and time for exports that you want to include in the response. Values are in [ISO 8601](https://developer-docs.amazon.com/sp-api/docs/iso-8601) date-time format. The default value is the time of the request. (optional)
+     *                                            The latest export creation date and time for exports that you want to include in the response. Values are in [ISO 8601](https://developer-docs.amazon.com/sp-api/docs/iso-8601) date-time format. The default value is the time of the request. (optional)
      * @param null|string    $status
-     *                                       Return exports matching the status specified. (optional)
+     *                                            Return exports matching the status specified. (optional)
+     * @param null|string    $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
@@ -2081,9 +3220,10 @@ class InvoicesApi
         ?string $next_token = null,
         ?int $page_size = null,
         ?\DateTime $date_end = null,
-        ?string $status = null
+        ?string $status = null,
+        ?string $restrictedDataToken = null
     ): GetInvoicesExportsResponse {
-        list($response) = $this->getInvoicesExportsWithHttpInfo($marketplace_id, $date_start, $next_token, $page_size, $date_end, $status);
+        list($response) = $this->getInvoicesExportsWithHttpInfo($marketplace_id, $date_start, $next_token, $page_size, $date_end, $status, $restrictedDataToken);
 
         return $response;
     }
@@ -2092,17 +3232,18 @@ class InvoicesApi
      * Operation getInvoicesExportsWithHttpInfo.
      *
      * @param string         $marketplace_id
-     *                                       The returned exports match the specified marketplace. (required)
+     *                                            The returned exports match the specified marketplace. (required)
      * @param null|\DateTime $date_start
-     *                                       The earliest export creation date and time for exports that you want to include in the response. Values are in [ISO 8601](https://developer-docs.amazon.com/sp-api/docs/iso-8601) date-time format. The default is 30 days ago. (optional)
+     *                                            The earliest export creation date and time for exports that you want to include in the response. Values are in [ISO 8601](https://developer-docs.amazon.com/sp-api/docs/iso-8601) date-time format. The default is 30 days ago. (optional)
      * @param null|string    $next_token
-     *                                       The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;pageSize&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
+     *                                            The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;pageSize&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
      * @param null|int       $page_size
-     *                                       The maximum number of invoices to return in a single call.  Minimum: 1  Maximum: 100 (optional)
+     *                                            The maximum number of invoices to return in a single call.  Minimum: 1  Maximum: 100 (optional)
      * @param null|\DateTime $date_end
-     *                                       The latest export creation date and time for exports that you want to include in the response. Values are in [ISO 8601](https://developer-docs.amazon.com/sp-api/docs/iso-8601) date-time format. The default value is the time of the request. (optional)
+     *                                            The latest export creation date and time for exports that you want to include in the response. Values are in [ISO 8601](https://developer-docs.amazon.com/sp-api/docs/iso-8601) date-time format. The default value is the time of the request. (optional)
      * @param null|string    $status
-     *                                       Return exports matching the status specified. (optional)
+     *                                            Return exports matching the status specified. (optional)
+     * @param null|string    $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of \SpApi\Model\invoices\v2024_06_19\GetInvoicesExportsResponse, HTTP status code, HTTP response headers (array of strings)
      *
@@ -2115,10 +3256,15 @@ class InvoicesApi
         ?string $next_token = null,
         ?int $page_size = null,
         ?\DateTime $date_end = null,
-        ?string $status = null
+        ?string $status = null,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->getInvoicesExportsRequest($marketplace_id, $date_start, $next_token, $page_size, $date_end, $status);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getInvoicesExports');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -2243,11 +3389,16 @@ class InvoicesApi
         ?string $next_token = null,
         ?int $page_size = null,
         ?\DateTime $date_end = null,
-        ?string $status = null
+        ?string $status = null,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '\SpApi\Model\invoices\v2024_06_19\GetInvoicesExportsResponse';
         $request = $this->getInvoicesExportsRequest($marketplace_id, $date_start, $next_token, $page_size, $date_end, $status);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'InvoicesApi-getInvoicesExports');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->getInvoicesExportsRateLimiter->consume()->ensureAccepted();
         }

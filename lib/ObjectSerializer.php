@@ -71,7 +71,7 @@ class ObjectSerializer
         mixed $data,
         ?string $type = null,
         ?string $format = null
-    ): null|array|bool|float|int|object|string {
+    ): array|bool|float|int|object|string|null {
         if (is_scalar($data) || null === $data) {
             return $data;
         }
@@ -202,7 +202,7 @@ class ObjectSerializer
         }
 
         // Handle DateTime objects in query
-        if ('\\DateTime' === $openApiType && $value instanceof \DateTime) {
+        if ($value instanceof \DateTime) {
             return ["{$paramName}" => $value->format(self::$dateTimeFormat)];
         }
 
@@ -389,7 +389,7 @@ class ObjectSerializer
         mixed $data,
         string $class,
         ?array $httpHeaders = null
-    ): null|array|float|int|object|string {
+    ): array|float|int|object|string|null {
         if (null === $data) {
             return null;
         }

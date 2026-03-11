@@ -38,6 +38,7 @@ use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
 use SpApi\ApiException;
+use SpApi\AuthAndAuth\RestrictedDataTokenSigner;
 use SpApi\Configuration;
 use SpApi\HeaderSelector;
 use SpApi\Model\awd\v2024_05_09\InboundEligibility;
@@ -47,6 +48,10 @@ use SpApi\Model\awd\v2024_05_09\InboundOrderReference;
 use SpApi\Model\awd\v2024_05_09\InboundPackages;
 use SpApi\Model\awd\v2024_05_09\InboundShipment;
 use SpApi\Model\awd\v2024_05_09\InventoryListing;
+use SpApi\Model\awd\v2024_05_09\ReplenishmentOrder;
+use SpApi\Model\awd\v2024_05_09\ReplenishmentOrderCreationData;
+use SpApi\Model\awd\v2024_05_09\ReplenishmentOrderListing;
+use SpApi\Model\awd\v2024_05_09\ReplenishmentOrderReference;
 use SpApi\Model\awd\v2024_05_09\ShipmentLabels;
 use SpApi\Model\awd\v2024_05_09\ShipmentListing;
 use SpApi\Model\awd\v2024_05_09\TransportationDetails;
@@ -69,12 +74,16 @@ class AwdApi
     public ?LimiterInterface $cancelInboundRateLimiter;
     public ?LimiterInterface $checkInboundEligibilityRateLimiter;
     public ?LimiterInterface $confirmInboundRateLimiter;
+    public ?LimiterInterface $confirmReplenishmentOrderRateLimiter;
     public ?LimiterInterface $createInboundRateLimiter;
+    public ?LimiterInterface $createReplenishmentOrderRateLimiter;
     public ?LimiterInterface $getInboundRateLimiter;
     public ?LimiterInterface $getInboundShipmentRateLimiter;
     public ?LimiterInterface $getInboundShipmentLabelsRateLimiter;
+    public ?LimiterInterface $getReplenishmentOrderRateLimiter;
     public ?LimiterInterface $listInboundShipmentsRateLimiter;
     public ?LimiterInterface $listInventoryRateLimiter;
+    public ?LimiterInterface $listReplenishmentOrdersRateLimiter;
     public ?LimiterInterface $updateInboundRateLimiter;
     public ?LimiterInterface $updateInboundShipmentTransportDetailsRateLimiter;
     protected ClientInterface $client;
@@ -113,18 +122,26 @@ class AwdApi
             $this->checkInboundEligibilityRateLimiter = $factory->create('AwdApi-checkInboundEligibility');
             $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('AwdApi-confirmInbound'), $this->rateLimitStorage);
             $this->confirmInboundRateLimiter = $factory->create('AwdApi-confirmInbound');
+            $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('AwdApi-confirmReplenishmentOrder'), $this->rateLimitStorage);
+            $this->confirmReplenishmentOrderRateLimiter = $factory->create('AwdApi-confirmReplenishmentOrder');
             $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('AwdApi-createInbound'), $this->rateLimitStorage);
             $this->createInboundRateLimiter = $factory->create('AwdApi-createInbound');
+            $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('AwdApi-createReplenishmentOrder'), $this->rateLimitStorage);
+            $this->createReplenishmentOrderRateLimiter = $factory->create('AwdApi-createReplenishmentOrder');
             $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('AwdApi-getInbound'), $this->rateLimitStorage);
             $this->getInboundRateLimiter = $factory->create('AwdApi-getInbound');
             $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('AwdApi-getInboundShipment'), $this->rateLimitStorage);
             $this->getInboundShipmentRateLimiter = $factory->create('AwdApi-getInboundShipment');
             $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('AwdApi-getInboundShipmentLabels'), $this->rateLimitStorage);
             $this->getInboundShipmentLabelsRateLimiter = $factory->create('AwdApi-getInboundShipmentLabels');
+            $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('AwdApi-getReplenishmentOrder'), $this->rateLimitStorage);
+            $this->getReplenishmentOrderRateLimiter = $factory->create('AwdApi-getReplenishmentOrder');
             $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('AwdApi-listInboundShipments'), $this->rateLimitStorage);
             $this->listInboundShipmentsRateLimiter = $factory->create('AwdApi-listInboundShipments');
             $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('AwdApi-listInventory'), $this->rateLimitStorage);
             $this->listInventoryRateLimiter = $factory->create('AwdApi-listInventory');
+            $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('AwdApi-listReplenishmentOrders'), $this->rateLimitStorage);
+            $this->listReplenishmentOrdersRateLimiter = $factory->create('AwdApi-listReplenishmentOrders');
             $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('AwdApi-updateInbound'), $this->rateLimitStorage);
             $this->updateInboundRateLimiter = $factory->create('AwdApi-updateInbound');
             $factory = new RateLimiterFactory(Configuration::getRateLimitOptions('AwdApi-updateInboundShipmentTransportDetails'), $this->rateLimitStorage);
@@ -164,23 +181,26 @@ class AwdApi
     /**
      * Operation cancelInbound.
      *
-     * @param string $order_id
-     *                         The ID of the inbound order you want to cancel. (required)
+     * @param string      $order_id
+     *                                         The ID of the inbound order you want to cancel. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
      */
     public function cancelInbound(
-        string $order_id
+        string $order_id,
+        ?string $restrictedDataToken = null
     ): void {
-        $this->cancelInboundWithHttpInfo($order_id);
+        $this->cancelInboundWithHttpInfo($order_id, $restrictedDataToken);
     }
 
     /**
      * Operation cancelInboundWithHttpInfo.
      *
-     * @param string $order_id
-     *                         The ID of the inbound order you want to cancel. (required)
+     * @param string      $order_id
+     *                                         The ID of the inbound order you want to cancel. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of , HTTP status code, HTTP response headers (array of strings)
      *
@@ -188,10 +208,15 @@ class AwdApi
      * @throws \InvalidArgumentException
      */
     public function cancelInboundWithHttpInfo(
-        string $order_id
+        string $order_id,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->cancelInboundRequest($order_id);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-cancelInbound');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -274,11 +299,16 @@ class AwdApi
      * @throws \InvalidArgumentException
      */
     public function cancelInboundAsyncWithHttpInfo(
-        string $order_id
+        string $order_id,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '';
         $request = $this->cancelInboundRequest($order_id);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-cancelInbound');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->cancelInboundRateLimiter->consume()->ensureAccepted();
         }
@@ -396,15 +426,17 @@ class AwdApi
      * Operation checkInboundEligibility.
      *
      * @param InboundPackages $body
-     *                              Represents the packages you want to inbound. (required)
+     *                                             Represents the packages you want to inbound. (required)
+     * @param null|string     $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
      */
     public function checkInboundEligibility(
-        InboundPackages $body
+        InboundPackages $body,
+        ?string $restrictedDataToken = null
     ): InboundEligibility {
-        list($response) = $this->checkInboundEligibilityWithHttpInfo($body);
+        list($response) = $this->checkInboundEligibilityWithHttpInfo($body, $restrictedDataToken);
 
         return $response;
     }
@@ -413,7 +445,8 @@ class AwdApi
      * Operation checkInboundEligibilityWithHttpInfo.
      *
      * @param InboundPackages $body
-     *                              Represents the packages you want to inbound. (required)
+     *                                             Represents the packages you want to inbound. (required)
+     * @param null|string     $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of \SpApi\Model\awd\v2024_05_09\InboundEligibility, HTTP status code, HTTP response headers (array of strings)
      *
@@ -421,10 +454,15 @@ class AwdApi
      * @throws \InvalidArgumentException
      */
     public function checkInboundEligibilityWithHttpInfo(
-        InboundPackages $body
+        InboundPackages $body,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->checkInboundEligibilityRequest($body);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-checkInboundEligibility');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -519,11 +557,16 @@ class AwdApi
      * @throws \InvalidArgumentException
      */
     public function checkInboundEligibilityAsyncWithHttpInfo(
-        InboundPackages $body
+        InboundPackages $body,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '\SpApi\Model\awd\v2024_05_09\InboundEligibility';
         $request = $this->checkInboundEligibilityRequest($body);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-checkInboundEligibility');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->checkInboundEligibilityRateLimiter->consume()->ensureAccepted();
         }
@@ -650,23 +693,26 @@ class AwdApi
     /**
      * Operation confirmInbound.
      *
-     * @param string $order_id
-     *                         The ID of the inbound order that you want to confirm. (required)
+     * @param string      $order_id
+     *                                         The ID of the inbound order that you want to confirm. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
      */
     public function confirmInbound(
-        string $order_id
+        string $order_id,
+        ?string $restrictedDataToken = null
     ): void {
-        $this->confirmInboundWithHttpInfo($order_id);
+        $this->confirmInboundWithHttpInfo($order_id, $restrictedDataToken);
     }
 
     /**
      * Operation confirmInboundWithHttpInfo.
      *
-     * @param string $order_id
-     *                         The ID of the inbound order that you want to confirm. (required)
+     * @param string      $order_id
+     *                                         The ID of the inbound order that you want to confirm. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of , HTTP status code, HTTP response headers (array of strings)
      *
@@ -674,10 +720,15 @@ class AwdApi
      * @throws \InvalidArgumentException
      */
     public function confirmInboundWithHttpInfo(
-        string $order_id
+        string $order_id,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->confirmInboundRequest($order_id);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-confirmInbound');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -760,11 +811,16 @@ class AwdApi
      * @throws \InvalidArgumentException
      */
     public function confirmInboundAsyncWithHttpInfo(
-        string $order_id
+        string $order_id,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '';
         $request = $this->confirmInboundRequest($order_id);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-confirmInbound');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->confirmInboundRateLimiter->consume()->ensureAccepted();
         }
@@ -879,18 +935,264 @@ class AwdApi
     }
 
     /**
+     * Operation confirmReplenishmentOrder.
+     *
+     * @param string      $order_id
+     *                                         ID of the replenishment order to be confirmed. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function confirmReplenishmentOrder(
+        string $order_id,
+        ?string $restrictedDataToken = null
+    ): void {
+        $this->confirmReplenishmentOrderWithHttpInfo($order_id, $restrictedDataToken);
+    }
+
+    /**
+     * Operation confirmReplenishmentOrderWithHttpInfo.
+     *
+     * @param string      $order_id
+     *                                         ID of the replenishment order to be confirmed. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
+     *
+     * @return array of , HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function confirmReplenishmentOrderWithHttpInfo(
+        string $order_id,
+        ?string $restrictedDataToken = null
+    ): array {
+        $request = $this->confirmReplenishmentOrderRequest($order_id);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-confirmReplenishmentOrder');
+        } else {
+            $request = $this->config->sign($request);
+        }
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                if ($this->rateLimiterEnabled) {
+                    $this->confirmReplenishmentOrderRateLimiter->consume()->ensureAccepted();
+                }
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getResponse()->getBody()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return [null, $statusCode, $response->getHeaders()];
+        } catch (ApiException $e) {
+            $data = ObjectSerializer::deserialize(
+                $e->getResponseBody(),
+                '\SpApi\Model\awd\v2024_05_09\ErrorList',
+                $e->getResponseHeaders()
+            );
+            $e->setResponseObject($data);
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation confirmReplenishmentOrderAsync.
+     *
+     * @param string $order_id
+     *                         ID of the replenishment order to be confirmed. (required)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function confirmReplenishmentOrderAsync(
+        string $order_id
+    ): PromiseInterface {
+        return $this->confirmReplenishmentOrderAsyncWithHttpInfo($order_id)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation confirmReplenishmentOrderAsyncWithHttpInfo.
+     *
+     * @param string $order_id
+     *                         ID of the replenishment order to be confirmed. (required)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function confirmReplenishmentOrderAsyncWithHttpInfo(
+        string $order_id,
+        ?string $restrictedDataToken = null
+    ): PromiseInterface {
+        $returnType = '';
+        $request = $this->confirmReplenishmentOrderRequest($order_id);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-confirmReplenishmentOrder');
+        } else {
+            $request = $this->config->sign($request);
+        }
+        if ($this->rateLimiterEnabled) {
+            $this->confirmReplenishmentOrderRateLimiter->consume()->ensureAccepted();
+        }
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) {
+                    return [null, $response->getStatusCode(), $response->getHeaders()];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'confirmReplenishmentOrder'.
+     *
+     * @param string $order_id
+     *                         ID of the replenishment order to be confirmed. (required)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function confirmReplenishmentOrderRequest(
+        string $order_id
+    ): Request {
+        // verify the required parameter 'order_id' is set
+        if (null === $order_id || (is_array($order_id) && 0 === count($order_id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $order_id when calling confirmReplenishmentOrder'
+            );
+        }
+
+        $resourcePath = '/awd/2024-05-09/replenishmentOrders/{orderId}/confirmation';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $order_id) {
+            $resourcePath = str_replace(
+                '{orderId}',
+                ObjectSerializer::toPathValue($order_id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            '',
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams, $this->config);
+            }
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = ObjectSerializer::buildQuery($queryParams, $this->config);
+
+        return new Request(
+            'POST',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation createInbound.
      *
      * @param InboundOrderCreationData $body
-     *                                       Payload for creating an inbound order. (required)
+     *                                                      Payload for creating an inbound order. (required)
+     * @param null|string              $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
      */
     public function createInbound(
-        InboundOrderCreationData $body
+        InboundOrderCreationData $body,
+        ?string $restrictedDataToken = null
     ): InboundOrderReference {
-        list($response) = $this->createInboundWithHttpInfo($body);
+        list($response) = $this->createInboundWithHttpInfo($body, $restrictedDataToken);
 
         return $response;
     }
@@ -899,7 +1201,8 @@ class AwdApi
      * Operation createInboundWithHttpInfo.
      *
      * @param InboundOrderCreationData $body
-     *                                       Payload for creating an inbound order. (required)
+     *                                                      Payload for creating an inbound order. (required)
+     * @param null|string              $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of \SpApi\Model\awd\v2024_05_09\InboundOrderReference, HTTP status code, HTTP response headers (array of strings)
      *
@@ -907,10 +1210,15 @@ class AwdApi
      * @throws \InvalidArgumentException
      */
     public function createInboundWithHttpInfo(
-        InboundOrderCreationData $body
+        InboundOrderCreationData $body,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->createInboundRequest($body);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-createInbound');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -1005,11 +1313,16 @@ class AwdApi
      * @throws \InvalidArgumentException
      */
     public function createInboundAsyncWithHttpInfo(
-        InboundOrderCreationData $body
+        InboundOrderCreationData $body,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '\SpApi\Model\awd\v2024_05_09\InboundOrderReference';
         $request = $this->createInboundRequest($body);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-createInbound');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->createInboundRateLimiter->consume()->ensureAccepted();
         }
@@ -1134,18 +1447,288 @@ class AwdApi
     }
 
     /**
+     * Operation createReplenishmentOrder.
+     *
+     * @param ReplenishmentOrderCreationData $body
+     *                                                            Payload for creating a replenishment order. (required)
+     * @param null|string                    $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function createReplenishmentOrder(
+        ReplenishmentOrderCreationData $body,
+        ?string $restrictedDataToken = null
+    ): ReplenishmentOrderReference {
+        list($response) = $this->createReplenishmentOrderWithHttpInfo($body, $restrictedDataToken);
+
+        return $response;
+    }
+
+    /**
+     * Operation createReplenishmentOrderWithHttpInfo.
+     *
+     * @param ReplenishmentOrderCreationData $body
+     *                                                            Payload for creating a replenishment order. (required)
+     * @param null|string                    $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
+     *
+     * @return array of \SpApi\Model\awd\v2024_05_09\ReplenishmentOrderReference, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function createReplenishmentOrderWithHttpInfo(
+        ReplenishmentOrderCreationData $body,
+        ?string $restrictedDataToken = null
+    ): array {
+        $request = $this->createReplenishmentOrderRequest($body);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-createReplenishmentOrder');
+        } else {
+            $request = $this->config->sign($request);
+        }
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                if ($this->rateLimiterEnabled) {
+                    $this->createReplenishmentOrderRateLimiter->consume()->ensureAccepted();
+                }
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getResponse()->getBody()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+            if ('\SpApi\Model\awd\v2024_05_09\ReplenishmentOrderReference' === '\SplFileObject') {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('\SpApi\Model\awd\v2024_05_09\ReplenishmentOrderReference' !== 'string') {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, '\SpApi\Model\awd\v2024_05_09\ReplenishmentOrderReference', []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            $data = ObjectSerializer::deserialize(
+                $e->getResponseBody(),
+                '\SpApi\Model\awd\v2024_05_09\ErrorList',
+                $e->getResponseHeaders()
+            );
+            $e->setResponseObject($data);
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation createReplenishmentOrderAsync.
+     *
+     * @param ReplenishmentOrderCreationData $body
+     *                                             Payload for creating a replenishment order. (required)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function createReplenishmentOrderAsync(
+        ReplenishmentOrderCreationData $body
+    ): PromiseInterface {
+        return $this->createReplenishmentOrderAsyncWithHttpInfo($body)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation createReplenishmentOrderAsyncWithHttpInfo.
+     *
+     * @param ReplenishmentOrderCreationData $body
+     *                                             Payload for creating a replenishment order. (required)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function createReplenishmentOrderAsyncWithHttpInfo(
+        ReplenishmentOrderCreationData $body,
+        ?string $restrictedDataToken = null
+    ): PromiseInterface {
+        $returnType = '\SpApi\Model\awd\v2024_05_09\ReplenishmentOrderReference';
+        $request = $this->createReplenishmentOrderRequest($body);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-createReplenishmentOrder');
+        } else {
+            $request = $this->config->sign($request);
+        }
+        if ($this->rateLimiterEnabled) {
+            $this->createReplenishmentOrderRateLimiter->consume()->ensureAccepted();
+        }
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'createReplenishmentOrder'.
+     *
+     * @param ReplenishmentOrderCreationData $body
+     *                                             Payload for creating a replenishment order. (required)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function createReplenishmentOrderRequest(
+        ReplenishmentOrderCreationData $body
+    ): Request {
+        // verify the required parameter 'body' is set
+        if (null === $body || (is_array($body) && 0 === count($body))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $body when calling createReplenishmentOrder'
+            );
+        }
+
+        $resourcePath = '/awd/2024-05-09/replenishmentOrders';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            'application/json',
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($body)) {
+            if ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($body));
+            } else {
+                $httpBody = $body;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams, $this->config);
+            }
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = ObjectSerializer::buildQuery($queryParams, $this->config);
+
+        return new Request(
+            'POST',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation getInbound.
      *
-     * @param string $order_id
-     *                         The ID of the inbound order that you want to retrieve. (required)
+     * @param string      $order_id
+     *                                         The ID of the inbound order that you want to retrieve. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
      */
     public function getInbound(
-        string $order_id
+        string $order_id,
+        ?string $restrictedDataToken = null
     ): InboundOrder {
-        list($response) = $this->getInboundWithHttpInfo($order_id);
+        list($response) = $this->getInboundWithHttpInfo($order_id, $restrictedDataToken);
 
         return $response;
     }
@@ -1153,8 +1736,9 @@ class AwdApi
     /**
      * Operation getInboundWithHttpInfo.
      *
-     * @param string $order_id
-     *                         The ID of the inbound order that you want to retrieve. (required)
+     * @param string      $order_id
+     *                                         The ID of the inbound order that you want to retrieve. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of \SpApi\Model\awd\v2024_05_09\InboundOrder, HTTP status code, HTTP response headers (array of strings)
      *
@@ -1162,10 +1746,15 @@ class AwdApi
      * @throws \InvalidArgumentException
      */
     public function getInboundWithHttpInfo(
-        string $order_id
+        string $order_id,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->getInboundRequest($order_id);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-getInbound');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -1260,11 +1849,16 @@ class AwdApi
      * @throws \InvalidArgumentException
      */
     public function getInboundAsyncWithHttpInfo(
-        string $order_id
+        string $order_id,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '\SpApi\Model\awd\v2024_05_09\InboundOrder';
         $request = $this->getInboundRequest($order_id);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-getInbound');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->getInboundRateLimiter->consume()->ensureAccepted();
         }
@@ -1395,18 +1989,20 @@ class AwdApi
      * Operation getInboundShipment.
      *
      * @param string      $shipment_id
-     *                                    ID for the shipment. A shipment contains the cases being inbounded. (required)
+     *                                         ID for the shipment. A shipment contains the cases being inbounded. (required)
      * @param null|string $sku_quantities
-     *                                    If equal to &#x60;SHOW&#x60;, the response includes the shipment SKU quantity details.  Defaults to &#x60;HIDE&#x60;, in which case the response does not contain SKU quantities (optional)
+     *                                         If equal to &#x60;SHOW&#x60;, the response includes the shipment SKU quantity details.  Defaults to &#x60;HIDE&#x60;, in which case the response does not contain SKU quantities (optional)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
      */
     public function getInboundShipment(
         string $shipment_id,
-        ?string $sku_quantities = null
+        ?string $sku_quantities = null,
+        ?string $restrictedDataToken = null
     ): InboundShipment {
-        list($response) = $this->getInboundShipmentWithHttpInfo($shipment_id, $sku_quantities);
+        list($response) = $this->getInboundShipmentWithHttpInfo($shipment_id, $sku_quantities, $restrictedDataToken);
 
         return $response;
     }
@@ -1415,9 +2011,10 @@ class AwdApi
      * Operation getInboundShipmentWithHttpInfo.
      *
      * @param string      $shipment_id
-     *                                    ID for the shipment. A shipment contains the cases being inbounded. (required)
+     *                                         ID for the shipment. A shipment contains the cases being inbounded. (required)
      * @param null|string $sku_quantities
-     *                                    If equal to &#x60;SHOW&#x60;, the response includes the shipment SKU quantity details.  Defaults to &#x60;HIDE&#x60;, in which case the response does not contain SKU quantities (optional)
+     *                                         If equal to &#x60;SHOW&#x60;, the response includes the shipment SKU quantity details.  Defaults to &#x60;HIDE&#x60;, in which case the response does not contain SKU quantities (optional)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of \SpApi\Model\awd\v2024_05_09\InboundShipment, HTTP status code, HTTP response headers (array of strings)
      *
@@ -1426,10 +2023,15 @@ class AwdApi
      */
     public function getInboundShipmentWithHttpInfo(
         string $shipment_id,
-        ?string $sku_quantities = null
+        ?string $sku_quantities = null,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->getInboundShipmentRequest($shipment_id, $sku_quantities);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-getInboundShipment');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -1530,11 +2132,16 @@ class AwdApi
      */
     public function getInboundShipmentAsyncWithHttpInfo(
         string $shipment_id,
-        ?string $sku_quantities = null
+        ?string $sku_quantities = null,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '\SpApi\Model\awd\v2024_05_09\InboundShipment';
         $request = $this->getInboundShipmentRequest($shipment_id, $sku_quantities);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-getInboundShipment');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->getInboundShipmentRateLimiter->consume()->ensureAccepted();
         }
@@ -1682,11 +2289,12 @@ class AwdApi
      * Operation getInboundShipmentLabels.
      *
      * @param string      $shipment_id
-     *                                 ID for the shipment. (required)
+     *                                         ID for the shipment. (required)
      * @param null|string $page_type
-     *                                 Page type for the generated labels. The default is &#x60;PLAIN_PAPER&#x60;. (optional)
+     *                                         Page type for the generated labels. The default is &#x60;PLAIN_PAPER&#x60;. (optional)
      * @param null|string $format_type
-     *                                 The format type of the output file that contains your labels. The default format type is &#x60;PDF&#x60;. (optional)
+     *                                         The format type of the output file that contains your labels. The default format type is &#x60;PDF&#x60;. (optional)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
@@ -1694,9 +2302,10 @@ class AwdApi
     public function getInboundShipmentLabels(
         string $shipment_id,
         ?string $page_type = null,
-        ?string $format_type = null
+        ?string $format_type = null,
+        ?string $restrictedDataToken = null
     ): ShipmentLabels {
-        list($response) = $this->getInboundShipmentLabelsWithHttpInfo($shipment_id, $page_type, $format_type);
+        list($response) = $this->getInboundShipmentLabelsWithHttpInfo($shipment_id, $page_type, $format_type, $restrictedDataToken);
 
         return $response;
     }
@@ -1705,11 +2314,12 @@ class AwdApi
      * Operation getInboundShipmentLabelsWithHttpInfo.
      *
      * @param string      $shipment_id
-     *                                 ID for the shipment. (required)
+     *                                         ID for the shipment. (required)
      * @param null|string $page_type
-     *                                 Page type for the generated labels. The default is &#x60;PLAIN_PAPER&#x60;. (optional)
+     *                                         Page type for the generated labels. The default is &#x60;PLAIN_PAPER&#x60;. (optional)
      * @param null|string $format_type
-     *                                 The format type of the output file that contains your labels. The default format type is &#x60;PDF&#x60;. (optional)
+     *                                         The format type of the output file that contains your labels. The default format type is &#x60;PDF&#x60;. (optional)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of \SpApi\Model\awd\v2024_05_09\ShipmentLabels, HTTP status code, HTTP response headers (array of strings)
      *
@@ -1719,10 +2329,15 @@ class AwdApi
     public function getInboundShipmentLabelsWithHttpInfo(
         string $shipment_id,
         ?string $page_type = null,
-        ?string $format_type = null
+        ?string $format_type = null,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->getInboundShipmentLabelsRequest($shipment_id, $page_type, $format_type);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-getInboundShipmentLabels');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -1829,11 +2444,16 @@ class AwdApi
     public function getInboundShipmentLabelsAsyncWithHttpInfo(
         string $shipment_id,
         ?string $page_type = null,
-        ?string $format_type = null
+        ?string $format_type = null,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '\SpApi\Model\awd\v2024_05_09\ShipmentLabels';
         $request = $this->getInboundShipmentLabelsRequest($shipment_id, $page_type, $format_type);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-getInboundShipmentLabels');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->getInboundShipmentLabelsRateLimiter->consume()->ensureAccepted();
         }
@@ -1991,22 +2611,294 @@ class AwdApi
     }
 
     /**
+     * Operation getReplenishmentOrder.
+     *
+     * @param string      $order_id
+     *                                         ID of the replenishment order to be retrieved. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function getReplenishmentOrder(
+        string $order_id,
+        ?string $restrictedDataToken = null
+    ): ReplenishmentOrder {
+        list($response) = $this->getReplenishmentOrderWithHttpInfo($order_id, $restrictedDataToken);
+
+        return $response;
+    }
+
+    /**
+     * Operation getReplenishmentOrderWithHttpInfo.
+     *
+     * @param string      $order_id
+     *                                         ID of the replenishment order to be retrieved. (required)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
+     *
+     * @return array of \SpApi\Model\awd\v2024_05_09\ReplenishmentOrder, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function getReplenishmentOrderWithHttpInfo(
+        string $order_id,
+        ?string $restrictedDataToken = null
+    ): array {
+        $request = $this->getReplenishmentOrderRequest($order_id);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-getReplenishmentOrder');
+        } else {
+            $request = $this->config->sign($request);
+        }
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                if ($this->rateLimiterEnabled) {
+                    $this->getReplenishmentOrderRateLimiter->consume()->ensureAccepted();
+                }
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getResponse()->getBody()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+            if ('\SpApi\Model\awd\v2024_05_09\ReplenishmentOrder' === '\SplFileObject') {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('\SpApi\Model\awd\v2024_05_09\ReplenishmentOrder' !== 'string') {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, '\SpApi\Model\awd\v2024_05_09\ReplenishmentOrder', []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            $data = ObjectSerializer::deserialize(
+                $e->getResponseBody(),
+                '\SpApi\Model\awd\v2024_05_09\ErrorList',
+                $e->getResponseHeaders()
+            );
+            $e->setResponseObject($data);
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation getReplenishmentOrderAsync.
+     *
+     * @param string $order_id
+     *                         ID of the replenishment order to be retrieved. (required)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getReplenishmentOrderAsync(
+        string $order_id
+    ): PromiseInterface {
+        return $this->getReplenishmentOrderAsyncWithHttpInfo($order_id)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation getReplenishmentOrderAsyncWithHttpInfo.
+     *
+     * @param string $order_id
+     *                         ID of the replenishment order to be retrieved. (required)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getReplenishmentOrderAsyncWithHttpInfo(
+        string $order_id,
+        ?string $restrictedDataToken = null
+    ): PromiseInterface {
+        $returnType = '\SpApi\Model\awd\v2024_05_09\ReplenishmentOrder';
+        $request = $this->getReplenishmentOrderRequest($order_id);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-getReplenishmentOrder');
+        } else {
+            $request = $this->config->sign($request);
+        }
+        if ($this->rateLimiterEnabled) {
+            $this->getReplenishmentOrderRateLimiter->consume()->ensureAccepted();
+        }
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'getReplenishmentOrder'.
+     *
+     * @param string $order_id
+     *                         ID of the replenishment order to be retrieved. (required)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getReplenishmentOrderRequest(
+        string $order_id
+    ): Request {
+        // verify the required parameter 'order_id' is set
+        if (null === $order_id || (is_array($order_id) && 0 === count($order_id))) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $order_id when calling getReplenishmentOrder'
+            );
+        }
+
+        $resourcePath = '/awd/2024-05-09/replenishmentOrders/{orderId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // path params
+        if (null !== $order_id) {
+            $resourcePath = str_replace(
+                '{orderId}',
+                ObjectSerializer::toPathValue($order_id),
+                $resourcePath
+            );
+        }
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            '',
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams, $this->config);
+            }
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = ObjectSerializer::buildQuery($queryParams, $this->config);
+
+        return new Request(
+            'GET',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation listInboundShipments.
      *
      * @param null|string    $sort_by
-     *                                        Field to sort results by. By default, the response will be sorted by UPDATED_AT. (optional)
+     *                                            Field to sort results by. By default, the response will be sorted by UPDATED_AT. (optional)
      * @param null|string    $sort_order
-     *                                        Sort the response in ASCENDING or DESCENDING order. By default, the response will be sorted in DESCENDING order. (optional)
+     *                                            Sort the response in ASCENDING or DESCENDING order. By default, the response will be sorted in DESCENDING order. (optional)
      * @param null|string    $shipment_status
-     *                                        Filter by inbound shipment status. (optional)
+     *                                            Filter by inbound shipment status. (optional)
      * @param null|\DateTime $updated_after
-     *                                        List the inbound shipments that were updated after a certain time (inclusive). The date must be in &lt;a href&#x3D;&#39;https://developer-docs.amazon.com/sp-api/docs/iso-8601&#39;&gt;ISO 8601&lt;/a&gt; format. (optional)
+     *                                            List the inbound shipments that were updated after a certain time (inclusive). The date must be in &lt;a href&#x3D;&#39;https://developer-docs.amazon.com/sp-api/docs/iso-8601&#39;&gt;ISO 8601&lt;/a&gt; format. (optional)
      * @param null|\DateTime $updated_before
-     *                                        List the inbound shipments that were updated before a certain time (inclusive). The date must be in &lt;a href&#x3D;&#39;https://developer-docs.amazon.com/sp-api/docs/iso-8601&#39;&gt;ISO 8601&lt;/a&gt; format. (optional)
+     *                                            List the inbound shipments that were updated before a certain time (inclusive). The date must be in &lt;a href&#x3D;&#39;https://developer-docs.amazon.com/sp-api/docs/iso-8601&#39;&gt;ISO 8601&lt;/a&gt; format. (optional)
      * @param null|int       $max_results
-     *                                        Maximum number of results to return. (optional, default to 25)
+     *                                            Maximum number of results to return. (optional, default to 25)
      * @param null|string    $next_token
-     *                                        A token that is used to retrieve the next page of results. The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;maxResults&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
+     *                                            A token that is used to retrieve the next page of results. The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;maxResults&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
+     * @param null|string    $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
@@ -2018,9 +2910,10 @@ class AwdApi
         ?\DateTime $updated_after = null,
         ?\DateTime $updated_before = null,
         ?int $max_results = 25,
-        ?string $next_token = null
+        ?string $next_token = null,
+        ?string $restrictedDataToken = null
     ): ShipmentListing {
-        list($response) = $this->listInboundShipmentsWithHttpInfo($sort_by, $sort_order, $shipment_status, $updated_after, $updated_before, $max_results, $next_token);
+        list($response) = $this->listInboundShipmentsWithHttpInfo($sort_by, $sort_order, $shipment_status, $updated_after, $updated_before, $max_results, $next_token, $restrictedDataToken);
 
         return $response;
     }
@@ -2029,19 +2922,20 @@ class AwdApi
      * Operation listInboundShipmentsWithHttpInfo.
      *
      * @param null|string    $sort_by
-     *                                        Field to sort results by. By default, the response will be sorted by UPDATED_AT. (optional)
+     *                                            Field to sort results by. By default, the response will be sorted by UPDATED_AT. (optional)
      * @param null|string    $sort_order
-     *                                        Sort the response in ASCENDING or DESCENDING order. By default, the response will be sorted in DESCENDING order. (optional)
+     *                                            Sort the response in ASCENDING or DESCENDING order. By default, the response will be sorted in DESCENDING order. (optional)
      * @param null|string    $shipment_status
-     *                                        Filter by inbound shipment status. (optional)
+     *                                            Filter by inbound shipment status. (optional)
      * @param null|\DateTime $updated_after
-     *                                        List the inbound shipments that were updated after a certain time (inclusive). The date must be in &lt;a href&#x3D;&#39;https://developer-docs.amazon.com/sp-api/docs/iso-8601&#39;&gt;ISO 8601&lt;/a&gt; format. (optional)
+     *                                            List the inbound shipments that were updated after a certain time (inclusive). The date must be in &lt;a href&#x3D;&#39;https://developer-docs.amazon.com/sp-api/docs/iso-8601&#39;&gt;ISO 8601&lt;/a&gt; format. (optional)
      * @param null|\DateTime $updated_before
-     *                                        List the inbound shipments that were updated before a certain time (inclusive). The date must be in &lt;a href&#x3D;&#39;https://developer-docs.amazon.com/sp-api/docs/iso-8601&#39;&gt;ISO 8601&lt;/a&gt; format. (optional)
+     *                                            List the inbound shipments that were updated before a certain time (inclusive). The date must be in &lt;a href&#x3D;&#39;https://developer-docs.amazon.com/sp-api/docs/iso-8601&#39;&gt;ISO 8601&lt;/a&gt; format. (optional)
      * @param null|int       $max_results
-     *                                        Maximum number of results to return. (optional, default to 25)
+     *                                            Maximum number of results to return. (optional, default to 25)
      * @param null|string    $next_token
-     *                                        A token that is used to retrieve the next page of results. The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;maxResults&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
+     *                                            A token that is used to retrieve the next page of results. The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;maxResults&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
+     * @param null|string    $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of \SpApi\Model\awd\v2024_05_09\ShipmentListing, HTTP status code, HTTP response headers (array of strings)
      *
@@ -2055,10 +2949,15 @@ class AwdApi
         ?\DateTime $updated_after = null,
         ?\DateTime $updated_before = null,
         ?int $max_results = 25,
-        ?string $next_token = null
+        ?string $next_token = null,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->listInboundShipmentsRequest($sort_by, $sort_order, $shipment_status, $updated_after, $updated_before, $max_results, $next_token);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-listInboundShipments');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -2189,11 +3088,16 @@ class AwdApi
         ?\DateTime $updated_after = null,
         ?\DateTime $updated_before = null,
         ?int $max_results = 25,
-        ?string $next_token = null
+        ?string $next_token = null,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '\SpApi\Model\awd\v2024_05_09\ShipmentListing';
         $request = $this->listInboundShipmentsRequest($sort_by, $sort_order, $shipment_status, $updated_after, $updated_before, $max_results, $next_token);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-listInboundShipments');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->listInboundShipmentsRateLimiter->consume()->ensureAccepted();
         }
@@ -2404,15 +3308,16 @@ class AwdApi
      * Operation listInventory.
      *
      * @param null|string $sku
-     *                                 Filter by seller or merchant SKU for the item. (optional)
+     *                                         Filter by seller or merchant SKU for the item. (optional)
      * @param null|string $sort_order
-     *                                 Sort the response in &#x60;ASCENDING&#x60; or &#x60;DESCENDING&#x60; order. (optional)
+     *                                         Sort the response in &#x60;ASCENDING&#x60; or &#x60;DESCENDING&#x60; order. (optional)
      * @param null|string $details
-     *                                 Set to &#x60;SHOW&#x60; to return summaries with additional inventory details. Defaults to &#x60;HIDE,&#x60; which returns only inventory summary totals. (optional)
+     *                                         Set to &#x60;SHOW&#x60; to return summaries with additional inventory details. Defaults to &#x60;HIDE,&#x60; which returns only inventory summary totals. (optional)
      * @param null|string $next_token
-     *                                 A token that is used to retrieve the next page of results. The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;maxResults&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
+     *                                         A token that is used to retrieve the next page of results. The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;maxResults&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
      * @param null|int    $max_results
-     *                                 Maximum number of results to return. (optional, default to 25)
+     *                                         Maximum number of results to return. (optional, default to 25)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
@@ -2422,9 +3327,10 @@ class AwdApi
         ?string $sort_order = null,
         ?string $details = null,
         ?string $next_token = null,
-        ?int $max_results = 25
+        ?int $max_results = 25,
+        ?string $restrictedDataToken = null
     ): InventoryListing {
-        list($response) = $this->listInventoryWithHttpInfo($sku, $sort_order, $details, $next_token, $max_results);
+        list($response) = $this->listInventoryWithHttpInfo($sku, $sort_order, $details, $next_token, $max_results, $restrictedDataToken);
 
         return $response;
     }
@@ -2433,15 +3339,16 @@ class AwdApi
      * Operation listInventoryWithHttpInfo.
      *
      * @param null|string $sku
-     *                                 Filter by seller or merchant SKU for the item. (optional)
+     *                                         Filter by seller or merchant SKU for the item. (optional)
      * @param null|string $sort_order
-     *                                 Sort the response in &#x60;ASCENDING&#x60; or &#x60;DESCENDING&#x60; order. (optional)
+     *                                         Sort the response in &#x60;ASCENDING&#x60; or &#x60;DESCENDING&#x60; order. (optional)
      * @param null|string $details
-     *                                 Set to &#x60;SHOW&#x60; to return summaries with additional inventory details. Defaults to &#x60;HIDE,&#x60; which returns only inventory summary totals. (optional)
+     *                                         Set to &#x60;SHOW&#x60; to return summaries with additional inventory details. Defaults to &#x60;HIDE,&#x60; which returns only inventory summary totals. (optional)
      * @param null|string $next_token
-     *                                 A token that is used to retrieve the next page of results. The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;maxResults&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
+     *                                         A token that is used to retrieve the next page of results. The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;maxResults&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
      * @param null|int    $max_results
-     *                                 Maximum number of results to return. (optional, default to 25)
+     *                                         Maximum number of results to return. (optional, default to 25)
+     * @param null|string $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of \SpApi\Model\awd\v2024_05_09\InventoryListing, HTTP status code, HTTP response headers (array of strings)
      *
@@ -2453,10 +3360,15 @@ class AwdApi
         ?string $sort_order = null,
         ?string $details = null,
         ?string $next_token = null,
-        ?int $max_results = 25
+        ?int $max_results = 25,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->listInventoryRequest($sku, $sort_order, $details, $next_token, $max_results);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-listInventory');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -2575,11 +3487,16 @@ class AwdApi
         ?string $sort_order = null,
         ?string $details = null,
         ?string $next_token = null,
-        ?int $max_results = 25
+        ?int $max_results = 25,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '\SpApi\Model\awd\v2024_05_09\InventoryListing';
         $request = $this->listInventoryRequest($sku, $sort_order, $details, $next_token, $max_results);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-listInventory');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->listInventoryRateLimiter->consume()->ensureAccepted();
         }
@@ -2761,30 +3678,406 @@ class AwdApi
     }
 
     /**
+     * Operation listReplenishmentOrders.
+     *
+     * @param null|\DateTime $updated_after
+     *                                            Get the replenishment orders updated after certain time (Inclusive) Date should be in ISO 8601 format as defined by date-time in - https://www.rfc-editor.org/rfc/rfc3339. (optional)
+     * @param null|\DateTime $updated_before
+     *                                            Get the replenishment orders updated before certain time (Inclusive) Date should be in ISO 8601 format as defined by date-time in - https://www.rfc-editor.org/rfc/rfc3339. (optional)
+     * @param null|string    $sort_order
+     *                                            Sort the response in ASCENDING or DESCENDING order. The default sort order is DESCENDING. (optional)
+     * @param null|int       $max_results
+     *                                            Maximum results to be returned in a single response. (optional, default to 25)
+     * @param null|string    $next_token
+     *                                            A token that is used to retrieve the next page of results. The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;maxResults&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
+     * @param null|string    $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function listReplenishmentOrders(
+        ?\DateTime $updated_after = null,
+        ?\DateTime $updated_before = null,
+        ?string $sort_order = null,
+        ?int $max_results = 25,
+        ?string $next_token = null,
+        ?string $restrictedDataToken = null
+    ): ReplenishmentOrderListing {
+        list($response) = $this->listReplenishmentOrdersWithHttpInfo($updated_after, $updated_before, $sort_order, $max_results, $next_token, $restrictedDataToken);
+
+        return $response;
+    }
+
+    /**
+     * Operation listReplenishmentOrdersWithHttpInfo.
+     *
+     * @param null|\DateTime $updated_after
+     *                                            Get the replenishment orders updated after certain time (Inclusive) Date should be in ISO 8601 format as defined by date-time in - https://www.rfc-editor.org/rfc/rfc3339. (optional)
+     * @param null|\DateTime $updated_before
+     *                                            Get the replenishment orders updated before certain time (Inclusive) Date should be in ISO 8601 format as defined by date-time in - https://www.rfc-editor.org/rfc/rfc3339. (optional)
+     * @param null|string    $sort_order
+     *                                            Sort the response in ASCENDING or DESCENDING order. The default sort order is DESCENDING. (optional)
+     * @param null|int       $max_results
+     *                                            Maximum results to be returned in a single response. (optional, default to 25)
+     * @param null|string    $next_token
+     *                                            A token that is used to retrieve the next page of results. The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;maxResults&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
+     * @param null|string    $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
+     *
+     * @return array of \SpApi\Model\awd\v2024_05_09\ReplenishmentOrderListing, HTTP status code, HTTP response headers (array of strings)
+     *
+     * @throws ApiException              on non-2xx response
+     * @throws \InvalidArgumentException
+     */
+    public function listReplenishmentOrdersWithHttpInfo(
+        ?\DateTime $updated_after = null,
+        ?\DateTime $updated_before = null,
+        ?string $sort_order = null,
+        ?int $max_results = 25,
+        ?string $next_token = null,
+        ?string $restrictedDataToken = null
+    ): array {
+        $request = $this->listReplenishmentOrdersRequest($updated_after, $updated_before, $sort_order, $max_results, $next_token);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-listReplenishmentOrders');
+        } else {
+            $request = $this->config->sign($request);
+        }
+
+        try {
+            $options = $this->createHttpClientOption();
+
+            try {
+                if ($this->rateLimiterEnabled) {
+                    $this->listReplenishmentOrdersRateLimiter->consume()->ensureAccepted();
+                }
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getResponse()->getBody()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+            if ('\SpApi\Model\awd\v2024_05_09\ReplenishmentOrderListing' === '\SplFileObject') {
+                $content = $response->getBody(); // stream goes to serializer
+            } else {
+                $content = (string) $response->getBody();
+                if ('\SpApi\Model\awd\v2024_05_09\ReplenishmentOrderListing' !== 'string') {
+                    $content = json_decode($content);
+                }
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, '\SpApi\Model\awd\v2024_05_09\ReplenishmentOrderListing', []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ];
+        } catch (ApiException $e) {
+            $data = ObjectSerializer::deserialize(
+                $e->getResponseBody(),
+                '\SpApi\Model\awd\v2024_05_09\ErrorList',
+                $e->getResponseHeaders()
+            );
+            $e->setResponseObject($data);
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation listReplenishmentOrdersAsync.
+     *
+     * @param null|\DateTime $updated_after
+     *                                       Get the replenishment orders updated after certain time (Inclusive) Date should be in ISO 8601 format as defined by date-time in - https://www.rfc-editor.org/rfc/rfc3339. (optional)
+     * @param null|\DateTime $updated_before
+     *                                       Get the replenishment orders updated before certain time (Inclusive) Date should be in ISO 8601 format as defined by date-time in - https://www.rfc-editor.org/rfc/rfc3339. (optional)
+     * @param null|string    $sort_order
+     *                                       Sort the response in ASCENDING or DESCENDING order. The default sort order is DESCENDING. (optional)
+     * @param null|int       $max_results
+     *                                       Maximum results to be returned in a single response. (optional, default to 25)
+     * @param null|string    $next_token
+     *                                       A token that is used to retrieve the next page of results. The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;maxResults&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function listReplenishmentOrdersAsync(
+        ?\DateTime $updated_after = null,
+        ?\DateTime $updated_before = null,
+        ?string $sort_order = null,
+        ?int $max_results = 25,
+        ?string $next_token = null
+    ): PromiseInterface {
+        return $this->listReplenishmentOrdersAsyncWithHttpInfo($updated_after, $updated_before, $sort_order, $max_results, $next_token)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            )
+        ;
+    }
+
+    /**
+     * Operation listReplenishmentOrdersAsyncWithHttpInfo.
+     *
+     * @param null|\DateTime $updated_after
+     *                                       Get the replenishment orders updated after certain time (Inclusive) Date should be in ISO 8601 format as defined by date-time in - https://www.rfc-editor.org/rfc/rfc3339. (optional)
+     * @param null|\DateTime $updated_before
+     *                                       Get the replenishment orders updated before certain time (Inclusive) Date should be in ISO 8601 format as defined by date-time in - https://www.rfc-editor.org/rfc/rfc3339. (optional)
+     * @param null|string    $sort_order
+     *                                       Sort the response in ASCENDING or DESCENDING order. The default sort order is DESCENDING. (optional)
+     * @param null|int       $max_results
+     *                                       Maximum results to be returned in a single response. (optional, default to 25)
+     * @param null|string    $next_token
+     *                                       A token that is used to retrieve the next page of results. The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;maxResults&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function listReplenishmentOrdersAsyncWithHttpInfo(
+        ?\DateTime $updated_after = null,
+        ?\DateTime $updated_before = null,
+        ?string $sort_order = null,
+        ?int $max_results = 25,
+        ?string $next_token = null,
+        ?string $restrictedDataToken = null
+    ): PromiseInterface {
+        $returnType = '\SpApi\Model\awd\v2024_05_09\ReplenishmentOrderListing';
+        $request = $this->listReplenishmentOrdersRequest($updated_after, $updated_before, $sort_order, $max_results, $next_token);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-listReplenishmentOrders');
+        } else {
+            $request = $this->config->sign($request);
+        }
+        if ($this->rateLimiterEnabled) {
+            $this->listReplenishmentOrdersRateLimiter->consume()->ensureAccepted();
+        }
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ('\SplFileObject' === $returnType) {
+                        $content = $response->getBody(); // stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ('string' !== $returnType) {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            )
+        ;
+    }
+
+    /**
+     * Create request for operation 'listReplenishmentOrders'.
+     *
+     * @param null|\DateTime $updated_after
+     *                                       Get the replenishment orders updated after certain time (Inclusive) Date should be in ISO 8601 format as defined by date-time in - https://www.rfc-editor.org/rfc/rfc3339. (optional)
+     * @param null|\DateTime $updated_before
+     *                                       Get the replenishment orders updated before certain time (Inclusive) Date should be in ISO 8601 format as defined by date-time in - https://www.rfc-editor.org/rfc/rfc3339. (optional)
+     * @param null|string    $sort_order
+     *                                       Sort the response in ASCENDING or DESCENDING order. The default sort order is DESCENDING. (optional)
+     * @param null|int       $max_results
+     *                                       Maximum results to be returned in a single response. (optional, default to 25)
+     * @param null|string    $next_token
+     *                                       A token that is used to retrieve the next page of results. The response includes &#x60;nextToken&#x60; when the number of results exceeds the specified &#x60;maxResults&#x60; value. To get the next page of results, call the operation with this token and include the same arguments as the call that produced the token. To get a complete list, call this operation until &#x60;nextToken&#x60; is null. Note that this operation can return empty pages. (optional)
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function listReplenishmentOrdersRequest(
+        ?\DateTime $updated_after = null,
+        ?\DateTime $updated_before = null,
+        ?string $sort_order = null,
+        ?int $max_results = 25,
+        ?string $next_token = null
+    ): Request {
+        if (null !== $max_results && $max_results > 100) {
+            throw new \InvalidArgumentException('invalid value for "$max_results" when calling AwdApi.listReplenishmentOrders, must be smaller than or equal to 100.');
+        }
+        if (null !== $max_results && $max_results < 1) {
+            throw new \InvalidArgumentException('invalid value for "$max_results" when calling AwdApi.listReplenishmentOrders, must be bigger than or equal to 1.');
+        }
+
+        $resourcePath = '/awd/2024-05-09/replenishmentOrders';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $updated_after,
+            'updatedAfter', // param base name
+            'string', // openApiType
+            '', // style
+            false, // explode
+            false, // required
+            $this->config
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $updated_before,
+            'updatedBefore', // param base name
+            'string', // openApiType
+            '', // style
+            false, // explode
+            false, // required
+            $this->config
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $sort_order,
+            'sortOrder', // param base name
+            'string', // openApiType
+            '', // style
+            false, // explode
+            false, // required
+            $this->config
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $max_results,
+            'maxResults', // param base name
+            'integer', // openApiType
+            '', // style
+            false, // explode
+            false, // required
+            $this->config
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $next_token,
+            'nextToken', // param base name
+            'string', // openApiType
+            '', // style
+            false, // explode
+            false, // required
+            $this->config
+        ) ?? []);
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            '',
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+            } elseif ('application/json' === $headers['Content-Type']) {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams, $this->config);
+            }
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = ObjectSerializer::buildQuery($queryParams, $this->config);
+
+        return new Request(
+            'GET',
+            $this->config->getHost().$resourcePath.($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation updateInbound.
      *
      * @param string       $order_id
-     *                               The ID of the inbound order that you want to update. (required)
+     *                                          The ID of the inbound order that you want to update. (required)
      * @param InboundOrder $body
-     *                               Represents an AWD inbound order. (required)
+     *                                          Represents an AWD inbound order. (required)
+     * @param null|string  $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
      */
     public function updateInbound(
         string $order_id,
-        InboundOrder $body
+        InboundOrder $body,
+        ?string $restrictedDataToken = null
     ): void {
-        $this->updateInboundWithHttpInfo($order_id, $body);
+        $this->updateInboundWithHttpInfo($order_id, $body, $restrictedDataToken);
     }
 
     /**
      * Operation updateInboundWithHttpInfo.
      *
      * @param string       $order_id
-     *                               The ID of the inbound order that you want to update. (required)
+     *                                          The ID of the inbound order that you want to update. (required)
      * @param InboundOrder $body
-     *                               Represents an AWD inbound order. (required)
+     *                                          Represents an AWD inbound order. (required)
+     * @param null|string  $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of , HTTP status code, HTTP response headers (array of strings)
      *
@@ -2793,10 +4086,15 @@ class AwdApi
      */
     public function updateInboundWithHttpInfo(
         string $order_id,
-        InboundOrder $body
+        InboundOrder $body,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->updateInboundRequest($order_id, $body);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-updateInbound');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -2885,11 +4183,16 @@ class AwdApi
      */
     public function updateInboundAsyncWithHttpInfo(
         string $order_id,
-        InboundOrder $body
+        InboundOrder $body,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '';
         $request = $this->updateInboundRequest($order_id, $body);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-updateInbound');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->updateInboundRateLimiter->consume()->ensureAccepted();
         }
@@ -3022,27 +4325,30 @@ class AwdApi
      * Operation updateInboundShipmentTransportDetails.
      *
      * @param string                $shipment_id
-     *                                           The shipment ID. (required)
+     *                                                   The shipment ID. (required)
      * @param TransportationDetails $body
-     *                                           Transportation details for the shipment. (required)
+     *                                                   Transportation details for the shipment. (required)
+     * @param null|string           $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @throws ApiException              on non-2xx response
      * @throws \InvalidArgumentException
      */
     public function updateInboundShipmentTransportDetails(
         string $shipment_id,
-        TransportationDetails $body
+        TransportationDetails $body,
+        ?string $restrictedDataToken = null
     ): void {
-        $this->updateInboundShipmentTransportDetailsWithHttpInfo($shipment_id, $body);
+        $this->updateInboundShipmentTransportDetailsWithHttpInfo($shipment_id, $body, $restrictedDataToken);
     }
 
     /**
      * Operation updateInboundShipmentTransportDetailsWithHttpInfo.
      *
      * @param string                $shipment_id
-     *                                           The shipment ID. (required)
+     *                                                   The shipment ID. (required)
      * @param TransportationDetails $body
-     *                                           Transportation details for the shipment. (required)
+     *                                                   Transportation details for the shipment. (required)
+     * @param null|string           $restrictedDataToken Restricted Data Token (RDT) for accessing restricted resources (optional, required for operations that return PII)
      *
      * @return array of , HTTP status code, HTTP response headers (array of strings)
      *
@@ -3051,10 +4357,15 @@ class AwdApi
      */
     public function updateInboundShipmentTransportDetailsWithHttpInfo(
         string $shipment_id,
-        TransportationDetails $body
+        TransportationDetails $body,
+        ?string $restrictedDataToken = null
     ): array {
         $request = $this->updateInboundShipmentTransportDetailsRequest($shipment_id, $body);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-updateInboundShipmentTransportDetails');
+        } else {
+            $request = $this->config->sign($request);
+        }
 
         try {
             $options = $this->createHttpClientOption();
@@ -3143,11 +4454,16 @@ class AwdApi
      */
     public function updateInboundShipmentTransportDetailsAsyncWithHttpInfo(
         string $shipment_id,
-        TransportationDetails $body
+        TransportationDetails $body,
+        ?string $restrictedDataToken = null
     ): PromiseInterface {
         $returnType = '';
         $request = $this->updateInboundShipmentTransportDetailsRequest($shipment_id, $body);
-        $request = $this->config->sign($request);
+        if (null !== $restrictedDataToken) {
+            $request = RestrictedDataTokenSigner::sign($request, $restrictedDataToken, 'AwdApi-updateInboundShipmentTransportDetails');
+        } else {
+            $request = $this->config->sign($request);
+        }
         if ($this->rateLimiterEnabled) {
             $this->updateInboundShipmentTransportDetailsRateLimiter->consume()->ensureAccepted();
         }

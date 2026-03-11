@@ -330,11 +330,11 @@ class OrdersV0ApiTest extends BaseTestCase
           &quot;PurchaseDate&quot; : &quot;2017-01-20T19:49:35Z&quot;,
           &quot;LastUpdateDate&quot; : &quot;2017-01-20T19:49:35Z&quot;,
           &quot;OrderStatus&quot; : &quot;Pending&quot;,
-          &quot;FulfillmentChannel&quot; : &quot;SellerFulfilled&quot;,
+          &quot;FulfillmentChannel&quot; : &quot;MFN&quot;,
           &quot;NumberOfItemsShipped&quot; : 0,
           &quot;NumberOfItemsUnshipped&quot; : 0,
           &quot;PaymentMethod&quot; : &quot;Other&quot;,
-          &quot;PaymentMethodDetails&quot; : [ &quot;CreditCard&quot;, &quot;GiftCerificate&quot; ],
+          &quot;PaymentMethodDetails&quot; : [ &quot;CreditCard&quot;, &quot;GiftCertificate&quot; ],
           &quot;MarketplaceId&quot; : &quot;ATVPDKIKX0DER&quot;,
           &quot;ShipmentServiceLevelCategory&quot; : &quot;Standard&quot;,
           &quot;OrderType&quot; : &quot;StandardOrder&quot;,
@@ -370,7 +370,6 @@ class OrdersV0ApiTest extends BaseTestCase
             &quot;CountryCode&quot; : &quot;US&quot;
           },
           &quot;BuyerInfo&quot; : {
-            &quot;BuyerEmail&quot; : &quot;user@example.com&quot;,
             &quot;BuyerName&quot; : &quot;John Doe&quot;,
             &quot;BuyerTaxInfo&quot; : {
               &quot;CompanyLegalName&quot; : &quot;A Company Name&quot;
@@ -471,6 +470,15 @@ class OrdersV0ApiTest extends BaseTestCase
           &quot;NumberOfItemsUnshipped&quot; : 0,
           &quot;PaymentMethod&quot; : &quot;Other&quot;,
           &quot;PaymentMethodDetails&quot; : [ &quot;Invoice&quot; ],
+          &quot;PaymentExecutionDetail&quot; : [ {
+            &quot;Payment&quot; : {
+              &quot;CurrencyCode&quot; : &quot;BRL&quot;,
+              &quot;Amount&quot; : &quot;20.00&quot;
+            },
+            &quot;PaymentMethod&quot; : &quot;Pix&quot;,
+            &quot;AcquirerId&quot; : &quot;XX.XXX.XXX/0001-ZZ&quot;,
+            &quot;AuthorizationCode&quot; : &quot;123456&quot;
+          } ],
           &quot;IsReplacementOrder&quot; : false,
           &quot;MarketplaceId&quot; : &quot;A1PA6795UKMFR9&quot;,
           &quot;ShipmentServiceLevelCategory&quot; : &quot;Standard&quot;,
@@ -919,7 +927,6 @@ class OrdersV0ApiTest extends BaseTestCase
       &quot;example&quot; : {
         &quot;payload&quot; : {
           &quot;AmazonOrderId&quot; : &quot;902-3159896-1390916&quot;,
-          &quot;BuyerEmail&quot; : &quot;user@example.com&quot;,
           &quot;BuyerName&quot; : &quot;John Smith&quot;,
           &quot;BuyerTaxInfo&quot; : {
             &quot;CompanyLegalName&quot; : &quot;Company Name&quot;
@@ -941,7 +948,6 @@ class OrdersV0ApiTest extends BaseTestCase
       &quot;response&quot; : {
         &quot;payload&quot; : {
           &quot;AmazonOrderId&quot; : &quot;902-1845936-5435065&quot;,
-          &quot;BuyerEmail&quot; : &quot;fzyrv6gwkhbb15c@example.com&quot;,
           &quot;BuyerName&quot; : &quot;MFNIntegrationTestMerchant&quot;
         }
       }
@@ -1481,6 +1487,7 @@ class OrdersV0ApiTest extends BaseTestCase
         &quot;payload&quot; : {
           &quot;AmazonOrderId&quot; : &quot;902-1845936-5435065&quot;,
           &quot;OrderItems&quot; : [ {
+            &quot;OrderItemId&quot; : &quot;68828574383266&quot;,
             &quot;BuyerCustomizedInfo&quot; : {
               &quot;CustomizedURL&quot; : &quot;https://zme-caps.amazon.com/t/bR6qHkzSOxuB/J8nbWhze0Bd3DkajkOdY-XQbWkFralegp2sr_QZiKEE/1&quot;
             },
@@ -2158,11 +2165,11 @@ class OrdersV0ApiTest extends BaseTestCase
             &quot;PurchaseDate&quot; : &quot;2017-01-20T19:49:35Z&quot;,
             &quot;LastUpdateDate&quot; : &quot;2017-01-20T19:49:35Z&quot;,
             &quot;OrderStatus&quot; : &quot;Pending&quot;,
-            &quot;FulfillmentChannel&quot; : &quot;SellerFulfilled&quot;,
+            &quot;FulfillmentChannel&quot; : &quot;MFN&quot;,
             &quot;NumberOfItemsShipped&quot; : 0,
             &quot;NumberOfItemsUnshipped&quot; : 0,
             &quot;PaymentMethod&quot; : &quot;Other&quot;,
-            &quot;PaymentMethodDetails&quot; : [ &quot;CreditCard&quot;, &quot;GiftCerificate&quot; ],
+            &quot;PaymentMethodDetails&quot; : [ &quot;CreditCard&quot;, &quot;GiftCertificate&quot; ],
             &quot;MarketplaceId&quot; : &quot;ATVPDKIKX0DER&quot;,
             &quot;ShipmentServiceLevelCategory&quot; : &quot;Standard&quot;,
             &quot;OrderType&quot; : &quot;StandardOrder&quot;,
@@ -2184,7 +2191,6 @@ class OrdersV0ApiTest extends BaseTestCase
               &quot;CountryCode&quot; : &quot;US&quot;
             },
             &quot;BuyerInfo&quot; : {
-              &quot;BuyerEmail&quot; : &quot;user@example.com&quot;,
               &quot;BuyerName&quot; : &quot;John Doe&quot;,
               &quot;BuyerTaxInfo&quot; : {
                 &quot;CompanyLegalName&quot; : &quot;A Company Name&quot;
@@ -2316,11 +2322,11 @@ class OrdersV0ApiTest extends BaseTestCase
             &quot;PurchaseDate&quot; : &quot;2017-01-20T19:49:35Z&quot;,
             &quot;LastUpdateDate&quot; : &quot;2017-01-20T19:49:35Z&quot;,
             &quot;OrderStatus&quot; : &quot;Pending&quot;,
-            &quot;FulfillmentChannel&quot; : &quot;SellerFulfilled&quot;,
+            &quot;FulfillmentChannel&quot; : &quot;MFN&quot;,
             &quot;NumberOfItemsShipped&quot; : 0,
             &quot;NumberOfItemsUnshipped&quot; : 0,
             &quot;PaymentMethod&quot; : &quot;Other&quot;,
-            &quot;PaymentMethodDetails&quot; : [ &quot;CreditCard&quot;, &quot;GiftCerificate&quot; ],
+            &quot;PaymentMethodDetails&quot; : [ &quot;CreditCard&quot;, &quot;GiftCertificate&quot; ],
             &quot;MarketplaceId&quot; : &quot;ATVPDKIKX0DER&quot;,
             &quot;ShipmentServiceLevelCategory&quot; : &quot;Standard&quot;,
             &quot;OrderType&quot; : &quot;StandardOrder&quot;,
@@ -2359,11 +2365,11 @@ class OrdersV0ApiTest extends BaseTestCase
             &quot;PurchaseDate&quot; : &quot;2017-01-20T19:49:35Z&quot;,
             &quot;LastUpdateDate&quot; : &quot;2017-01-20T19:49:35Z&quot;,
             &quot;OrderStatus&quot; : &quot;Pending&quot;,
-            &quot;FulfillmentChannel&quot; : &quot;SellerFulfilled&quot;,
+            &quot;FulfillmentChannel&quot; : &quot;MFN&quot;,
             &quot;NumberOfItemsShipped&quot; : 0,
             &quot;NumberOfItemsUnshipped&quot; : 0,
             &quot;PaymentMethod&quot; : &quot;Other&quot;,
-            &quot;PaymentMethodDetails&quot; : [ &quot;CreditCard&quot;, &quot;GiftCerificate&quot; ],
+            &quot;PaymentMethodDetails&quot; : [ &quot;CreditCard&quot;, &quot;GiftCertificate&quot; ],
             &quot;MarketplaceId&quot; : &quot;ATVPDKIKX0DER&quot;,
             &quot;ShipmentServiceLevelCategory&quot; : &quot;Standard&quot;,
             &quot;OrderType&quot; : &quot;StandardOrder&quot;,

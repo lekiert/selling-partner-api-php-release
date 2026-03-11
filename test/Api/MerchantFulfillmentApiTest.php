@@ -152,8 +152,22 @@ class MerchantFulfillmentApiTest extends BaseTestCase
               &quot;CurrencyCode&quot; : &quot;USD&quot;,
               &quot;Amount&quot; : 34.73
             },
+            &quot;RateWithAdjustments&quot; : {
+              &quot;CurrencyCode&quot; : &quot;USD&quot;,
+              &quot;Amount&quot; : 33.73
+            },
+            &quot;AdjustmentItemList&quot; : [ {
+              &quot;RateItemID&quot; : &quot;FBM_SHIP_PLUS_CREDIT&quot;,
+              &quot;RateItemType&quot; : &quot;INCLUDED&quot;,
+              &quot;RateItemCharge&quot; : {
+                &quot;CurrencyCode&quot; : &quot;USD&quot;,
+                &quot;Amount&quot; : 1.0
+              },
+              &quot;RateItemNameLocalization&quot; : &quot;FBM Ship Plus Credit&quot;
+            } ],
             &quot;ShippingServiceOptions&quot; : {
               &quot;DeliveryExperience&quot; : &quot;DeliveryConfirmationWithoutSignature&quot;,
+              &quot;CarrierWillPickUp&quot; : false,
               &quot;DeclaredValue&quot; : {
                 &quot;CurrencyCode&quot; : &quot;USD&quot;,
                 &quot;Amount&quot; : 0.0
@@ -162,7 +176,11 @@ class MerchantFulfillmentApiTest extends BaseTestCase
             &quot;RequiresAdditionalSellerInputs&quot; : false
           },
           &quot;Label&quot; : {
-            &quot;Dimensions&quot; : { },
+            &quot;Dimensions&quot; : {
+              &quot;Length&quot; : 6.0,
+              &quot;Width&quot; : 4.0,
+              &quot;Unit&quot; : &quot;inches&quot;
+            },
             &quot;FileContents&quot; : {
               &quot;Contents&quot; : &quot;&quot;,
               &quot;FileType&quot; : &quot;&quot;,
@@ -470,8 +488,22 @@ class MerchantFulfillmentApiTest extends BaseTestCase
               &quot;CurrencyCode&quot; : &quot;USD&quot;,
               &quot;Amount&quot; : 34.73
             },
+            &quot;RateWithAdjustments&quot; : {
+              &quot;CurrencyCode&quot; : &quot;USD&quot;,
+              &quot;Amount&quot; : 33.73
+            },
+            &quot;AdjustmentItemList&quot; : [ {
+              &quot;RateItemID&quot; : &quot;FBM_SHIP_PLUS_CREDIT&quot;,
+              &quot;RateItemType&quot; : &quot;INCLUDED&quot;,
+              &quot;RateItemCharge&quot; : {
+                &quot;CurrencyCode&quot; : &quot;USD&quot;,
+                &quot;Amount&quot; : 1.0
+              },
+              &quot;RateItemNameLocalization&quot; : &quot;FBM Ship Plus Credit&quot;
+            } ],
             &quot;ShippingServiceOptions&quot; : {
               &quot;DeliveryExperience&quot; : &quot;NoTracking&quot;,
+              &quot;CarrierWillPickUp&quot; : false,
               &quot;DeclaredValue&quot; : {
                 &quot;CurrencyCode&quot; : &quot;USD&quot;,
                 &quot;Amount&quot; : 0
@@ -479,7 +511,7 @@ class MerchantFulfillmentApiTest extends BaseTestCase
             },
             &quot;RequiresAdditionalSellerInputs&quot; : false,
             &quot;Benefits&quot; : {
-              &quot;IncludedBenefits&quot; : [ &quot;CLAIMS_PROTECTED&quot; ],
+              &quot;IncludedBenefits&quot; : [ &quot;CLAIMS_PROTECTED&quot;, &quot;FBM_SHIP_PLUS&quot; ],
               &quot;ExcludedBenefits&quot; : [ ]
             }
           },
@@ -1030,6 +1062,19 @@ class MerchantFulfillmentApiTest extends BaseTestCase
               &quot;CurrencyCode&quot; : &quot;USD&quot;,
               &quot;Amount&quot; : 34.73
             },
+            &quot;RateWithAdjustments&quot; : {
+              &quot;CurrencyCode&quot; : &quot;USD&quot;,
+              &quot;Amount&quot; : 33.73
+            },
+            &quot;AdjustmentItemList&quot; : [ {
+              &quot;RateItemID&quot; : &quot;FBM_SHIP_PLUS_CREDIT&quot;,
+              &quot;RateItemType&quot; : &quot;INCLUDED&quot;,
+              &quot;RateItemCharge&quot; : {
+                &quot;CurrencyCode&quot; : &quot;USD&quot;,
+                &quot;Amount&quot; : 1.0
+              },
+              &quot;RateItemNameLocalization&quot; : &quot;FBM Ship Plus Credit&quot;
+            } ],
             &quot;ShippingServiceOptions&quot; : {
               &quot;DeliveryExperience&quot; : &quot;NoTracking&quot;,
               &quot;CarrierWillPickUp&quot; : false,
@@ -1045,8 +1090,9 @@ class MerchantFulfillmentApiTest extends BaseTestCase
             }, {
               &quot;LabelFormat&quot; : &quot;PNG&quot;
             } ],
+            &quot;RequiresAdditionalSellerInputs&quot; : true,
             &quot;Benefits&quot; : {
-              &quot;IncludedBenefits&quot; : [ &quot;CLAIMS_PROTECTED&quot; ],
+              &quot;IncludedBenefits&quot; : [ &quot;CLAIMS_PROTECTED&quot;, &quot;FBM_SHIP_PLUS&quot; ],
               &quot;ExcludedBenefits&quot; : [ ]
             }
           }, {
@@ -1058,6 +1104,10 @@ class MerchantFulfillmentApiTest extends BaseTestCase
             &quot;EarliestEstimatedDeliveryDate&quot; : &quot;2019-10-30T06:00:00Z&quot;,
             &quot;LatestEstimatedDeliveryDate&quot; : &quot;2019-10-30T06:00:00Z&quot;,
             &quot;Rate&quot; : {
+              &quot;CurrencyCode&quot; : &quot;USD&quot;,
+              &quot;Amount&quot; : 98.75
+            },
+            &quot;RateWithAdjustments&quot; : {
               &quot;CurrencyCode&quot; : &quot;USD&quot;,
               &quot;Amount&quot; : 98.75
             },
@@ -1076,6 +1126,7 @@ class MerchantFulfillmentApiTest extends BaseTestCase
             }, {
               &quot;LabelFormat&quot; : &quot;PNG&quot;
             } ],
+            &quot;RequiresAdditionalSellerInputs&quot; : true,
             &quot;Benefits&quot; : {
               &quot;IncludedBenefits&quot; : [ ],
               &quot;ExcludedBenefits&quot; : [ {
@@ -1388,8 +1439,22 @@ class MerchantFulfillmentApiTest extends BaseTestCase
               &quot;CurrencyCode&quot; : &quot;USD&quot;,
               &quot;Amount&quot; : 34.73
             },
+            &quot;RateWithAdjustments&quot; : {
+              &quot;CurrencyCode&quot; : &quot;USD&quot;,
+              &quot;Amount&quot; : 33.73
+            },
+            &quot;AdjustmentItemList&quot; : [ {
+              &quot;RateItemID&quot; : &quot;FBM_SHIP_PLUS_CREDIT&quot;,
+              &quot;RateItemType&quot; : &quot;INCLUDED&quot;,
+              &quot;RateItemCharge&quot; : {
+                &quot;CurrencyCode&quot; : &quot;USD&quot;,
+                &quot;Amount&quot; : 1.0
+              },
+              &quot;RateItemNameLocalization&quot; : &quot;FBM Ship Plus Credit&quot;
+            } ],
             &quot;ShippingServiceOptions&quot; : {
               &quot;DeliveryExperience&quot; : &quot;DeliveryConfirmationWithoutSignature&quot;,
+              &quot;CarrierWillPickUp&quot; : false,
               &quot;DeclaredValue&quot; : {
                 &quot;CurrencyCode&quot; : &quot;USD&quot;,
                 &quot;Amount&quot; : 0.0
@@ -1397,7 +1462,7 @@ class MerchantFulfillmentApiTest extends BaseTestCase
             },
             &quot;RequiresAdditionalSellerInputs&quot; : false,
             &quot;Benefits&quot; : {
-              &quot;IncludedBenefits&quot; : [ ],
+              &quot;IncludedBenefits&quot; : [ &quot;FBM_SHIP_PLUS&quot; ],
               &quot;ExcludedBenefits&quot; : [ {
                 &quot;Benefit&quot; : &quot;CLAIMS_PROTECTED&quot;,
                 &quot;ReasonCodes&quot; : [ &quot;LATE_DELIVERY_RISK&quot; ]

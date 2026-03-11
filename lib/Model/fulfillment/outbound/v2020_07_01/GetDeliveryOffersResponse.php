@@ -38,7 +38,7 @@ use SpApi\ObjectSerializer;
  *
  * @category Class
  *
- * @description The response schema for the getDeliveryOffers operation.
+ * @description The response schema for the &#x60;getDeliveryOffers&#x60; operation.
  *
  * @author   OpenAPI Generator team
  *
