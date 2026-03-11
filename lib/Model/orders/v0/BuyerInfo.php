@@ -120,6 +120,7 @@ class BuyerInfo implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static array $setters = [
         'buyer_name' => 'setBuyerName',
+        'buyer_email' => 'setBuyerEmail',
         'buyer_county' => 'setBuyerCounty',
         'buyer_tax_info' => 'setBuyerTaxInfo',
         'purchase_order_number' => 'setPurchaseOrderNumber',
@@ -132,6 +133,7 @@ class BuyerInfo implements ModelInterface, \ArrayAccess, \JsonSerializable
      */
     protected static array $getters = [
         'buyer_name' => 'getBuyerName',
+        'buyer_email' => 'getBuyerEmail',
         'buyer_county' => 'getBuyerCounty',
         'buyer_tax_info' => 'getBuyerTaxInfo',
         'purchase_order_number' => 'getPurchaseOrderNumber',
@@ -151,6 +153,7 @@ class BuyerInfo implements ModelInterface, \ArrayAccess, \JsonSerializable
     public function __construct(?array $data = null)
     {
         $this->setIfExists('buyer_name', $data ?? [], null);
+        $this->setIfExists('buyer_email', $data ?? [], null);
         $this->setIfExists('buyer_county', $data ?? [], null);
         $this->setIfExists('buyer_tax_info', $data ?? [], null);
         $this->setIfExists('purchase_order_number', $data ?? [], null);
@@ -264,6 +267,14 @@ class BuyerInfo implements ModelInterface, \ArrayAccess, \JsonSerializable
     }
 
     /**
+     * Gets buyer_email.
+     */
+    public function getBuyerEmail(): ?string
+    {
+        return $this->container['buyer_email'];
+    }
+
+    /**
      * Sets buyer_name.
      *
      * @param null|string $buyer_name the buyer name or the recipient name
@@ -281,6 +292,18 @@ class BuyerInfo implements ModelInterface, \ArrayAccess, \JsonSerializable
             }
         }
         $this->container['buyer_name'] = $buyer_name;
+
+        return $this;
+    }
+
+    /**
+     * Sets buyer_name.
+     *
+     * @param null|string $buyer_email the buyer name or the recipient name
+     */
+    public function setBuyerEmail(?string $buyer_email): self
+    {
+        $this->container['buyer_email'] = $buyer_email;
 
         return $this;
     }
