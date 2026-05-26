@@ -149,7 +149,7 @@ class FulfillmentOrdersApi
      *
      * @throws \GeekSeller\SellingPartnerAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return object|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList
+     * @return object|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList
      */
     public function cancelOrder($order_id, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['cancelOrder'][0])
     {
@@ -166,7 +166,7 @@ class FulfillmentOrdersApi
      *
      * @throws \GeekSeller\SellingPartnerAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of object|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList, HTTP status code, HTTP response headers (array of strings)
+     * @return array of object|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList, HTTP status code, HTTP response headers (array of strings)
      */
     public function cancelOrderWithHttpInfo($order_id, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['cancelOrder'][0])
     {
@@ -236,11 +236,11 @@ class FulfillmentOrdersApi
                         $response->getHeaders()
                     ];
                 case 400:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -258,16 +258,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 401:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -285,16 +285,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 403:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -312,16 +312,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 404:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -339,16 +339,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 413:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -366,16 +366,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 415:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -393,16 +393,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 429:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -420,16 +420,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 500:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -447,16 +447,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 503:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -474,7 +474,7 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -521,7 +521,7 @@ class FulfillmentOrdersApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -529,7 +529,7 @@ class FulfillmentOrdersApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -537,7 +537,7 @@ class FulfillmentOrdersApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -545,7 +545,7 @@ class FulfillmentOrdersApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -553,7 +553,7 @@ class FulfillmentOrdersApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -561,7 +561,7 @@ class FulfillmentOrdersApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -569,7 +569,7 @@ class FulfillmentOrdersApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -577,7 +577,7 @@ class FulfillmentOrdersApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -585,7 +585,7 @@ class FulfillmentOrdersApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -773,13 +773,13 @@ class FulfillmentOrdersApi
     /**
      * Operation createOrder
      *
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\CreateOrderRequest $body CreateOrderRequest parameter (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\CreateOrderRequest $body CreateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createOrder'] to see the possible values for this operation
      *
      * @throws \GeekSeller\SellingPartnerAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\CreateOrderResponse|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList
+     * @return \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList
      */
     public function createOrder($body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['createOrder'][0])
     {
@@ -790,13 +790,13 @@ class FulfillmentOrdersApi
     /**
      * Operation createOrderWithHttpInfo
      *
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\CreateOrderRequest $body CreateOrderRequest parameter (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\CreateOrderRequest $body CreateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createOrder'] to see the possible values for this operation
      *
      * @throws \GeekSeller\SellingPartnerAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\CreateOrderResponse|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList, HTTP status code, HTTP response headers (array of strings)
      */
     public function createOrderWithHttpInfo($body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['createOrder'][0])
     {
@@ -839,11 +839,11 @@ class FulfillmentOrdersApi
 
             switch($statusCode) {
                 case 200:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\CreateOrderResponse' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\CreateOrderResponse' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -861,16 +861,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\CreateOrderResponse', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 400:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -888,16 +888,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 401:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -915,16 +915,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 403:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -942,16 +942,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 404:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -969,16 +969,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 413:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -996,16 +996,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 415:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1023,16 +1023,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 429:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1050,16 +1050,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 500:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1077,16 +1077,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 503:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1104,13 +1104,13 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
             }
 
-            $returnType = '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\CreateOrderResponse';
+            $returnType = '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -1143,7 +1143,7 @@ class FulfillmentOrdersApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\CreateOrderResponse',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1151,7 +1151,7 @@ class FulfillmentOrdersApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1159,7 +1159,7 @@ class FulfillmentOrdersApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1167,7 +1167,7 @@ class FulfillmentOrdersApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1175,7 +1175,7 @@ class FulfillmentOrdersApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1183,7 +1183,7 @@ class FulfillmentOrdersApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1191,7 +1191,7 @@ class FulfillmentOrdersApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1199,7 +1199,7 @@ class FulfillmentOrdersApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1207,7 +1207,7 @@ class FulfillmentOrdersApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1215,7 +1215,7 @@ class FulfillmentOrdersApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1228,7 +1228,7 @@ class FulfillmentOrdersApi
     /**
      * Operation createOrderAsync
      *
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\CreateOrderRequest $body CreateOrderRequest parameter (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\CreateOrderRequest $body CreateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createOrder'] to see the possible values for this operation
      *
@@ -1248,7 +1248,7 @@ class FulfillmentOrdersApi
     /**
      * Operation createOrderAsyncWithHttpInfo
      *
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\CreateOrderRequest $body CreateOrderRequest parameter (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\CreateOrderRequest $body CreateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createOrder'] to see the possible values for this operation
      *
@@ -1257,7 +1257,7 @@ class FulfillmentOrdersApi
      */
     public function createOrderAsyncWithHttpInfo($body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['createOrder'][0])
     {
-        $returnType = '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\CreateOrderResponse';
+        $returnType = '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse';
         $request = $this->createOrderRequest($body, $x_amzn_fulfillment_service_id, $contentType);
 
         return $this->client
@@ -1299,7 +1299,7 @@ class FulfillmentOrdersApi
     /**
      * Create request for operation 'createOrder'
      *
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\CreateOrderRequest $body CreateOrderRequest parameter (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\CreateOrderRequest $body CreateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createOrder'] to see the possible values for this operation
      *
@@ -1406,7 +1406,7 @@ class FulfillmentOrdersApi
      *
      * @throws \GeekSeller\SellingPartnerAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\GetOrderResponse|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList
+     * @return \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList
      */
     public function getOrder($order_id, $x_amzn_fulfillment_service_id = null, $shipments = null, string $contentType = self::contentTypes['getOrder'][0])
     {
@@ -1424,7 +1424,7 @@ class FulfillmentOrdersApi
      *
      * @throws \GeekSeller\SellingPartnerAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\GetOrderResponse|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList, HTTP status code, HTTP response headers (array of strings)
      */
     public function getOrderWithHttpInfo($order_id, $x_amzn_fulfillment_service_id = null, $shipments = null, string $contentType = self::contentTypes['getOrder'][0])
     {
@@ -1467,11 +1467,11 @@ class FulfillmentOrdersApi
 
             switch($statusCode) {
                 case 200:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\GetOrderResponse' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\GetOrderResponse' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1489,16 +1489,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\GetOrderResponse', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 400:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1516,16 +1516,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 401:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1543,16 +1543,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 403:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1570,16 +1570,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 404:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1597,16 +1597,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 413:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1624,16 +1624,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 415:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1651,16 +1651,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 429:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1678,16 +1678,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 500:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1705,16 +1705,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 503:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1732,13 +1732,13 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
             }
 
-            $returnType = '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\GetOrderResponse';
+            $returnType = '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -1771,7 +1771,7 @@ class FulfillmentOrdersApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\GetOrderResponse',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1779,7 +1779,7 @@ class FulfillmentOrdersApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1787,7 +1787,7 @@ class FulfillmentOrdersApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1795,7 +1795,7 @@ class FulfillmentOrdersApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1803,7 +1803,7 @@ class FulfillmentOrdersApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1811,7 +1811,7 @@ class FulfillmentOrdersApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1819,7 +1819,7 @@ class FulfillmentOrdersApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1827,7 +1827,7 @@ class FulfillmentOrdersApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1835,7 +1835,7 @@ class FulfillmentOrdersApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1843,7 +1843,7 @@ class FulfillmentOrdersApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1887,7 +1887,7 @@ class FulfillmentOrdersApi
      */
     public function getOrderAsyncWithHttpInfo($order_id, $x_amzn_fulfillment_service_id = null, $shipments = null, string $contentType = self::contentTypes['getOrder'][0])
     {
-        $returnType = '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\GetOrderResponse';
+        $returnType = '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse';
         $request = $this->getOrderRequest($order_id, $x_amzn_fulfillment_service_id, $shipments, $contentType);
 
         return $this->client
@@ -2052,7 +2052,7 @@ class FulfillmentOrdersApi
      *
      * @throws \GeekSeller\SellingPartnerAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ListOrdersResponse|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList
+     * @return \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList
      */
     public function listOrders($x_amzn_fulfillment_service_id = null, $updated_after = null, $page_token = null, $shipments = null, string $contentType = self::contentTypes['listOrders'][0])
     {
@@ -2071,7 +2071,7 @@ class FulfillmentOrdersApi
      *
      * @throws \GeekSeller\SellingPartnerAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ListOrdersResponse|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList, HTTP status code, HTTP response headers (array of strings)
      */
     public function listOrdersWithHttpInfo($x_amzn_fulfillment_service_id = null, $updated_after = null, $page_token = null, $shipments = null, string $contentType = self::contentTypes['listOrders'][0])
     {
@@ -2114,11 +2114,11 @@ class FulfillmentOrdersApi
 
             switch($statusCode) {
                 case 200:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ListOrdersResponse' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ListOrdersResponse' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2136,16 +2136,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ListOrdersResponse', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 400:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2163,16 +2163,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 401:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2190,16 +2190,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 403:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2217,16 +2217,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 404:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2244,16 +2244,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 413:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2271,16 +2271,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 415:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2298,16 +2298,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 429:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2325,16 +2325,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 500:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2352,16 +2352,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 503:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2379,13 +2379,13 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
             }
 
-            $returnType = '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ListOrdersResponse';
+            $returnType = '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -2418,7 +2418,7 @@ class FulfillmentOrdersApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ListOrdersResponse',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2426,7 +2426,7 @@ class FulfillmentOrdersApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2434,7 +2434,7 @@ class FulfillmentOrdersApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2442,7 +2442,7 @@ class FulfillmentOrdersApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2450,7 +2450,7 @@ class FulfillmentOrdersApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2458,7 +2458,7 @@ class FulfillmentOrdersApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2466,7 +2466,7 @@ class FulfillmentOrdersApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2474,7 +2474,7 @@ class FulfillmentOrdersApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2482,7 +2482,7 @@ class FulfillmentOrdersApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2490,7 +2490,7 @@ class FulfillmentOrdersApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2536,7 +2536,7 @@ class FulfillmentOrdersApi
      */
     public function listOrdersAsyncWithHttpInfo($x_amzn_fulfillment_service_id = null, $updated_after = null, $page_token = null, $shipments = null, string $contentType = self::contentTypes['listOrders'][0])
     {
-        $returnType = '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ListOrdersResponse';
+        $returnType = '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse';
         $request = $this->listOrdersRequest($x_amzn_fulfillment_service_id, $updated_after, $page_token, $shipments, $contentType);
 
         return $this->client
@@ -2697,13 +2697,13 @@ class FulfillmentOrdersApi
      * Operation updateOrder
      *
      * @param  string $order_id The fulfillment order identifier identifying the order that the merchant wants to update. (required)
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrder'] to see the possible values for this operation
      *
      * @throws \GeekSeller\SellingPartnerAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return object|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList
+     * @return object|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList
      */
     public function updateOrder($order_id, $body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['updateOrder'][0])
     {
@@ -2715,13 +2715,13 @@ class FulfillmentOrdersApi
      * Operation updateOrderWithHttpInfo
      *
      * @param  string $order_id The fulfillment order identifier identifying the order that the merchant wants to update. (required)
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrder'] to see the possible values for this operation
      *
      * @throws \GeekSeller\SellingPartnerAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of object|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList|\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList, HTTP status code, HTTP response headers (array of strings)
+     * @return array of object|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList|\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList, HTTP status code, HTTP response headers (array of strings)
      */
     public function updateOrderWithHttpInfo($order_id, $body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['updateOrder'][0])
     {
@@ -2791,11 +2791,11 @@ class FulfillmentOrdersApi
                         $response->getHeaders()
                     ];
                 case 400:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2813,16 +2813,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 401:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2840,16 +2840,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 403:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2867,16 +2867,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 404:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2894,16 +2894,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 413:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2921,16 +2921,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 415:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2948,16 +2948,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 429:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2975,16 +2975,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 500:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -3002,16 +3002,16 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 503:
-                    if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -3029,7 +3029,7 @@ class FulfillmentOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -3076,7 +3076,7 @@ class FulfillmentOrdersApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3084,7 +3084,7 @@ class FulfillmentOrdersApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3092,7 +3092,7 @@ class FulfillmentOrdersApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3100,7 +3100,7 @@ class FulfillmentOrdersApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3108,7 +3108,7 @@ class FulfillmentOrdersApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3116,7 +3116,7 @@ class FulfillmentOrdersApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3124,7 +3124,7 @@ class FulfillmentOrdersApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3132,7 +3132,7 @@ class FulfillmentOrdersApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3140,7 +3140,7 @@ class FulfillmentOrdersApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3154,7 +3154,7 @@ class FulfillmentOrdersApi
      * Operation updateOrderAsync
      *
      * @param  string $order_id The fulfillment order identifier identifying the order that the merchant wants to update. (required)
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrder'] to see the possible values for this operation
      *
@@ -3175,7 +3175,7 @@ class FulfillmentOrdersApi
      * Operation updateOrderAsyncWithHttpInfo
      *
      * @param  string $order_id The fulfillment order identifier identifying the order that the merchant wants to update. (required)
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrder'] to see the possible values for this operation
      *
@@ -3227,7 +3227,7 @@ class FulfillmentOrdersApi
      * Create request for operation 'updateOrder'
      *
      * @param  string $order_id The fulfillment order identifier identifying the order that the merchant wants to update. (required)
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrder'] to see the possible values for this operation
      *
@@ -3346,7 +3346,7 @@ class FulfillmentOrdersApi
      * Operation updateOrderStatus
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrderStatus'] to see the possible values for this operation
      *
@@ -3363,7 +3363,7 @@ class FulfillmentOrdersApi
      * Operation updateOrderStatusWithHttpInfo
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrderStatus'] to see the possible values for this operation
      *
@@ -3417,7 +3417,7 @@ class FulfillmentOrdersApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3425,7 +3425,7 @@ class FulfillmentOrdersApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3433,7 +3433,7 @@ class FulfillmentOrdersApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3441,7 +3441,7 @@ class FulfillmentOrdersApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3449,7 +3449,7 @@ class FulfillmentOrdersApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3457,7 +3457,7 @@ class FulfillmentOrdersApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3465,7 +3465,7 @@ class FulfillmentOrdersApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3473,7 +3473,7 @@ class FulfillmentOrdersApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3481,7 +3481,7 @@ class FulfillmentOrdersApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3495,7 +3495,7 @@ class FulfillmentOrdersApi
      * Operation updateOrderStatusAsync
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrderStatus'] to see the possible values for this operation
      *
@@ -3516,7 +3516,7 @@ class FulfillmentOrdersApi
      * Operation updateOrderStatusAsyncWithHttpInfo
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrderStatus'] to see the possible values for this operation
      *
@@ -3555,7 +3555,7 @@ class FulfillmentOrdersApi
      * Create request for operation 'updateOrderStatus'
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrderStatus'] to see the possible values for this operation
      *
@@ -3675,7 +3675,7 @@ class FulfillmentOrdersApi
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
      * @param  string $package_number The package number to update. (required)
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\UpdatePackageRequest $body The package information to update. (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\UpdatePackageRequest $body The package information to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updatePackage'] to see the possible values for this operation
      *
@@ -3693,7 +3693,7 @@ class FulfillmentOrdersApi
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
      * @param  string $package_number The package number to update. (required)
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\UpdatePackageRequest $body The package information to update. (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\UpdatePackageRequest $body The package information to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updatePackage'] to see the possible values for this operation
      *
@@ -3747,7 +3747,7 @@ class FulfillmentOrdersApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3755,7 +3755,7 @@ class FulfillmentOrdersApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3763,7 +3763,7 @@ class FulfillmentOrdersApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3771,7 +3771,7 @@ class FulfillmentOrdersApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3779,7 +3779,7 @@ class FulfillmentOrdersApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3787,7 +3787,7 @@ class FulfillmentOrdersApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3795,7 +3795,7 @@ class FulfillmentOrdersApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3803,7 +3803,7 @@ class FulfillmentOrdersApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3811,7 +3811,7 @@ class FulfillmentOrdersApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\ErrorList',
+                        '\GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3826,7 +3826,7 @@ class FulfillmentOrdersApi
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
      * @param  string $package_number The package number to update. (required)
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\UpdatePackageRequest $body The package information to update. (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\UpdatePackageRequest $body The package information to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updatePackage'] to see the possible values for this operation
      *
@@ -3848,7 +3848,7 @@ class FulfillmentOrdersApi
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
      * @param  string $package_number The package number to update. (required)
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\UpdatePackageRequest $body The package information to update. (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\UpdatePackageRequest $body The package information to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updatePackage'] to see the possible values for this operation
      *
@@ -3888,7 +3888,7 @@ class FulfillmentOrdersApi
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
      * @param  string $package_number The package number to update. (required)
-     * @param  \GeekSeller\SellingPartnerAPI\FulfillmentOutboundApiV2\UpdatePackageRequest $body The package information to update. (required)
+     * @param  \GeekSeller\SellingPartnerAPI\Model\fulfillment\outbound\v2025_09_24\UpdatePackageRequest $body The package information to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updatePackage'] to see the possible values for this operation
      *

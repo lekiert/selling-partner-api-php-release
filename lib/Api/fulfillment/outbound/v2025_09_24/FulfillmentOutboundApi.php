@@ -155,7 +155,7 @@ class FulfillmentOutboundApi
      *
      * @throws \SpApi\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return object|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList
+     * @return object|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList
      */
     public function cancelOrder($order_id, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['cancelOrder'][0])
     {
@@ -172,7 +172,7 @@ class FulfillmentOutboundApi
      *
      * @throws \SpApi\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of object|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList, HTTP status code, HTTP response headers (array of strings)
+     * @return array of object|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList, HTTP status code, HTTP response headers (array of strings)
      */
     public function cancelOrderWithHttpInfo($order_id, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['cancelOrder'][0])
     {
@@ -242,11 +242,11 @@ class FulfillmentOutboundApi
                         $response->getHeaders()
                     ];
                 case 400:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -264,16 +264,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 401:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -291,16 +291,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 403:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -318,16 +318,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 404:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -345,16 +345,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 413:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -372,16 +372,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 415:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -399,16 +399,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 429:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -426,16 +426,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 500:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -453,16 +453,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 503:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -480,7 +480,7 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -527,7 +527,7 @@ class FulfillmentOutboundApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -535,7 +535,7 @@ class FulfillmentOutboundApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -543,7 +543,7 @@ class FulfillmentOutboundApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -551,7 +551,7 @@ class FulfillmentOutboundApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -559,7 +559,7 @@ class FulfillmentOutboundApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -567,7 +567,7 @@ class FulfillmentOutboundApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -575,7 +575,7 @@ class FulfillmentOutboundApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -583,7 +583,7 @@ class FulfillmentOutboundApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -591,7 +591,7 @@ class FulfillmentOutboundApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -779,13 +779,13 @@ class FulfillmentOutboundApi
     /**
      * Operation createOrder
      *
-     * @param  \SpApi\FulfillmentOutboundApiV2\CreateOrderRequest $body CreateOrderRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\CreateOrderRequest $body CreateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createOrder'] to see the possible values for this operation
      *
      * @throws \SpApi\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \SpApi\FulfillmentOutboundApiV2\CreateOrderResponse|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList
+     * @return \SpApi\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList
      */
     public function createOrder($body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['createOrder'][0])
     {
@@ -796,13 +796,13 @@ class FulfillmentOutboundApi
     /**
      * Operation createOrderWithHttpInfo
      *
-     * @param  \SpApi\FulfillmentOutboundApiV2\CreateOrderRequest $body CreateOrderRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\CreateOrderRequest $body CreateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createOrder'] to see the possible values for this operation
      *
      * @throws \SpApi\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \SpApi\FulfillmentOutboundApiV2\CreateOrderResponse|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \SpApi\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList, HTTP status code, HTTP response headers (array of strings)
      */
     public function createOrderWithHttpInfo($body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['createOrder'][0])
     {
@@ -845,11 +845,11 @@ class FulfillmentOutboundApi
 
             switch($statusCode) {
                 case 200:
-                    if ('\SpApi\FulfillmentOutboundApiV2\CreateOrderResponse' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\CreateOrderResponse' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -867,16 +867,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\CreateOrderResponse', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 400:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -894,16 +894,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 401:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -921,16 +921,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 403:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -948,16 +948,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 404:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -975,16 +975,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 413:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1002,16 +1002,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 415:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1029,16 +1029,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 429:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1056,16 +1056,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 500:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1083,16 +1083,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 503:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1110,13 +1110,13 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
             }
 
-            $returnType = '\SpApi\FulfillmentOutboundApiV2\CreateOrderResponse';
+            $returnType = '\SpApi\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -1149,7 +1149,7 @@ class FulfillmentOutboundApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\CreateOrderResponse',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1157,7 +1157,7 @@ class FulfillmentOutboundApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1165,7 +1165,7 @@ class FulfillmentOutboundApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1173,7 +1173,7 @@ class FulfillmentOutboundApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1181,7 +1181,7 @@ class FulfillmentOutboundApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1189,7 +1189,7 @@ class FulfillmentOutboundApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1197,7 +1197,7 @@ class FulfillmentOutboundApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1205,7 +1205,7 @@ class FulfillmentOutboundApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1213,7 +1213,7 @@ class FulfillmentOutboundApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1221,7 +1221,7 @@ class FulfillmentOutboundApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1234,7 +1234,7 @@ class FulfillmentOutboundApi
     /**
      * Operation createOrderAsync
      *
-     * @param  \SpApi\FulfillmentOutboundApiV2\CreateOrderRequest $body CreateOrderRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\CreateOrderRequest $body CreateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createOrder'] to see the possible values for this operation
      *
@@ -1254,7 +1254,7 @@ class FulfillmentOutboundApi
     /**
      * Operation createOrderAsyncWithHttpInfo
      *
-     * @param  \SpApi\FulfillmentOutboundApiV2\CreateOrderRequest $body CreateOrderRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\CreateOrderRequest $body CreateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createOrder'] to see the possible values for this operation
      *
@@ -1263,7 +1263,7 @@ class FulfillmentOutboundApi
      */
     public function createOrderAsyncWithHttpInfo($body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['createOrder'][0])
     {
-        $returnType = '\SpApi\FulfillmentOutboundApiV2\CreateOrderResponse';
+        $returnType = '\SpApi\Model\fulfillment\outbound\v2025_09_24\CreateOrderResponse';
         $request = $this->createOrderRequest($body, $x_amzn_fulfillment_service_id, $contentType);
 
         return $this->client
@@ -1305,7 +1305,7 @@ class FulfillmentOutboundApi
     /**
      * Create request for operation 'createOrder'
      *
-     * @param  \SpApi\FulfillmentOutboundApiV2\CreateOrderRequest $body CreateOrderRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\CreateOrderRequest $body CreateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createOrder'] to see the possible values for this operation
      *
@@ -1405,13 +1405,13 @@ class FulfillmentOutboundApi
     /**
      * Operation getOffers
      *
-     * @param  \SpApi\FulfillmentOutboundApiV2\GetOffersRequest $body GetOffersRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOffersRequest $body GetOffersRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getOffers'] to see the possible values for this operation
      *
      * @throws \SpApi\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \SpApi\FulfillmentOutboundApiV2\GetOffersResponse|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList
+     * @return \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOffersResponse|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList
      */
     public function getOffers($body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['getOffers'][0])
     {
@@ -1422,13 +1422,13 @@ class FulfillmentOutboundApi
     /**
      * Operation getOffersWithHttpInfo
      *
-     * @param  \SpApi\FulfillmentOutboundApiV2\GetOffersRequest $body GetOffersRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOffersRequest $body GetOffersRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getOffers'] to see the possible values for this operation
      *
      * @throws \SpApi\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \SpApi\FulfillmentOutboundApiV2\GetOffersResponse|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOffersResponse|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList, HTTP status code, HTTP response headers (array of strings)
      */
     public function getOffersWithHttpInfo($body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['getOffers'][0])
     {
@@ -1471,11 +1471,11 @@ class FulfillmentOutboundApi
 
             switch($statusCode) {
                 case 200:
-                    if ('\SpApi\FulfillmentOutboundApiV2\GetOffersResponse' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOffersResponse' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\GetOffersResponse' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOffersResponse' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1493,16 +1493,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\GetOffersResponse', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOffersResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 400:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1520,16 +1520,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 401:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1547,16 +1547,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 403:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1574,16 +1574,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 404:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1601,16 +1601,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 413:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1628,16 +1628,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 415:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1655,16 +1655,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 429:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1682,16 +1682,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 500:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1709,16 +1709,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 503:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -1736,13 +1736,13 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
             }
 
-            $returnType = '\SpApi\FulfillmentOutboundApiV2\GetOffersResponse';
+            $returnType = '\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOffersResponse';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -1775,7 +1775,7 @@ class FulfillmentOutboundApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\GetOffersResponse',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOffersResponse',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1783,7 +1783,7 @@ class FulfillmentOutboundApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1791,7 +1791,7 @@ class FulfillmentOutboundApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1799,7 +1799,7 @@ class FulfillmentOutboundApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1807,7 +1807,7 @@ class FulfillmentOutboundApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1815,7 +1815,7 @@ class FulfillmentOutboundApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1823,7 +1823,7 @@ class FulfillmentOutboundApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1831,7 +1831,7 @@ class FulfillmentOutboundApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1839,7 +1839,7 @@ class FulfillmentOutboundApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1847,7 +1847,7 @@ class FulfillmentOutboundApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1860,7 +1860,7 @@ class FulfillmentOutboundApi
     /**
      * Operation getOffersAsync
      *
-     * @param  \SpApi\FulfillmentOutboundApiV2\GetOffersRequest $body GetOffersRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOffersRequest $body GetOffersRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getOffers'] to see the possible values for this operation
      *
@@ -1880,7 +1880,7 @@ class FulfillmentOutboundApi
     /**
      * Operation getOffersAsyncWithHttpInfo
      *
-     * @param  \SpApi\FulfillmentOutboundApiV2\GetOffersRequest $body GetOffersRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOffersRequest $body GetOffersRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getOffers'] to see the possible values for this operation
      *
@@ -1889,7 +1889,7 @@ class FulfillmentOutboundApi
      */
     public function getOffersAsyncWithHttpInfo($body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['getOffers'][0])
     {
-        $returnType = '\SpApi\FulfillmentOutboundApiV2\GetOffersResponse';
+        $returnType = '\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOffersResponse';
         $request = $this->getOffersRequest($body, $x_amzn_fulfillment_service_id, $contentType);
 
         return $this->client
@@ -1931,7 +1931,7 @@ class FulfillmentOutboundApi
     /**
      * Create request for operation 'getOffers'
      *
-     * @param  \SpApi\FulfillmentOutboundApiV2\GetOffersRequest $body GetOffersRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOffersRequest $body GetOffersRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getOffers'] to see the possible values for this operation
      *
@@ -2038,7 +2038,7 @@ class FulfillmentOutboundApi
      *
      * @throws \SpApi\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \SpApi\FulfillmentOutboundApiV2\GetOrderResponse|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList
+     * @return \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList
      */
     public function getOrder($order_id, $x_amzn_fulfillment_service_id = null, $shipments = null, string $contentType = self::contentTypes['getOrder'][0])
     {
@@ -2056,7 +2056,7 @@ class FulfillmentOutboundApi
      *
      * @throws \SpApi\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \SpApi\FulfillmentOutboundApiV2\GetOrderResponse|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList, HTTP status code, HTTP response headers (array of strings)
      */
     public function getOrderWithHttpInfo($order_id, $x_amzn_fulfillment_service_id = null, $shipments = null, string $contentType = self::contentTypes['getOrder'][0])
     {
@@ -2099,11 +2099,11 @@ class FulfillmentOutboundApi
 
             switch($statusCode) {
                 case 200:
-                    if ('\SpApi\FulfillmentOutboundApiV2\GetOrderResponse' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\GetOrderResponse' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2121,16 +2121,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\GetOrderResponse', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 400:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2148,16 +2148,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 401:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2175,16 +2175,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 403:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2202,16 +2202,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 404:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2229,16 +2229,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 413:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2256,16 +2256,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 415:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2283,16 +2283,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 429:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2310,16 +2310,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 500:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2337,16 +2337,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 503:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2364,13 +2364,13 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
             }
 
-            $returnType = '\SpApi\FulfillmentOutboundApiV2\GetOrderResponse';
+            $returnType = '\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -2403,7 +2403,7 @@ class FulfillmentOutboundApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\GetOrderResponse',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2411,7 +2411,7 @@ class FulfillmentOutboundApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2419,7 +2419,7 @@ class FulfillmentOutboundApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2427,7 +2427,7 @@ class FulfillmentOutboundApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2435,7 +2435,7 @@ class FulfillmentOutboundApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2443,7 +2443,7 @@ class FulfillmentOutboundApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2451,7 +2451,7 @@ class FulfillmentOutboundApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2459,7 +2459,7 @@ class FulfillmentOutboundApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2467,7 +2467,7 @@ class FulfillmentOutboundApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2475,7 +2475,7 @@ class FulfillmentOutboundApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -2519,7 +2519,7 @@ class FulfillmentOutboundApi
      */
     public function getOrderAsyncWithHttpInfo($order_id, $x_amzn_fulfillment_service_id = null, $shipments = null, string $contentType = self::contentTypes['getOrder'][0])
     {
-        $returnType = '\SpApi\FulfillmentOutboundApiV2\GetOrderResponse';
+        $returnType = '\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderResponse';
         $request = $this->getOrderRequest($order_id, $x_amzn_fulfillment_service_id, $shipments, $contentType);
 
         return $this->client
@@ -2676,13 +2676,13 @@ class FulfillmentOutboundApi
     /**
      * Operation getOrderPreview
      *
-     * @param  \SpApi\FulfillmentOutboundApiV2\GetOrderPreviewRequest $body GetOrderPreviewRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderPreviewRequest $body GetOrderPreviewRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getOrderPreview'] to see the possible values for this operation
      *
      * @throws \SpApi\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \SpApi\FulfillmentOutboundApiV2\GetOrderPreviewResponse|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList
+     * @return \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderPreviewResponse|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList
      */
     public function getOrderPreview($body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['getOrderPreview'][0])
     {
@@ -2693,13 +2693,13 @@ class FulfillmentOutboundApi
     /**
      * Operation getOrderPreviewWithHttpInfo
      *
-     * @param  \SpApi\FulfillmentOutboundApiV2\GetOrderPreviewRequest $body GetOrderPreviewRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderPreviewRequest $body GetOrderPreviewRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getOrderPreview'] to see the possible values for this operation
      *
      * @throws \SpApi\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \SpApi\FulfillmentOutboundApiV2\GetOrderPreviewResponse|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderPreviewResponse|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList, HTTP status code, HTTP response headers (array of strings)
      */
     public function getOrderPreviewWithHttpInfo($body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['getOrderPreview'][0])
     {
@@ -2742,11 +2742,11 @@ class FulfillmentOutboundApi
 
             switch($statusCode) {
                 case 200:
-                    if ('\SpApi\FulfillmentOutboundApiV2\GetOrderPreviewResponse' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderPreviewResponse' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\GetOrderPreviewResponse' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderPreviewResponse' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2764,16 +2764,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\GetOrderPreviewResponse', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderPreviewResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 400:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2791,16 +2791,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 401:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2818,16 +2818,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 403:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2845,16 +2845,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 404:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2872,16 +2872,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 413:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2899,16 +2899,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 415:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2926,16 +2926,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 429:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2953,16 +2953,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 500:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -2980,16 +2980,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 503:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -3007,13 +3007,13 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
             }
 
-            $returnType = '\SpApi\FulfillmentOutboundApiV2\GetOrderPreviewResponse';
+            $returnType = '\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderPreviewResponse';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -3046,7 +3046,7 @@ class FulfillmentOutboundApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\GetOrderPreviewResponse',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderPreviewResponse',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3054,7 +3054,7 @@ class FulfillmentOutboundApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3062,7 +3062,7 @@ class FulfillmentOutboundApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3070,7 +3070,7 @@ class FulfillmentOutboundApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3078,7 +3078,7 @@ class FulfillmentOutboundApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3086,7 +3086,7 @@ class FulfillmentOutboundApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3094,7 +3094,7 @@ class FulfillmentOutboundApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3102,7 +3102,7 @@ class FulfillmentOutboundApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3110,7 +3110,7 @@ class FulfillmentOutboundApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3118,7 +3118,7 @@ class FulfillmentOutboundApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3131,7 +3131,7 @@ class FulfillmentOutboundApi
     /**
      * Operation getOrderPreviewAsync
      *
-     * @param  \SpApi\FulfillmentOutboundApiV2\GetOrderPreviewRequest $body GetOrderPreviewRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderPreviewRequest $body GetOrderPreviewRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getOrderPreview'] to see the possible values for this operation
      *
@@ -3151,7 +3151,7 @@ class FulfillmentOutboundApi
     /**
      * Operation getOrderPreviewAsyncWithHttpInfo
      *
-     * @param  \SpApi\FulfillmentOutboundApiV2\GetOrderPreviewRequest $body GetOrderPreviewRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderPreviewRequest $body GetOrderPreviewRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getOrderPreview'] to see the possible values for this operation
      *
@@ -3160,7 +3160,7 @@ class FulfillmentOutboundApi
      */
     public function getOrderPreviewAsyncWithHttpInfo($body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['getOrderPreview'][0])
     {
-        $returnType = '\SpApi\FulfillmentOutboundApiV2\GetOrderPreviewResponse';
+        $returnType = '\SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderPreviewResponse';
         $request = $this->getOrderPreviewRequest($body, $x_amzn_fulfillment_service_id, $contentType);
 
         return $this->client
@@ -3202,7 +3202,7 @@ class FulfillmentOutboundApi
     /**
      * Create request for operation 'getOrderPreview'
      *
-     * @param  \SpApi\FulfillmentOutboundApiV2\GetOrderPreviewRequest $body GetOrderPreviewRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\GetOrderPreviewRequest $body GetOrderPreviewRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getOrderPreview'] to see the possible values for this operation
      *
@@ -3310,7 +3310,7 @@ class FulfillmentOutboundApi
      *
      * @throws \SpApi\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \SpApi\FulfillmentOutboundApiV2\ListOrdersResponse|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList
+     * @return \SpApi\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList
      */
     public function listOrders($x_amzn_fulfillment_service_id = null, $updated_after = null, $page_token = null, $shipments = null, string $contentType = self::contentTypes['listOrders'][0])
     {
@@ -3329,7 +3329,7 @@ class FulfillmentOutboundApi
      *
      * @throws \SpApi\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \SpApi\FulfillmentOutboundApiV2\ListOrdersResponse|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \SpApi\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList, HTTP status code, HTTP response headers (array of strings)
      */
     public function listOrdersWithHttpInfo($x_amzn_fulfillment_service_id = null, $updated_after = null, $page_token = null, $shipments = null, string $contentType = self::contentTypes['listOrders'][0])
     {
@@ -3372,11 +3372,11 @@ class FulfillmentOutboundApi
 
             switch($statusCode) {
                 case 200:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ListOrdersResponse' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ListOrdersResponse' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -3394,16 +3394,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ListOrdersResponse', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 400:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -3421,16 +3421,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 401:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -3448,16 +3448,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 403:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -3475,16 +3475,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 404:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -3502,16 +3502,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 413:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -3529,16 +3529,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 415:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -3556,16 +3556,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 429:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -3583,16 +3583,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 500:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -3610,16 +3610,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 503:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -3637,13 +3637,13 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
             }
 
-            $returnType = '\SpApi\FulfillmentOutboundApiV2\ListOrdersResponse';
+            $returnType = '\SpApi\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse';
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -3676,7 +3676,7 @@ class FulfillmentOutboundApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ListOrdersResponse',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3684,7 +3684,7 @@ class FulfillmentOutboundApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3692,7 +3692,7 @@ class FulfillmentOutboundApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3700,7 +3700,7 @@ class FulfillmentOutboundApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3708,7 +3708,7 @@ class FulfillmentOutboundApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3716,7 +3716,7 @@ class FulfillmentOutboundApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3724,7 +3724,7 @@ class FulfillmentOutboundApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3732,7 +3732,7 @@ class FulfillmentOutboundApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3740,7 +3740,7 @@ class FulfillmentOutboundApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3748,7 +3748,7 @@ class FulfillmentOutboundApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -3794,7 +3794,7 @@ class FulfillmentOutboundApi
      */
     public function listOrdersAsyncWithHttpInfo($x_amzn_fulfillment_service_id = null, $updated_after = null, $page_token = null, $shipments = null, string $contentType = self::contentTypes['listOrders'][0])
     {
-        $returnType = '\SpApi\FulfillmentOutboundApiV2\ListOrdersResponse';
+        $returnType = '\SpApi\Model\fulfillment\outbound\v2025_09_24\ListOrdersResponse';
         $request = $this->listOrdersRequest($x_amzn_fulfillment_service_id, $updated_after, $page_token, $shipments, $contentType);
 
         return $this->client
@@ -3955,13 +3955,13 @@ class FulfillmentOutboundApi
      * Operation updateOrder
      *
      * @param  string $order_id The fulfillment order identifier identifying the order that the merchant wants to update. (required)
-     * @param  \SpApi\FulfillmentOutboundApiV2\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrder'] to see the possible values for this operation
      *
      * @throws \SpApi\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return object|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList
+     * @return object|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList
      */
     public function updateOrder($order_id, $body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['updateOrder'][0])
     {
@@ -3973,13 +3973,13 @@ class FulfillmentOutboundApi
      * Operation updateOrderWithHttpInfo
      *
      * @param  string $order_id The fulfillment order identifier identifying the order that the merchant wants to update. (required)
-     * @param  \SpApi\FulfillmentOutboundApiV2\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrder'] to see the possible values for this operation
      *
      * @throws \SpApi\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of object|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList|\SpApi\FulfillmentOutboundApiV2\ErrorList, HTTP status code, HTTP response headers (array of strings)
+     * @return array of object|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList|\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList, HTTP status code, HTTP response headers (array of strings)
      */
     public function updateOrderWithHttpInfo($order_id, $body, $x_amzn_fulfillment_service_id = null, string $contentType = self::contentTypes['updateOrder'][0])
     {
@@ -4049,11 +4049,11 @@ class FulfillmentOutboundApi
                         $response->getHeaders()
                     ];
                 case 400:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -4071,16 +4071,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 401:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -4098,16 +4098,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 403:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -4125,16 +4125,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 404:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -4152,16 +4152,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 413:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -4179,16 +4179,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 415:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -4206,16 +4206,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 429:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -4233,16 +4233,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 500:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -4260,16 +4260,16 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
                 case 503:
-                    if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' === '\SplFileObject') {
+                    if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
-                        if ('\SpApi\FulfillmentOutboundApiV2\ErrorList' !== 'string') {
+                        if ('\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList' !== 'string') {
                             try {
                                 $content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
                             } catch (\JsonException $exception) {
@@ -4287,7 +4287,7 @@ class FulfillmentOutboundApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\SpApi\FulfillmentOutboundApiV2\ErrorList', []),
+                        ObjectSerializer::deserialize($content, '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -4334,7 +4334,7 @@ class FulfillmentOutboundApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4342,7 +4342,7 @@ class FulfillmentOutboundApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4350,7 +4350,7 @@ class FulfillmentOutboundApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4358,7 +4358,7 @@ class FulfillmentOutboundApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4366,7 +4366,7 @@ class FulfillmentOutboundApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4374,7 +4374,7 @@ class FulfillmentOutboundApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4382,7 +4382,7 @@ class FulfillmentOutboundApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4390,7 +4390,7 @@ class FulfillmentOutboundApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4398,7 +4398,7 @@ class FulfillmentOutboundApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4412,7 +4412,7 @@ class FulfillmentOutboundApi
      * Operation updateOrderAsync
      *
      * @param  string $order_id The fulfillment order identifier identifying the order that the merchant wants to update. (required)
-     * @param  \SpApi\FulfillmentOutboundApiV2\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrder'] to see the possible values for this operation
      *
@@ -4433,7 +4433,7 @@ class FulfillmentOutboundApi
      * Operation updateOrderAsyncWithHttpInfo
      *
      * @param  string $order_id The fulfillment order identifier identifying the order that the merchant wants to update. (required)
-     * @param  \SpApi\FulfillmentOutboundApiV2\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrder'] to see the possible values for this operation
      *
@@ -4485,7 +4485,7 @@ class FulfillmentOutboundApi
      * Create request for operation 'updateOrder'
      *
      * @param  string $order_id The fulfillment order identifier identifying the order that the merchant wants to update. (required)
-     * @param  \SpApi\FulfillmentOutboundApiV2\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\UpdateOrderRequest $body UpdateOrderRequest parameter (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrder'] to see the possible values for this operation
      *
@@ -4604,7 +4604,7 @@ class FulfillmentOutboundApi
      * Operation updateOrderStatus
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
-     * @param  \SpApi\FulfillmentOutboundApiV2\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrderStatus'] to see the possible values for this operation
      *
@@ -4621,7 +4621,7 @@ class FulfillmentOutboundApi
      * Operation updateOrderStatusWithHttpInfo
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
-     * @param  \SpApi\FulfillmentOutboundApiV2\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrderStatus'] to see the possible values for this operation
      *
@@ -4675,7 +4675,7 @@ class FulfillmentOutboundApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4683,7 +4683,7 @@ class FulfillmentOutboundApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4691,7 +4691,7 @@ class FulfillmentOutboundApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4699,7 +4699,7 @@ class FulfillmentOutboundApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4707,7 +4707,7 @@ class FulfillmentOutboundApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4715,7 +4715,7 @@ class FulfillmentOutboundApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4723,7 +4723,7 @@ class FulfillmentOutboundApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4731,7 +4731,7 @@ class FulfillmentOutboundApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4739,7 +4739,7 @@ class FulfillmentOutboundApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -4753,7 +4753,7 @@ class FulfillmentOutboundApi
      * Operation updateOrderStatusAsync
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
-     * @param  \SpApi\FulfillmentOutboundApiV2\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrderStatus'] to see the possible values for this operation
      *
@@ -4774,7 +4774,7 @@ class FulfillmentOutboundApi
      * Operation updateOrderStatusAsyncWithHttpInfo
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
-     * @param  \SpApi\FulfillmentOutboundApiV2\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrderStatus'] to see the possible values for this operation
      *
@@ -4813,7 +4813,7 @@ class FulfillmentOutboundApi
      * Create request for operation 'updateOrderStatus'
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
-     * @param  \SpApi\FulfillmentOutboundApiV2\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\UpdateOrderStatusRequest $body The new status of the fulfillment order to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateOrderStatus'] to see the possible values for this operation
      *
@@ -4933,7 +4933,7 @@ class FulfillmentOutboundApi
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
      * @param  string $package_number The package number to update. (required)
-     * @param  \SpApi\FulfillmentOutboundApiV2\UpdatePackageRequest $body The package information to update. (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\UpdatePackageRequest $body The package information to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updatePackage'] to see the possible values for this operation
      *
@@ -4951,7 +4951,7 @@ class FulfillmentOutboundApi
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
      * @param  string $package_number The package number to update. (required)
-     * @param  \SpApi\FulfillmentOutboundApiV2\UpdatePackageRequest $body The package information to update. (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\UpdatePackageRequest $body The package information to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updatePackage'] to see the possible values for this operation
      *
@@ -5005,7 +5005,7 @@ class FulfillmentOutboundApi
                 case 400:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -5013,7 +5013,7 @@ class FulfillmentOutboundApi
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -5021,7 +5021,7 @@ class FulfillmentOutboundApi
                 case 403:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -5029,7 +5029,7 @@ class FulfillmentOutboundApi
                 case 404:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -5037,7 +5037,7 @@ class FulfillmentOutboundApi
                 case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -5045,7 +5045,7 @@ class FulfillmentOutboundApi
                 case 415:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -5053,7 +5053,7 @@ class FulfillmentOutboundApi
                 case 429:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -5061,7 +5061,7 @@ class FulfillmentOutboundApi
                 case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -5069,7 +5069,7 @@ class FulfillmentOutboundApi
                 case 503:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\SpApi\FulfillmentOutboundApiV2\ErrorList',
+                        '\SpApi\Model\fulfillment\outbound\v2025_09_24\ErrorList',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -5084,7 +5084,7 @@ class FulfillmentOutboundApi
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
      * @param  string $package_number The package number to update. (required)
-     * @param  \SpApi\FulfillmentOutboundApiV2\UpdatePackageRequest $body The package information to update. (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\UpdatePackageRequest $body The package information to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updatePackage'] to see the possible values for this operation
      *
@@ -5106,7 +5106,7 @@ class FulfillmentOutboundApi
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
      * @param  string $package_number The package number to update. (required)
-     * @param  \SpApi\FulfillmentOutboundApiV2\UpdatePackageRequest $body The package information to update. (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\UpdatePackageRequest $body The package information to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updatePackage'] to see the possible values for this operation
      *
@@ -5146,7 +5146,7 @@ class FulfillmentOutboundApi
      *
      * @param  string $order_id The identifier assigned to the order by the merchant when the fulfillment order was created. (required)
      * @param  string $package_number The package number to update. (required)
-     * @param  \SpApi\FulfillmentOutboundApiV2\UpdatePackageRequest $body The package information to update. (required)
+     * @param  \SpApi\Model\fulfillment\outbound\v2025_09_24\UpdatePackageRequest $body The package information to update. (required)
      * @param  string $x_amzn_fulfillment_service_id The identifier of the fulfillment service used for this operation. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updatePackage'] to see the possible values for this operation
      *
